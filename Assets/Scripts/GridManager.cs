@@ -30,7 +30,7 @@ public class GridManager : MonoBehaviour {
             }
         }
 
-        _cam.transform.position = new Vector3(width / 2f - 0.5f, height / 2f - 0.5f, -10);
+        _cam.transform.position = new Vector3(width / 2f - 0.5f, height / 2f - 0.5f, -30);
     }
 
  
@@ -87,5 +87,11 @@ public class GridManager : MonoBehaviour {
         Vector2 gridPos = new Vector2(Mathf.Round(mouseWorldPos.x), Mathf.Round(mouseWorldPos.y));
 
         return GetTileAtPosition(gridPos);
+    }
+
+    public void OnResetForLoop(int[,] mapData, Vector2 startPosition)
+    {
+        // TODO: Reset the map
+        GenerateGrid(mapData);
     }
 }

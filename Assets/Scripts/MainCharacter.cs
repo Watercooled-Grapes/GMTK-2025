@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
@@ -6,11 +7,15 @@ public class MainCharacter : MonoBehaviour
 {
     [SerializeField] private Vector2 _currentPosition;
     [SerializeField] private int _steps = 5;
+    private List<Turn> _turnsThisLoop = new List<Turn>();
 
     private bool _isSelected = false;
     private List<Tile> _availableTiles;
 
     private GridManager _gridManager;
+
+    // Events
+    public event Action<List<Turn>> TurnEnded;
 
     void Update()
     {
@@ -34,66 +39,63 @@ public class MainCharacter : MonoBehaviour
                 Tile targetTile = _gridManager.GetTileByWorldCoordinate(mouseWorldPos);
                 if (targetTile != null && !targetTile.IsWall && _availableTiles.Contains(targetTile))
                 {
-                    // Move player to the tile
-                    transform.position = _gridManager.GetTileCenterPosition(targetTile);
-                    _isSelected = false;
-                    RemoveHightlights(_availableTiles);
-                    _currentPosition = new Vector2(targetTile.X, targetTile.Y);
-                    Debug.Log("Player moved to " + targetTile.name);
-
-                    _availableTiles.Clear();
+                    MoveMainCharacter(targetTile);
                 }
             }
         }
     }
 
-    public void Init(int[,] mapData)
+    private void MoveMainCharacter(Tile newTile)
+    {
+        // Move player to the tile
+        transform.position = _gridManager.GetTileCenterPosition(newTile);
+        _isSelected = false;
+        RemoveHightlights(_availableTiles);
+        _currentPosition = new Vector2(newTile.X, newTile.Y);
+        Debug.Log("Player moved to " + newTile.name);
+
+        _availableTiles.Clear();
+
+        Turn turn = new Turn
+        {
+            Position = _currentPosition
+        };
+        _turnsThisLoop.Add(turn);
+
+        TurnEnded?.Invoke(_turnsThisLoop);
+    }
+
+    public void Init(int[,] mapData, Vector2 startPosition)
     {
         _gridManager = FindFirstObjectByType<GridManager>();
+        _isSelected = false;
+        
         if (_gridManager == null)
         {
             Debug.LogError("GridManager not found!");
             return;
         }
-
-        Vector2Int? startPos = FindStartPosition(mapData, 2); // 2 is the player start marker
-        if (startPos == null)
-        {
-            Debug.LogError("Start position not found in map data!");
-            return;
-        }
-
-        Vector2Int start = startPos.Value;
-        Vector3 pos = _gridManager.GetTileCenterPosition(start);
+        Vector3 pos = _gridManager.GetTileCenterPosition(startPosition);
         transform.position = pos;
 
-        _currentPosition = start;
-    }
+        _currentPosition = startPosition;
 
-    private Vector2Int? FindStartPosition(int[,] mapData, int startValue)
-    {
-        int width = mapData.GetLength(0);
-        int height = mapData.GetLength(1);
-
-        for (int x = 0; x < width; x++)
+        _turnsThisLoop.Clear();
+        if (_availableTiles != null)
         {
-            for (int y = 0; y < height; y++)
-            {
-                if (mapData[x, y] == startValue)
-                {
-                    return new Vector2Int(x, y);
-                }
-            }
+            RemoveHightlights(_availableTiles);
+            _availableTiles.Clear();
         }
-
-        return null;
     }
 
     private void OnMouseDown()
     {
-        _availableTiles = _gridManager.GetReachableTiles(_currentPosition, _steps);
-        HighlightPotentialDestinationTiles(_availableTiles);
-        _isSelected = true;
+        if (enabled)
+        {
+            _availableTiles = _gridManager.GetReachableTiles(_currentPosition, _steps);
+            HighlightPotentialDestinationTiles(_availableTiles);
+            _isSelected = true;
+        }
     }
 
     private void HighlightPotentialDestinationTiles(List<Tile> tiles)
@@ -111,5 +113,10 @@ public class MainCharacter : MonoBehaviour
             tile.RemoveHighlight();
         }
     }
-}
 
+    public void OnResetForLoop(int[,] mapData, Vector2 startPosition)
+    {
+        Init(mapData, startPosition);
+        _turnsThisLoop.Clear();
+    }
+}
