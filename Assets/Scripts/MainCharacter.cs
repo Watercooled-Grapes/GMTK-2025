@@ -69,7 +69,7 @@ public class MainCharacter : MonoBehaviour
     {
         _gridManager = FindFirstObjectByType<GridManager>();
         _isSelected = false;
-        
+
         if (_gridManager == null)
         {
             Debug.LogError("GridManager not found!");
@@ -118,5 +118,10 @@ public class MainCharacter : MonoBehaviour
     {
         Init(mapData, startPosition);
         _turnsThisLoop.Clear();
+    }
+
+    public int GetCurrentTurn()
+    {
+        return _turnsThisLoop.Count;
     }
 }
