@@ -25,7 +25,7 @@ public class CodeLineManager : MonoBehaviour
     {
         tmp = this.GetComponent<TMP_Text>();
 
-        lines = new string[] { "def helloWorld()", "    I like men", "    this is not a joke", "    i fuk dudes", "end" };
+        lines = new string[] { "def helloWorld()", "    this is some supah cool code", "    man i sure do hope i dont get hightlighted", "end" };
 
         updateCode();
     }
