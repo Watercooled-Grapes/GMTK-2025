@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class MainCharacter : MonoBehaviour, LevelManager.IResetable
 {
-    [SerializeField] private Vector2 _startPosition = new Vector2(2, 3);
     [SerializeField] private Vector2 _currentPosition;
     [SerializeField] private int _steps = 5;
     public List<IObserver> observers = new List<IObserver>();
@@ -71,7 +70,7 @@ public class MainCharacter : MonoBehaviour, LevelManager.IResetable
         }
     }
     
-    public void Init()
+    public void Init(int[,] mapData)
     {
         _gridManager = FindFirstObjectByType<GridManager>();
         if (_gridManager == null)
@@ -80,12 +79,39 @@ public class MainCharacter : MonoBehaviour, LevelManager.IResetable
             return;
         }
 
-        Vector3 pos = _gridManager.GetTileCenterPosition(_startPosition);
+        Vector2Int? startPos = FindStartPosition(mapData, 2); // 2 is the player start marker
+        if (startPos == null)
+        {
+            Debug.LogError("Start position not found in map data!");
+            return;
+        }
+
+        Vector2Int start = startPos.Value;
+        Vector3 pos = _gridManager.GetTileCenterPosition(start);
         transform.position = pos;
 
-        _currentPosition = _startPosition;
         observers.Clear();
         _actionsThisLoop.Clear();
+        _currentPosition = start;
+    }
+
+    private Vector2Int? FindStartPosition(int[,] mapData, int startValue)
+    {
+        int width = mapData.GetLength(0);
+        int height = mapData.GetLength(1);
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (mapData[x, y] == startValue)
+                {
+                    return new Vector2Int(x, y);
+                }
+            }
+        }
+
+        return null;
     }
 
     private void OnMouseDown()
@@ -113,7 +139,6 @@ public class MainCharacter : MonoBehaviour, LevelManager.IResetable
 
     public void ResetForLoop()
     {
-        Init();
         _actionsThisLoop.Clear();
     }
 }
