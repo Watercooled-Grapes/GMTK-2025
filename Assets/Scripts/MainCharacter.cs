@@ -2,17 +2,23 @@ using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class MainCharacter : MonoBehaviour
+public class MainCharacter : MonoBehaviour, LevelManager.IResetable
 {
     [SerializeField] private Vector2 _startPosition = new Vector2(2, 3);
     [SerializeField] private Vector2 _currentPosition;
     [SerializeField] private int _steps = 5;
-
+    public List<IObserver> observers = new List<IObserver>();
     private bool _isSelected = false;
     private List<Tile> _availableTiles;
+    private Queue<Action> _actionsThisLoop = new Queue<Action>();
 
     private GridManager _gridManager;
 
+    public interface IObserver
+    {
+        void OnTurnEnd(Queue<Action> action);
+    }
+    
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -35,20 +41,36 @@ public class MainCharacter : MonoBehaviour
                 Tile targetTile = _gridManager.GetTileByWorldCoordinate(mouseWorldPos);
                 if (targetTile != null && !targetTile.IsWall && _availableTiles.Contains(targetTile))
                 {
-                    // Move player to the tile
-                    transform.position = _gridManager.GetTileCenterPosition(targetTile);
-                    _isSelected = false;
-                    RemoveHightlights(_availableTiles);
-                    _currentPosition = new Vector2(targetTile.X, targetTile.Y);
-                    Debug.Log("Player moved to " + targetTile.name);
-                    Debug.Log("Player moved to " + targetTile.X + targetTile.Y);
-
-                    _availableTiles.Clear();
+                    MoveMainCharacter(targetTile);
                 }
             }
         }
     }
 
+    private void MoveMainCharacter(Tile targetTile)
+    {
+        // Move player to the tile
+        transform.position = _gridManager.GetTileCenterPosition(targetTile);
+        _isSelected = false;
+        RemoveHightlights(_availableTiles);
+        _currentPosition = new Vector2(targetTile.X, targetTile.Y);
+        Action action = new Action
+        {
+            Position = _currentPosition
+        };
+        _actionsThisLoop.Enqueue(action);
+        Debug.Log("Player moved to " + targetTile.name);
+        Debug.Log("Player moved to " + targetTile.X + targetTile.Y);
+        _availableTiles.Clear();
+        
+        // TODO: This should be moved elsewhere if throwing mechanics are added -> after moving we should throw
+        // Notify observers of turn end since player has completed move
+        foreach (IObserver observer in observers)
+        {
+            observer.OnTurnEnd(_actionsThisLoop);
+        }
+    }
+    
     public void Init()
     {
         _gridManager = FindFirstObjectByType<GridManager>();
@@ -62,6 +84,8 @@ public class MainCharacter : MonoBehaviour
         transform.position = pos;
 
         _currentPosition = _startPosition;
+        observers.Clear();
+        _actionsThisLoop.Clear();
     }
 
     private void OnMouseDown()
@@ -85,6 +109,12 @@ public class MainCharacter : MonoBehaviour
         {
             tile.RemoveHighlight();
         }
+    }
+
+    public void ResetForLoop()
+    {
+        Init();
+        _actionsThisLoop.Clear();
     }
 }
 
