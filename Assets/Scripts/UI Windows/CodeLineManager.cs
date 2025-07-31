@@ -17,6 +17,7 @@ public class CodeLineManager : MonoBehaviour
         set
         {
             pos = value;
+            if (pos >= lines.Length) pos = 0;
             updateCode();
         }
     } 
@@ -41,6 +42,7 @@ public class CodeLineManager : MonoBehaviour
                 highlightedText = highlightedText.Insert(lines[i].Length + "<mark=#ffff00aa>".Length, "</mark>");
 
                 tmp.text += highlightedText + "\n";
+                continue;
             }
             tmp.text += lines[i] + "\n";
         }
