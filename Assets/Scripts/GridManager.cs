@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
  
-public class GridManager : MonoBehaviour, LevelManager.IResetable {
+public class GridManager : MonoBehaviour {
     [SerializeField] private int _width, _height;
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Transform _cam;
@@ -89,7 +89,7 @@ public class GridManager : MonoBehaviour, LevelManager.IResetable {
         return GetTileAtPosition(gridPos);
     }
 
-    public void ResetForLoop(int[,] mapData)
+    public void OnResetForLoop(int[,] mapData, Vector2 startPosition)
     {
         // TODO: Reset the map
         GenerateGrid(mapData);
