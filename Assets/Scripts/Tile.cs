@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    [SerializeField] private Color _baseColor, _offsetColor;
+    [SerializeField] private Color _baseColor, _offsetColor, _wallColor;
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
 
@@ -11,9 +11,15 @@ public class Tile : MonoBehaviour
     private Coroutine _fadeCoroutine;
     private Coroutine _scaleCoroutine;
 
-    public void Init(bool isOffset)
+    public bool IsWall { get; set; } = false;
+
+    // IsOccupied does not block character moving
+    public bool IsOccupied { get; set; } = false;
+
+    public void Init(bool isOffset, bool isWall = false)
     {
-        _renderer.color = isOffset ? _offsetColor : _baseColor;
+        IsWall = isWall;
+        _renderer.color = IsWall ? _wallColor : (isOffset ? _offsetColor : _baseColor);
 
         _highlightRenderer = _highlight.GetComponent<SpriteRenderer>();
         SetAlpha(0f);
@@ -23,14 +29,22 @@ public class Tile : MonoBehaviour
 
     void OnMouseEnter()
     {
+        if (IsWall) return;
         StartFade(0.4f, 0.2f);
-        StartScale(Vector3.one * 1.2f, 0.25f);
+
+        if (IsOccupied) return;
+        StartScale(Vector3.one * 1.05f, 0.25f);
     }
 
     void OnMouseExit()
     {
         StartFade(0f, 0.2f);
         StartScale(Vector3.one, 0.25f);
+    }
+
+    public void HighlightAsMoveOption() {
+        _highlight.SetActive(true);
+        _highlight.GetComponent<SpriteRenderer>().color = Color.cyan;
     }
 
     private void StartFade(float targetAlpha, float duration)
