@@ -16,6 +16,10 @@ public class Tile : MonoBehaviour
     // IsOccupied does not block character moving
     public bool IsOccupied { get; set; } = false;
 
+    private bool _isHighlighted = false;
+
+    private const float SELECTED_COLOR_ALPHA = 0.4f;
+
     public void Init(bool isOffset, bool isWall = false)
     {
         IsWall = isWall;
@@ -23,14 +27,13 @@ public class Tile : MonoBehaviour
 
         _highlightRenderer = _highlight.GetComponent<SpriteRenderer>();
         SetAlpha(0f);
-        _highlight.SetActive(true);
         _highlight.transform.localScale = Vector3.one;
     }
 
     void OnMouseEnter()
     {
         if (IsWall) return;
-        StartFade(0.4f, 0.2f);
+        StartFade(SELECTED_COLOR_ALPHA, 0.2f);
 
         if (IsOccupied) return;
         StartScale(Vector3.one * 1.05f, 0.25f);
@@ -38,13 +41,19 @@ public class Tile : MonoBehaviour
 
     void OnMouseExit()
     {
-        StartFade(0f, 0.2f);
         StartScale(Vector3.one, 0.25f);
+        if (_isHighlighted) return;
+        StartFade(0f, 0.2f);
     }
 
     public void HighlightAsMoveOption() {
-        _highlight.SetActive(true);
-        _highlight.GetComponent<SpriteRenderer>().color = Color.cyan;
+        SetAlpha(SELECTED_COLOR_ALPHA);
+        _isHighlighted = true;
+    }
+
+    public void RemoveHighlight() {
+        SetAlpha(0f);
+        _isHighlighted = false;
     }
 
     private void StartFade(float targetAlpha, float duration)
