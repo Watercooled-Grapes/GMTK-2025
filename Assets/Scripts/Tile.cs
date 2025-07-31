@@ -10,27 +10,36 @@ public class Tile : MonoBehaviour
     private SpriteRenderer _highlightRenderer;
     private Coroutine _fadeCoroutine;
     private Coroutine _scaleCoroutine;
+    
+    public int X { get; set; } = 0;
+    public int Y { get; set; } = 0;
 
     public bool IsWall { get; set; } = false;
 
     // IsOccupied does not block character moving
     public bool IsOccupied { get; set; } = false;
 
-    public void Init(bool isOffset, bool isWall = false)
+    private bool _isHighlighted = false;
+
+    private const float SELECTED_COLOR_ALPHA = 0.4f;
+
+    public void Init(bool isOffset, int x, int y, bool isWall = false)
     {
         IsWall = isWall;
         _renderer.color = IsWall ? _wallColor : (isOffset ? _offsetColor : _baseColor);
 
         _highlightRenderer = _highlight.GetComponent<SpriteRenderer>();
         SetAlpha(0f);
-        _highlight.SetActive(true);
         _highlight.transform.localScale = Vector3.one;
+
+        X = x;
+        Y = y;
     }
 
     void OnMouseEnter()
     {
         if (IsWall) return;
-        StartFade(0.4f, 0.2f);
+        StartFade(SELECTED_COLOR_ALPHA, 0.2f);
 
         if (IsOccupied) return;
         StartScale(Vector3.one * 1.05f, 0.25f);
@@ -38,13 +47,19 @@ public class Tile : MonoBehaviour
 
     void OnMouseExit()
     {
-        StartFade(0f, 0.2f);
         StartScale(Vector3.one, 0.25f);
+        if (_isHighlighted) return;
+        StartFade(0f, 0.2f);
     }
 
     public void HighlightAsMoveOption() {
-        _highlight.SetActive(true);
-        _highlight.GetComponent<SpriteRenderer>().color = Color.cyan;
+        SetAlpha(SELECTED_COLOR_ALPHA);
+        _isHighlighted = true;
+    }
+
+    public void RemoveHighlight() {
+        SetAlpha(0f);
+        _isHighlighted = false;
     }
 
     private void StartFade(float targetAlpha, float duration)
