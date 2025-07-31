@@ -8,7 +8,46 @@ public class MainCharacter : MonoBehaviour
     [SerializeField] private Vector2 _currentPosition;
     [SerializeField] private int _steps = 5;
 
+    private bool _isSelected = false;
+    private List<Tile> _availableTiles;
+
     private GridManager _gridManager;
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mouseWorldPos.z = 0;
+
+            // Clicking main character itself
+            Collider2D hit = Physics2D.OverlapPoint(mouseWorldPos);
+            if (hit != null && hit.gameObject == gameObject)
+            {
+                _isSelected = true;
+                Debug.Log("Player selected!");
+                return;
+            }
+
+            // If the player is already selected
+            if (_isSelected)
+            {
+                Tile targetTile = _gridManager.GetTileByWorldCoordinate(mouseWorldPos);
+                if (targetTile != null && !targetTile.IsWall && _availableTiles.Contains(targetTile))
+                {
+                    // Move player to the tile
+                    transform.position = _gridManager.GetTileCenterPosition(targetTile);
+                    _isSelected = false;
+                    RemoveHightlights(_availableTiles);
+                    _currentPosition = new Vector2(targetTile.X, targetTile.Y);
+                    Debug.Log("Player moved to " + targetTile.name);
+                    Debug.Log("Player moved to " + targetTile.X + targetTile.Y);
+
+                    _availableTiles.Clear();
+                }
+            }
+        }
+    }
 
     public void Init()
     {
@@ -27,15 +66,24 @@ public class MainCharacter : MonoBehaviour
 
     private void OnMouseDown()
     {
-        HighlightPotentialDestinationTiles();
+        _availableTiles = _gridManager.GetReachableTiles(_currentPosition, _steps);
+        HighlightPotentialDestinationTiles(_availableTiles);
+        _isSelected = true;
     }
 
-    private void HighlightPotentialDestinationTiles()
+    private void HighlightPotentialDestinationTiles(List<Tile> tiles)
     {
-        List<Tile> walkableTiles = _gridManager.GetReachableTiles(_currentPosition, _steps);
-        foreach (Tile tile in walkableTiles)
+        foreach (Tile tile in tiles)
         {
             tile.HighlightAsMoveOption();
+        }
+    }
+
+    private void RemoveHightlights(List<Tile> tiles)
+    {
+        foreach (Tile tile in tiles)
+        {
+            tile.RemoveHighlight();
         }
     }
 }

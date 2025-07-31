@@ -10,6 +10,9 @@ public class Tile : MonoBehaviour
     private SpriteRenderer _highlightRenderer;
     private Coroutine _fadeCoroutine;
     private Coroutine _scaleCoroutine;
+    
+    public int X { get; set; } = 0;
+    public int Y { get; set; } = 0;
 
     public bool IsWall { get; set; } = false;
 
@@ -20,7 +23,7 @@ public class Tile : MonoBehaviour
 
     private const float SELECTED_COLOR_ALPHA = 0.4f;
 
-    public void Init(bool isOffset, bool isWall = false)
+    public void Init(bool isOffset, int x, int y, bool isWall = false)
     {
         IsWall = isWall;
         _renderer.color = IsWall ? _wallColor : (isOffset ? _offsetColor : _baseColor);
@@ -28,6 +31,9 @@ public class Tile : MonoBehaviour
         _highlightRenderer = _highlight.GetComponent<SpriteRenderer>();
         SetAlpha(0f);
         _highlight.transform.localScale = Vector3.one;
+
+        X = x;
+        Y = y;
     }
 
     void OnMouseEnter()

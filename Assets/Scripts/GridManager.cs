@@ -9,7 +9,7 @@ public class GridManager : MonoBehaviour {
     [SerializeField] private Transform _cam;
  
     private Dictionary<Vector2, Tile> _tiles;
- 
+
     public void GenerateGrid()
     {
         _tiles = new Dictionary<Vector2, Tile>();
@@ -19,7 +19,7 @@ public class GridManager : MonoBehaviour {
                 spawnedTile.name = $"Tile {x} {y}";
  
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
-                spawnedTile.Init(isOffset);
+                spawnedTile.Init(isOffset, x, y);
  
                 _tiles[new Vector2(x, y)] = spawnedTile;
             }
@@ -60,14 +60,26 @@ public class GridManager : MonoBehaviour {
     public Vector3 GetTileCenterPosition(Vector2 gridPos)
     {
         Tile tile = GetTileAtPosition(gridPos);
+        return GetTileCenterPosition(tile);
+    }
+
+    public Vector3 GetTileCenterPosition(Tile tile)
+    {
         if (tile != null)
         {
             return tile.transform.position;
         }
         else
         {
-            Debug.LogWarning($"No tile found at position {gridPos}");
             return Vector3.zero;
         }
+    }
+
+    public Tile GetTileByWorldCoordinate(Vector3 worldPos)
+    {
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 gridPos = new Vector2(Mathf.Round(mouseWorldPos.x), Mathf.Round(mouseWorldPos.y));
+
+        return GetTileAtPosition(gridPos);
     }
 }
