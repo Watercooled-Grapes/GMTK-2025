@@ -9,13 +9,13 @@ public class MainCharacter : MonoBehaviour, LevelManager.IResetable
     public List<IObserver> observers = new List<IObserver>();
     private bool _isSelected = false;
     private List<Tile> _availableTiles;
-    private Queue<Action> _actionsThisLoop = new Queue<Action>();
+    private List<Turn> _turnsThisLoop = new List<Turn>();
 
     private GridManager _gridManager;
 
     public interface IObserver
     {
-        void OnTurnEnd(Queue<Action> action);
+        void OnTurnEnd(List<Turn> turns);
     }
     
     void Update()
@@ -38,7 +38,7 @@ public class MainCharacter : MonoBehaviour, LevelManager.IResetable
             if (_isSelected)
             {
                 Tile targetTile = _gridManager.GetTileByWorldCoordinate(mouseWorldPos);
-                if (targetTile != null && !targetTile.IsWall && _availableTiles.Contains(targetTile))
+                if (targetTile != null && !targetTile.IsWall && _availableTiles.Contains(targetTile) && targetTile != _gridManager.GetTileByWorldCoordinate(_currentPosition))
                 {
                     MoveMainCharacter(targetTile);
                 }
@@ -53,21 +53,22 @@ public class MainCharacter : MonoBehaviour, LevelManager.IResetable
         _isSelected = false;
         RemoveHightlights(_availableTiles);
         _currentPosition = new Vector2(targetTile.X, targetTile.Y);
-        Action action = new Action
+        Turn turn = new Turn
         {
             Position = _currentPosition
         };
-        _actionsThisLoop.Enqueue(action);
+        _turnsThisLoop.Add(turn);
         Debug.Log("Player moved to " + targetTile.name);
         Debug.Log("Player moved to " + targetTile.X + targetTile.Y);
         _availableTiles.Clear();
         
         // TODO: This should be moved elsewhere if throwing mechanics are added -> after moving we should throw
         // Notify observers of turn end since player has completed move
-        foreach (IObserver observer in observers)
-        {
-            observer.OnTurnEnd(_actionsThisLoop);
-        }
+        // foreach (IObserver observer in observers)
+        // {
+        //     observer.OnTurnEnd(_turnsThisLoop);
+        // }
+        FindFirstObjectByType<LoopManager>().OnTurnEnd(_turnsThisLoop);
     }
     
     public void Init(int[,] mapData)
@@ -91,11 +92,16 @@ public class MainCharacter : MonoBehaviour, LevelManager.IResetable
         transform.position = pos;
 
         observers.Clear();
-        _actionsThisLoop.Clear();
+        _turnsThisLoop.Clear();
         _currentPosition = start;
+        Turn turn = new Turn
+        {
+            Position = _currentPosition
+        };
+        _turnsThisLoop.Add(turn);
     }
 
-    private Vector2Int? FindStartPosition(int[,] mapData, int startValue)
+    public Vector2Int? FindStartPosition(int[,] mapData, int startValue)
     {
         int width = mapData.GetLength(0);
         int height = mapData.GetLength(1);
@@ -137,9 +143,10 @@ public class MainCharacter : MonoBehaviour, LevelManager.IResetable
         }
     }
 
-    public void ResetForLoop()
+    public void ResetForLoop(int[,] mapData)
     {
-        _actionsThisLoop.Clear();
+        Init(mapData);
+        _turnsThisLoop.Clear();
     }
 }
 

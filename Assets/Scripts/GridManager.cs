@@ -30,7 +30,7 @@ public class GridManager : MonoBehaviour, LevelManager.IResetable {
             }
         }
 
-        _cam.transform.position = new Vector3(width / 2f - 0.5f, height / 2f - 0.5f, -10);
+        _cam.transform.position = new Vector3(width / 2f - 0.5f, height / 2f - 0.5f, -30);
     }
 
  
@@ -89,9 +89,9 @@ public class GridManager : MonoBehaviour, LevelManager.IResetable {
         return GetTileAtPosition(gridPos);
     }
 
-    public void ResetForLoop()
+    public void ResetForLoop(int[,] mapData)
     {
         // TODO: Reset the map
-        GenerateGrid();
+        GenerateGrid(mapData);
     }
 }

@@ -5,21 +5,18 @@ public class LevelManager : MonoBehaviour
 {
     private GridManager _gridManager;
     private MainCharacter _mainCharacter;
-<<<<<<< HEAD
     private LoopManager _loopManager;
     private static List<IResetable> _resetables = new List<IResetable>();
     
     public interface IResetable
     {
-        void ResetForLoop();
+        void ResetForLoop(int[,] mapData);
     }
-=======
     private Goal _goal;
 
     [SerializeField] private string _mapFileName;
 
-    private int[,] _mapData;
->>>>>>> 5e3594b31cefce582280be7d2dd60947925a1e6e
+    private static int[,] _mapData;
 
     void Start()
     {
@@ -31,12 +28,9 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Init Grid Manager");
         _gridManager = FindFirstObjectByType<GridManager>();
         if (_gridManager != null) {
-<<<<<<< HEAD
-            _gridManager.GenerateGrid();
-            _resetables.Add(_gridManager);
-=======
             _gridManager.GenerateGrid(_mapData);
->>>>>>> 5e3594b31cefce582280be7d2dd60947925a1e6e
+            _resetables.Add(_gridManager);
+            
         } else {
             Debug.LogError("Grid Manager is NULL");
         }
@@ -44,27 +38,8 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Init Main Character");
         _mainCharacter = FindFirstObjectByType<MainCharacter>();
         if (_mainCharacter != null) {
-<<<<<<< HEAD
-            _mainCharacter.Init();
-            _resetables.Add(_mainCharacter);
-        } else {
-            Debug.LogError("Main Character is NULL");
-        }
-        
-        Debug.Log("Init Loop Manager");
-        _loopManager = FindFirstObjectByType<LoopManager>();
-
-        _mainCharacter.observers.Add(_loopManager);
-    }
-
-    public static void RestartLevelWithLoop()
-    {
-        foreach (var resetable in _resetables)
-        {
-            resetable.ResetForLoop();
-        }
-=======
             _mainCharacter.Init(_mapData);
+            _resetables.Add(_mainCharacter);
         } else {
             Debug.LogError("Main Character is NULL");
         }
@@ -76,6 +51,11 @@ public class LevelManager : MonoBehaviour
         } else {
             Debug.LogError("Goal is NULL");
         }
+        
+        Debug.Log("Init Loop Manager");
+        _loopManager = FindFirstObjectByType<LoopManager>();
+
+        // _mainCharacter.observers.Add(_loopManager);
     }
 
     private void LoadMap()
@@ -100,6 +80,15 @@ public class LevelManager : MonoBehaviour
         }
 
         Debug.Log($"Loaded map {width}x{height}");
->>>>>>> 5e3594b31cefce582280be7d2dd60947925a1e6e
+    }
+
+    public void RestartLevelWithLoop()
+    {
+        foreach (var resetable in _resetables)
+        {
+            resetable.ResetForLoop(_mapData);
+        }
+
+        _loopManager.InitLoopInstances();
     }
 }
