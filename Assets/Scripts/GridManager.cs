@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
  
 public class GridManager : MonoBehaviour {
@@ -49,9 +48,9 @@ public class GridManager : MonoBehaviour {
         return null;
     }
 
-    public List<Tile> GetReachableTiles(Vector2 startPos, int steps)
+    public Dictionary<Tile, int> GetReachableTiles(Vector2 startPos, int turns)
     {
-        List<Tile> reachableTiles = new List<Tile>();
+        Dictionary<Tile, int> reachableTiles = new Dictionary<Tile, int>();
 
         Vector2[] directions = new Vector2[] {
             Vector2.up,
@@ -61,11 +60,11 @@ public class GridManager : MonoBehaviour {
         };
 
         foreach (Vector2 dir in directions) {
-            for (int i = 1; i <= steps; i++) {
+            for (int i = 1; i <= turns; i++) {
                 Vector2 nextPos = startPos + dir * i;
                 Tile tile = GetTileAtPosition(nextPos);
                 if (tile == null || tile.IsWall) break;
-                reachableTiles.Add(tile);
+                reachableTiles.Add(tile, i);
             }
         }
 
@@ -104,6 +103,38 @@ public class GridManager : MonoBehaviour {
         GenerateGrid(mapData);
     }
     
+    public List<Tile> GetPathToTile(Vector2 fromPosition, Tile toTile)
+    {
+        List<Tile> path = new List<Tile>();
+
+        int fromX = (int)fromPosition.x;
+        int fromY = (int)fromPosition.y;
+        int toX = toTile.X;
+        int toY = toTile.Y;
+
+        // Horizontal line
+        if (fromY == toY)
+        {
+            int dir = (toX > fromX) ? 1 : -1;
+            for (int x = fromX + dir; x != toX + dir; x += dir)
+            {
+                Tile tile = GetTileAtPosition(new Vector2(x, fromY));
+                path.Add(tile);
+            }
+        }
+        // Vertical line
+        else if (fromX == toX)
+        {
+            int dir = (toY > fromY) ? 1 : -1;
+            for (int y = fromY + dir; y != toY + dir; y += dir)
+            {
+                Tile tile = GetTileAtPosition(new Vector2(fromX, y));
+                path.Add(tile);
+            }
+        }
+
+        return path;
+    }
     
     public static Vector2Int? FindFirstPositionOfType(int[,] mapData, GridManager.TileType tileType)
     {
