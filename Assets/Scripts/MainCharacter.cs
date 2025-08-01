@@ -14,6 +14,7 @@ public class MainCharacter : MonoBehaviour
 
     private GridManager _gridManager;
     private LoopManager _loopManager;
+    private GameObject[] _exes;
 
     // Events
     public event Action<List<Turn>> TurnEnded;
@@ -113,11 +114,23 @@ public class MainCharacter : MonoBehaviour
             {
                 tile.appBroken = true;
             }
-            
+
             Turn turn = new Turn
             {
-                Position = _currentPosition
+                Position = _currentPosition,
+                exe = null
             };
+
+            foreach (GameObject go in _exes)
+            {
+                ExeScript e = go.GetComponent<ExeScript>().tryCollect();
+                if (e != null)
+                {
+                    turn.exe = e;
+                    break;
+                }
+            }
+
             _turnsThisLoop.Add(turn);
 
             TurnEnded?.Invoke(_turnsThisLoop);
@@ -149,6 +162,8 @@ public class MainCharacter : MonoBehaviour
         }
 
         _loopManager = FindFirstObjectByType<LoopManager>();
+
+        _exes = GameObject.FindGameObjectsWithTag("Exes");
     }
 
     private void OnMouseDown()

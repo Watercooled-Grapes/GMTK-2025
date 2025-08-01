@@ -9,6 +9,7 @@ using UnityEngine;
 public struct Turn
 {
     public Vector2 Position;
-    
+    public int exeTurnsAdded;
+    public ExeScript exe;
     // TODO: Throwing will require thrown object + end location
 }

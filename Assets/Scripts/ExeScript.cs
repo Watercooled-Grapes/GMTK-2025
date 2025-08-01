@@ -27,8 +27,7 @@ public class ExeScript : MonoBehaviour
         transform.position = pos;
     }
 
-    // Update is called once per frame
-    void Update()
+    public ExeScript tryCollect()
     {
         if (canBeCollected && _player._currentPosition == _pos)
         {
@@ -36,6 +35,25 @@ public class ExeScript : MonoBehaviour
             _loopManager.addTurns(turnsToAdd);
             GetComponent<SpriteRenderer>().enabled = false;
             canBeCollected = false;
+            return this;
         }
+        return null;
+    }
+
+    public void OnResetForLoop(int[,] mapData, Vector2 startPosition)
+    {
+        GetComponent<SpriteRenderer>().enabled = true;
+    }
+
+    public void ghostCollect()
+    {
+        _loopManager.addTurns(turnsToAdd);
+        GetComponent<SpriteRenderer>().enabled = false;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
     }
 }

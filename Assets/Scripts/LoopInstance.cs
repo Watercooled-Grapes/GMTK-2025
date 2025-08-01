@@ -7,12 +7,14 @@ public class LoopInstance : MonoBehaviour
     private List<Turn> _turns;
     private Vector2 _startPosition;
     private int _currentTurn;
+    private LoopManager _loopManager;
 
     public void Init(List<Turn> turns, Vector2 startPosition)
     {
         _turns = turns;
         _startPosition = startPosition;
         Reset();
+        _loopManager = FindFirstObjectByType<LoopManager>();
     }
 
     public void Reset()
@@ -30,6 +32,10 @@ public class LoopInstance : MonoBehaviour
         }
         // TODO: Implement throwing
         Turn turn = _turns[_currentTurn];
+        if (turn.exe != null)
+        {
+            turn.exe.ghostCollect();
+        }
         StartCoroutine(MoveToSquare(turn.Position));
         _currentTurn++;
     }

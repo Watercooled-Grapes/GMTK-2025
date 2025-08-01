@@ -84,6 +84,7 @@ public class LevelManager : MonoBehaviour
         foreach (GameObject go in exes)
         {
             go.GetComponent<ExeScript>().Init(_mapData);
+            Resetable += go.GetComponent<ExeScript>().OnResetForLoop;
         }
     }
     
