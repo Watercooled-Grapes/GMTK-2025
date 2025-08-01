@@ -6,8 +6,12 @@ using System.Collections.Generic;
 public class MainCharacter : MonoBehaviour
 {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     [SerializeField] private Vector2 _currentPosition;
     [SerializeField] private int _steps = 5;
+=======
+    [SerializeField] public Vector2 _currentPosition;
+>>>>>>> Stashed changes
 =======
     [SerializeField] public Vector2 _currentPosition;
 >>>>>>> Stashed changes
