@@ -18,9 +18,11 @@ public class MainCharacter : MonoBehaviour
     // Events
     public event Action<List<Turn>> TurnEnded;
 
+    public bool IsInteractable { get; set; } = true;
+
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && IsInteractable)
         {
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mouseWorldPos.z = 0;
@@ -67,7 +69,7 @@ public class MainCharacter : MonoBehaviour
         Debug.Log("Player moved to " + newTile.name);
 
         _availableTiles.Clear();
-        
+        IsInteractable = false;
         StartCoroutine(MoveAlongPath(path));
     }
 
@@ -108,7 +110,6 @@ public class MainCharacter : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
 
             // Log or animate step if needed
-
             Debug.Log("Step to " + tile.name);
 
             if (tile.TileType == TileType.AppTile)
@@ -125,6 +126,7 @@ public class MainCharacter : MonoBehaviour
             TurnEnded?.Invoke(_turnsThisLoop);
         }
         this.GetComponent<Animator>().SetTrigger("idle");
+        IsInteractable = true;
     }
 
     public void Init(int[,] mapData, Vector2 startPosition)
@@ -155,7 +157,7 @@ public class MainCharacter : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (enabled)
+        if (IsInteractable)
         {
             _availableTiles = _gridManager.GetReachableTiles(_currentPosition, _loopManager.curMaxTurns - GetCurrentTurn());
             HighlightPotentialDestinationTiles();

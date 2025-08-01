@@ -59,6 +59,7 @@ public class LoopManager : MonoBehaviour
         clone.GetComponent<LoopInstance>().Init(new List<Turn>(turns), levelManager.StartPosition);
         _loopInstances.Add(clone);
         _codeLineManager.UpdateCode(1);
+        levelManager.ResumeLevel();
 
         levelManager.RestartLevelWithLoop();
         _currentLoops++;
