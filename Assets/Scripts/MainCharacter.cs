@@ -2,11 +2,8 @@ using System;
 using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
-<<<<<<< HEAD
 using static GridManager;
-=======
 using UnityEngine.EventSystems;
->>>>>>> c584003 (fix layering)
 
 public class MainCharacter : MonoBehaviour
 {
