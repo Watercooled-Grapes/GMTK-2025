@@ -9,7 +9,7 @@ public class MainCharacter : MonoBehaviour
     private List<Turn> _turnsThisLoop = new List<Turn>();
 
     private bool _isSelected = false;
-    private List<Tile> _availableTiles;
+    private Dictionary<Tile, int> _availableTiles;
 
     private GridManager _gridManager;
     private LoopManager _loopManager;
@@ -37,7 +37,7 @@ public class MainCharacter : MonoBehaviour
             if (_isSelected)
             {
                 Tile targetTile = _gridManager.GetTileByWorldCoordinate(mouseWorldPos);
-                if (targetTile != null && !targetTile.IsWall && _availableTiles.Contains(targetTile))
+                if (targetTile != null && !targetTile.IsWall && _availableTiles.ContainsKey(targetTile))
                 {
                     MoveMainCharacter(targetTile);
                 }
@@ -50,7 +50,7 @@ public class MainCharacter : MonoBehaviour
         // Move player to the tile
         transform.position = _gridManager.GetTileCenterPosition(newTile);
         _isSelected = false;
-        RemoveHightlights(_availableTiles);
+        RemoveHightlights();
         _currentPosition = new Vector2(newTile.X, newTile.Y);
         Debug.Log("Player moved to " + newTile.name);
 
@@ -83,8 +83,9 @@ public class MainCharacter : MonoBehaviour
         _turnsThisLoop.Clear();
         if (_availableTiles != null)
         {
-            RemoveHightlights(_availableTiles);
+            RemoveHightlights();
             _availableTiles.Clear();
+
         }
 
         _loopManager = FindFirstObjectByType<LoopManager>();
@@ -95,24 +96,26 @@ public class MainCharacter : MonoBehaviour
         if (enabled)
         {
             _availableTiles = _gridManager.GetReachableTiles(_currentPosition, _loopManager.maxTurns - GetCurrentTurn());
-            HighlightPotentialDestinationTiles(_availableTiles);
+            HighlightPotentialDestinationTiles();
             _isSelected = true;
         }
     }
 
-    private void HighlightPotentialDestinationTiles(List<Tile> tiles)
+    private void HighlightPotentialDestinationTiles()
     {
-        foreach (Tile tile in tiles)
+        foreach (var kvp in _availableTiles)
         {
-            tile.HighlightAsMoveOption();
+            kvp.Key.HighlightAsMoveOption();
+            kvp.Key.DisplayText(kvp.Value.ToString());
         }
     }
 
-    private void RemoveHightlights(List<Tile> tiles)
+    private void RemoveHightlights()
     {
-        foreach (Tile tile in tiles)
+        foreach (var kvp in _availableTiles)
         {
-            tile.RemoveHighlight();
+            kvp.Key.RemoveHighlight();
+            kvp.Key.DisplayText("");
         }
     }
 

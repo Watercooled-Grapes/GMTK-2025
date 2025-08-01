@@ -40,10 +40,9 @@ public class LoopManager : MonoBehaviour
             loopInstance.GetComponent<LoopInstance>().Reset();
         }
     }
+
     IEnumerator RestartLevelWithLoop(float delayTime, List<Turn> turns, LevelManager levelManager)
     {
-
-
         //Wait for the specified delay time before continuing.
         yield return new WaitForSeconds(delayTime);
         //Do the action after the delay time has finished.

@@ -40,9 +40,9 @@ public class GridManager : MonoBehaviour {
         return null;
     }
 
-    public List<Tile> GetReachableTiles(Vector2 startPos, int steps)
+    public Dictionary<Tile, int> GetReachableTiles(Vector2 startPos, int turns)
     {
-        List<Tile> reachableTiles = new List<Tile>();
+        Dictionary<Tile, int> reachableTiles = new Dictionary<Tile, int>();
 
         Vector2[] directions = new Vector2[] {
             Vector2.up,
@@ -52,11 +52,11 @@ public class GridManager : MonoBehaviour {
         };
 
         foreach (Vector2 dir in directions) {
-            for (int i = 1; i <= steps; i++) {
+            for (int i = 1; i <= turns; i++) {
                 Vector2 nextPos = startPos + dir * i;
                 Tile tile = GetTileAtPosition(nextPos);
                 if (tile == null || tile.IsWall) break;
-                reachableTiles.Add(tile);
+                reachableTiles.Add(tile, i);
             }
         }
 
