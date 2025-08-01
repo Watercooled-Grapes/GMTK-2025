@@ -2,12 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
- 
+
 public class GridManager : MonoBehaviour {
     [SerializeField] private int _width, _height;
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Transform _cam;
- 
+    [SerializeField] private List<GameObject> _appPrefabs; // honest we should just have 1, at most 3
     private Dictionary<Vector2, Tile> _tiles;
     public enum TileType
     {
@@ -30,9 +30,9 @@ public class GridManager : MonoBehaviour {
                 spawnedTile.name = $"Tile {x} {y}";
 
                 bool isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
-                bool isWall = mapData[x, y] == (int)TileType.WallTile;
+                TileType tileType = (TileType) mapData[x, y];
 
-                spawnedTile.Init(isOffset, x, y, isWall);
+                spawnedTile.Init(isOffset, x, y, tileType);
 
                 _tiles[new Vector2(x, y)] = spawnedTile;
             }
@@ -63,8 +63,12 @@ public class GridManager : MonoBehaviour {
             for (int i = 1; i <= turns; i++) {
                 Vector2 nextPos = startPos + dir * i;
                 Tile tile = GetTileAtPosition(nextPos);
-                if (tile == null || tile.IsWall) break;
+                if (tile == null || tile.TileType == TileType.WallTile) break;
                 reachableTiles.Add(tile, i);
+                if (!tile.appBroken)
+                {
+                    break;
+                }
             }
         }
 
@@ -179,11 +183,15 @@ public class GridManager : MonoBehaviour {
 
     public void GenerateApps(int[,] mapData)
     {
-        List<Vector2Int> appPositions = FindAllPositionOfType(mapData, GridManager.TileType.AppTile);
+        List<Vector2Int> appPositions = FindAllPositionOfType(mapData, TileType.AppTile);
 
         foreach (var appPosition in appPositions)
         {
-            
+            if (_appPrefabs.Count > 0)
+            {
+                GameObject appPrefab = _appPrefabs[UnityEngine.Random.Range(0, _appPrefabs.Count)];
+                Instantiate(appPrefab, (Vector2)appPosition, Quaternion.identity);
+            }
         }
     }
 }
