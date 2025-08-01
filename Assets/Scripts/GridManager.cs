@@ -94,4 +94,37 @@ public class GridManager : MonoBehaviour {
         // TODO: Reset the map
         GenerateGrid(mapData);
     }
+
+    public List<Tile> GetPathToTile(Vector2 fromPosition, Tile toTile)
+    {
+        List<Tile> path = new List<Tile>();
+
+        int fromX = (int)fromPosition.x;
+        int fromY = (int)fromPosition.y;
+        int toX = toTile.X;
+        int toY = toTile.Y;
+
+        // Horizontal line
+        if (fromY == toY)
+        {
+            int dir = (toX > fromX) ? 1 : -1;
+            for (int x = fromX + dir; x != toX + dir; x += dir)
+            {
+                Tile tile = GetTileAtPosition(new Vector2(x, fromY));
+                path.Add(tile);
+            }
+        }
+        // Vertical line
+        else if (fromX == toX)
+        {
+            int dir = (toY > fromY) ? 1 : -1;
+            for (int y = fromY + dir; y != toY + dir; y += dir)
+            {
+                Tile tile = GetTileAtPosition(new Vector2(fromX, y));
+                path.Add(tile);
+            }
+        }
+
+        return path;
+    }
 }

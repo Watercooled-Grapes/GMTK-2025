@@ -48,21 +48,44 @@ public class MainCharacter : MonoBehaviour
     private void MoveMainCharacter(Tile newTile)
     {
         // Move player to the tile
-        transform.position = _gridManager.GetTileCenterPosition(newTile);
+        List<Tile> path = _gridManager.GetPathToTile(_currentPosition, newTile);
         _isSelected = false;
         RemoveHightlights();
-        _currentPosition = new Vector2(newTile.X, newTile.Y);
         Debug.Log("Player moved to " + newTile.name);
 
         _availableTiles.Clear();
 
-        Turn turn = new Turn
-        {
-            Position = _currentPosition
-        };
-        _turnsThisLoop.Add(turn);
+        StartCoroutine(MoveAlongPath(path));
+    }
 
-        TurnEnded?.Invoke(_turnsThisLoop);
+    private IEnumerator MoveAlongPath(List<Tile> path)
+    {
+        foreach (Tile tile in path)
+        {
+            Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
+            while ((transform.position - targetPos).sqrMagnitude > 0.01f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPos, 5f * Time.deltaTime);
+                yield return null;
+            }
+
+            _currentPosition = new Vector2(tile.X, tile.Y);
+
+            // Optional: Wait between steps to show movement rhythm
+            yield return new WaitForSeconds(0.1f);
+
+            // Log or animate step if needed
+            Debug.Log("Step to " + tile.name);
+
+
+            Turn turn = new Turn
+            {
+                Position = _currentPosition
+            };
+            _turnsThisLoop.Add(turn);
+
+            TurnEnded?.Invoke(_turnsThisLoop);
+        }
     }
 
     public void Init(int[,] mapData, Vector2 startPosition)
