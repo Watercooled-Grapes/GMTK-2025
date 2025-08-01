@@ -12,7 +12,6 @@ public class MainCharacter : MonoBehaviour
 {
     [SerializeField] public Vector2 _currentPosition;
     private List<Turn> _turnsThisLoop = new List<Turn>();
-    private Transform _transform;
 
     private bool _isSelected = false;
     private Dictionary<Tile, int> _availableTiles;
@@ -82,7 +81,7 @@ public class MainCharacter : MonoBehaviour
         foreach (Tile tile in path)
         {
             Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
-            targetPos.z = _transform.position.z;
+            targetPos.z = transform.position.z;
 
             if (_currentPosition.x < tile.X)
             {
@@ -145,7 +144,7 @@ public class MainCharacter : MonoBehaviour
             return;
         }
         Vector3 pos = _gridManager.GetTileCenterPosition(startPosition);
-        transform.position = pos;
+        transform.position = new Vector3(pos.x, pos.y, transform.position.z);
 
         _currentPosition = startPosition;
 
@@ -158,8 +157,6 @@ public class MainCharacter : MonoBehaviour
         }
 
         _loopManager = FindFirstObjectByType<LoopManager>();
-
-        _transform = GetComponent<Transform>();
     }
 
     private void OnMouseDown()

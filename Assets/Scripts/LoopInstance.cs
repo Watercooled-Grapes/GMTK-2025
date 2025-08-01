@@ -8,11 +8,16 @@ public class LoopInstance : MonoBehaviour
     private Vector2 _startPosition;
     private int _currentTurn;
 
+    private Animator _animator;
+
+
     public void Init(List<Turn> turns, Vector2 startPosition)
     {
         _turns = turns;
         _startPosition = startPosition;
         Reset();
+
+        _animator = GetComponent<Animator>();
     }
 
     public void Reset()
@@ -38,30 +43,28 @@ public class LoopInstance : MonoBehaviour
     {
         if (transform.position.x < target.x)
         {
-            this.GetComponent<Animator>().SetTrigger("right");
+            _animator.SetTrigger("right");
         }
         else if (transform.position.x > target.x)
         {
-            this.GetComponent<Animator>().SetTrigger("left");
+            _animator.SetTrigger("left");
         }
         else if (transform.position.y < target.y)
         {
-            this.GetComponent<Animator>().SetTrigger("up");
+            _animator.SetTrigger("up");
         }
         else
         {
-            this.GetComponent<Animator>().SetTrigger("down");
+            _animator.SetTrigger("down");
         }
 
         while ((new Vector2(transform.position.x, transform.position.y) - target).sqrMagnitude > 0.01f)
         {
-            Debug.Log("On Position!!!");
             transform.position = Vector2.MoveTowards(transform.position, target, 5f * Time.deltaTime);
-            this.GetComponent<Animator>().SetTrigger("idle");
             yield return null;
         }
 
-        this.GetComponent<Animator>().SetTrigger("idle");
+        _animator.SetTrigger("idle");
     }
 }
 
