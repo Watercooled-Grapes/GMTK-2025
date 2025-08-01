@@ -129,7 +129,7 @@ public class MainCharacter : MonoBehaviour
     {
         if (enabled)
         {
-            _availableTiles = _gridManager.GetReachableTiles(_currentPosition, _loopManager.maxTurns - GetCurrentTurn());
+            _availableTiles = _gridManager.GetReachableTiles(_currentPosition, _loopManager.curMaxTurns - GetCurrentTurn());
             HighlightPotentialDestinationTiles();
             _isSelected = true;
         }

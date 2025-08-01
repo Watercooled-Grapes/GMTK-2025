@@ -72,8 +72,14 @@ public class LevelManager : MonoBehaviour
         GameObject[] folders = GameObject.FindGameObjectsWithTag("Folder");
         foreach (GameObject go in folders)
         {
-            Debug.Log(go);
             go.GetComponent<FolderScript>().Init(_mapData);
+        }
+
+        Debug.Log("Init EXE");
+        GameObject[] exes = GameObject.FindGameObjectsWithTag("Exes");
+        foreach (GameObject go in exes)
+        {
+            go.GetComponent<ExeScript>().Init(_mapData);
         }
     }
 

@@ -1,20 +1,22 @@
 using UnityEngine;
 
-public class FolderScript : MonoBehaviour
+public class ExeScript : MonoBehaviour
 {
     [SerializeField] private Vector2 _pos;
-    [SerializeField] private GameObject tpToFolder;
+    [SerializeField] private int turnsToAdd;
 
     private MainCharacter _player;
     private GridManager _gridManager;
+    private LoopManager _loopManager;
+    private bool canBeCollected = true;
 
     public void Start()
     {
         _player = FindFirstObjectByType<MainCharacter>();
+        _loopManager = FindFirstObjectByType<LoopManager>();
     }
-
     public void Init(int[,] mapData)
-    {   
+    {
         _gridManager = FindFirstObjectByType<GridManager>();
         if (_gridManager == null)
         {
@@ -25,18 +27,15 @@ public class FolderScript : MonoBehaviour
         transform.position = pos;
     }
 
-    public void Update()
+    // Update is called once per frame
+    void Update()
     {
-        if (tpToFolder == null) 
+        if (canBeCollected && _player._currentPosition == _pos)
         {
-            return;
+            Debug.Log("collect exe");
+            _loopManager.addTurns(turnsToAdd);
+            GetComponent<SpriteRenderer>().enabled = false;
+            canBeCollected = false;
         }
-
-        if (_player._currentPosition == _pos)
-        {
-            Vector2 tpPos = tpToFolder.GetComponent<FolderScript>()._pos;
-            _player.TeleportMainCharacter(_gridManager.GetTileAtPosition(tpPos));
-        }
-        
     }
 }
