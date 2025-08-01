@@ -30,11 +30,11 @@ public class LoopInstance : MonoBehaviour
         }
         // TODO: Implement throwing
         Turn turn = _turns[_currentTurn];
-        StartCoroutine(MoveToSquare(turn.Position));
+        StartCoroutine(MoveToTile(turn.Position));
         _currentTurn++;
     }
 
-    private IEnumerator MoveToSquare(Vector2 target)
+    private IEnumerator MoveToTile(Vector2 target)
     {
         if (transform.position.x < target.x)
         {
@@ -55,7 +55,9 @@ public class LoopInstance : MonoBehaviour
 
         while ((new Vector2(transform.position.x, transform.position.y) - target).sqrMagnitude > 0.01f)
         {
+            Debug.Log("On Position!!!");
             transform.position = Vector2.MoveTowards(transform.position, target, 5f * Time.deltaTime);
+            this.GetComponent<Animator>().SetTrigger("idle");
             yield return null;
         }
 

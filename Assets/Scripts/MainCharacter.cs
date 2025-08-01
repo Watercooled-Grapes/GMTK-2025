@@ -2,12 +2,17 @@ using System;
 using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+<<<<<<< HEAD
 using static GridManager;
+=======
+using UnityEngine.EventSystems;
+>>>>>>> c584003 (fix layering)
 
 public class MainCharacter : MonoBehaviour
 {
     [SerializeField] public Vector2 _currentPosition;
     private List<Turn> _turnsThisLoop = new List<Turn>();
+    private Transform _transform;
 
     private bool _isSelected = false;
     private Dictionary<Tile, int> _availableTiles;
@@ -49,7 +54,6 @@ public class MainCharacter : MonoBehaviour
         }
     }
 
-
     public void TeleportMainCharacter(Tile newTile)
     {
         _isSelected = false;
@@ -78,6 +82,7 @@ public class MainCharacter : MonoBehaviour
         foreach (Tile tile in path)
         {
             Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
+            targetPos.z = _transform.position.z;
 
             if (_currentPosition.x < tile.X)
             {
@@ -153,6 +158,8 @@ public class MainCharacter : MonoBehaviour
         }
 
         _loopManager = FindFirstObjectByType<LoopManager>();
+
+        _transform = GetComponent<Transform>();
     }
 
     private void OnMouseDown()

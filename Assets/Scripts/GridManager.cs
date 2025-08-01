@@ -106,7 +106,7 @@ public class GridManager : MonoBehaviour {
     public void OnResetForLoop(int[,] mapData, Vector2 startPosition)
     {
         // TODO: Reset the map
-        GenerateGrid(mapData);
+        // GenerateGrid(mapData);
     }
     
     public List<Tile> GetPathToTile(Vector2 fromPosition, Tile toTile)
