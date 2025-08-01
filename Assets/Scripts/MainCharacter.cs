@@ -78,6 +78,7 @@ public class MainCharacter : MonoBehaviour
     {
         foreach (Tile tile in path)
         {
+            bool appBrokenBeforeMove = tile.IsAppDeleted;
             Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
             targetPos.z = -5;
 
@@ -114,18 +115,30 @@ public class MainCharacter : MonoBehaviour
             // Log or animate step if needed
             Debug.Log("Step to " + tile.name);
 
-            Turn turn = new Turn
-            {
-                Position = _currentPosition
-            };
-            _turnsThisLoop.Add(turn);
-
-            TurnEnded?.Invoke(_turnsThisLoop);
+            BroadcastTurnEnded(tile, _currentPosition, appBrokenBeforeMove);
         }
         this.GetComponent<Animator>().SetTrigger("idle");
         IsInteractable = true;
     }
 
+    private void BroadcastTurnEnded(Tile tile, Vector2 currentPosition, bool appBrokenBeforeMove)
+    {
+        AppController appController = null;
+        if (!appBrokenBeforeMove && tile.TileType == TileType.AppTile)
+        {
+            // This is the first time we touch this app as the MC, we should cache this info for clones
+            
+        }
+        Turn turn = new Turn
+        {
+            Position = currentPosition,
+            AppController = appController,
+        };
+        _turnsThisLoop.Add(turn);
+
+        TurnEnded?.Invoke(_turnsThisLoop);
+    }
+    
     public void Init(int[,] mapData, Vector2 startPosition)
     {
         _gridManager = FindFirstObjectByType<GridManager>();

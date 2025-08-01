@@ -75,9 +75,10 @@ public class GridManager : MonoBehaviour {
             for (int i = 1; i <= turns; i++) {
                 Vector2 nextPos = startPos + dir * i;
                 Tile tile = GetTileAtPosition(nextPos);
-                if (tile == null || tile.TileType == TileType.WallTile) break;
+                if (tile == null || tile.TileType == TileType.WallTile 
+                                 || (tile.IsAppScheduledForDeletion && !tile.IsAppDeleted)) break;
                 reachableTiles.Add(tile, i);
-                if (!tile.AppBroken)
+                if (!tile.IsAppDeleted)
                 {
                     break;
                 }

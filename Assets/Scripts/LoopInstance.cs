@@ -7,12 +7,14 @@ public class LoopInstance : MonoBehaviour
     private List<Turn> _turns;
     private Vector2 _startPosition;
     private int _currentTurn;
+    public int LoopCreatedIn { get; private set; }
 
     private Animator _animator;
 
 
-    public void Init(List<Turn> turns, Vector2 startPosition)
+    public void Init(List<Turn> turns, Vector2 startPosition, int loopCreatedIn)
     {
+        LoopCreatedIn = loopCreatedIn;
         _turns = turns;
         _startPosition = startPosition;
         Reset();
@@ -65,6 +67,11 @@ public class LoopInstance : MonoBehaviour
         }
 
         _animator.SetTrigger("idle");
+    }
+
+    public Turn GetCurrentTurn()
+    {
+        return _turns[_currentTurn];
     }
 }
 

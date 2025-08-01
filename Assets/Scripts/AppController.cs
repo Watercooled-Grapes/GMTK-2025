@@ -7,21 +7,22 @@ public class AppController : MonoBehaviour
     // public static int appBreakCost = 5;
     [SerializeField] private ParticleSystem _particleSystem;
     private Tile _tile;
-    public bool BeenConsumedAtSomePoint {get; set;} = false;
-    public bool BeenConsumed {get; set;} = false;
+    private int _loopDestroyedIn;
+    
+    public bool BeenConsumedAtSomePoint {get; private set;} = false;
     public void Init(Tile tile)
     {
         _tile = tile;
-        _tile.AppBroken = false;
+        _tile.IsAppDeleted = false;
         gameObject.SetActive(true);
         GetComponent<Renderer>().enabled = true;
         if (BeenConsumedAtSomePoint)
         {
-            // Show the icon with lower transparency 
+            // TODO: Show the icon with lower transparency 
         }
         else
         {
-            // Show the normal icon
+            // TODO: Show the normal icon
         }
     }
     
@@ -36,23 +37,29 @@ public class AppController : MonoBehaviour
     
     void OnTriggerEnter2D(Collider2D col)
     {
-        MainCharacter mainCharacter = col.gameObject.GetComponent<MainCharacter>();
         LoopInstance loopInstance = col.gameObject.GetComponent<LoopInstance>();
-        if (mainCharacter != null || loopInstance != null)
+        if (loopInstance != null && BeenConsumedAtSomePoint && loopInstance.LoopCreatedIn == _loopDestroyedIn)
         {
-            if (loopInstance != null)
-                Debug.Log("TOUCHED BY CLONE");
-            
-            // TODO: We need to track which loop instance touched this
-            CinemachineImpulseSource cinemachineImpulseSource =
-                GetComponent<CinemachineImpulseSource>();
-            cinemachineImpulseSource.GenerateImpulse();
-            
-            if (_tile != null && _tile.TileType == GridManager.TileType.AppTile)
-            {
-                _tile.AppBroken = true;
-            }
-            StartCoroutine(DelayedDestroy(0.5f));
+            RunDestroySeqeuence();
+        } else if (!BeenConsumedAtSomePoint && col.gameObject.GetComponent<MainCharacter>() != null)
+        {
+            BeenConsumedAtSomePoint = true;
+            _loopDestroyedIn = LoopManager.CurrentLoops;
+            RunDestroySeqeuence();
         }
+    }
+
+    private void RunDestroySeqeuence()
+    {
+        CinemachineImpulseSource cinemachineImpulseSource =
+            GetComponent<CinemachineImpulseSource>();
+        cinemachineImpulseSource.GenerateImpulse();
+            
+        if (_tile != null && _tile.TileType == GridManager.TileType.AppTile)
+        {
+            _tile.IsAppDeleted = true;
+            _tile.IsAppScheduledForDeletion = true;
+        }
+        StartCoroutine(DelayedDestroy(0.5f));
     }
 }

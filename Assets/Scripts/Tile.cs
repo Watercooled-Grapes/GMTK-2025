@@ -18,7 +18,8 @@ public class Tile : MonoBehaviour
     public int Y { get; set; } = 0;
     
     [SerializeField] public TileType TileType { get; set; }
-    public bool AppBroken { get; set; }  = true;
+    public bool IsAppDeleted { get; set; }  = true;
+    public bool IsAppScheduledForDeletion { get; set; }  = false;
 
     // IsOccupied does not block character moving
     public bool IsOccupied { get; set; } = false;
@@ -31,7 +32,7 @@ public class Tile : MonoBehaviour
     {
         TileType = tileType;
         _renderer.color = tileType == TileType.WallTile ? _wallColor : (isOffset ? _offsetColor : _baseColor);
-        AppBroken = tileType != TileType.AppTile;
+        IsAppDeleted = tileType != TileType.AppTile;
         _highlightRenderer = _highlight.GetComponent<SpriteRenderer>();
         SetAlpha(0f);
         _highlight.transform.localScale = Vector3.one;
