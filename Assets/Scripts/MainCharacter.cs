@@ -59,7 +59,7 @@ public class MainCharacter : MonoBehaviour
         RemoveHightlights();
         Debug.Log("Player moved to " + newTile.name);
         _availableTiles.Clear();
-        transform.position = _gridManager.GetTileCenterPosition(newTile);
+        SetPositionWithLockedZ(_gridManager.GetTileCenterPosition(newTile));
         _currentPosition = new Vector2(newTile.X, newTile.Y);
     }
 
@@ -81,7 +81,7 @@ public class MainCharacter : MonoBehaviour
         foreach (Tile tile in path)
         {
             Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
-            targetPos.z = transform.position.z;
+            targetPos.z = -5;
 
             if (_currentPosition.x < tile.X)
             {
@@ -106,7 +106,7 @@ public class MainCharacter : MonoBehaviour
                 yield return null;
             }
 
-            transform.position = targetPos;
+            SetPositionWithLockedZ(targetPos);
 
             _currentPosition = new Vector2(tile.X, tile.Y);
 
@@ -144,7 +144,7 @@ public class MainCharacter : MonoBehaviour
             return;
         }
         Vector3 pos = _gridManager.GetTileCenterPosition(startPosition);
-        transform.position = new Vector3(pos.x, pos.y, transform.position.z);
+        SetPositionWithLockedZ(pos);
 
         _currentPosition = startPosition;
 
@@ -196,5 +196,11 @@ public class MainCharacter : MonoBehaviour
     public int GetCurrentTurn()
     {
         return _turnsThisLoop.Count;
+    }
+
+    // We lock the Z coordinate to prevent accidentally change the Z coordinate of the main character
+    // Otherwise it might break ray cast system.
+    private void SetPositionWithLockedZ(Vector3 targetPos) {
+        transform.position = new Vector3(targetPos.x, targetPos.y, -5);
     }
 }
