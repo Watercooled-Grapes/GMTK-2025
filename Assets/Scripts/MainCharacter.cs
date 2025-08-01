@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class MainCharacter : MonoBehaviour
 {
-    [SerializeField] private Vector2 _currentPosition;
+    [SerializeField] public Vector2 _currentPosition;
     private List<Turn> _turnsThisLoop = new List<Turn>();
 
     private bool _isSelected = false;
@@ -43,6 +43,17 @@ public class MainCharacter : MonoBehaviour
                 }
             }
         }
+    }
+
+
+    public void TeleportMainCharacter(Tile newTile)
+    {
+        _isSelected = false;
+        RemoveHightlights();
+        Debug.Log("Player moved to " + newTile.name);
+        _availableTiles.Clear();
+        transform.position = _gridManager.GetTileCenterPosition(newTile);
+        _currentPosition = new Vector2(newTile.X, newTile.Y);
     }
 
     private void MoveMainCharacter(Tile newTile)
