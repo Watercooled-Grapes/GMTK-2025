@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using Object = UnityEngine.Object;
+using UnityEngine.SceneManagement;
 
 public class TypewriterOnEvent : MonoBehaviour
 {
@@ -23,13 +24,23 @@ public class TypewriterOnEvent : MonoBehaviour
 
     // Event Functionality
     private WaitForSeconds _textboxFullEventDelay;
-    [SerializeField][Range(0.1f, 0.5f)] private float sendDoneDelay = 0.25f; // In testing, I found 0.25 to be a good value
+    [SerializeField][Range(0.1f, 0.5f)] private float sendDoneDelay = 0.25f; 
 
     public event Action StartGameInput;
 
+    // we gon make this supah cool later with epic screen cracking and guy popping out, but just change scenes for now
+    void StartGame()
+    {
+        SceneManager.LoadScene(sceneName:"Level1");
+    } 
 
     private void Awake()
     {
+        ///////
+        StartGameInput += StartGame;
+        ///////
+
+
         prevObject.GetComponent<AppearAfterTypeWriter>().AfterAppearing += StartTyping;
 
         _textBox = GetComponent<TMP_Text>();
