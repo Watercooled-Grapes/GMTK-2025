@@ -120,11 +120,11 @@ public class LevelManager : MonoBehaviour
 
     public void PauseLevel()
     {
-        _mainCharacter.enabled = false;
+        _mainCharacter.IsInteractable = false;
     }
 
     public void ResumeLevel()
     {
-        _mainCharacter.enabled = true;
+        _mainCharacter.IsInteractable = true;
     }
 }

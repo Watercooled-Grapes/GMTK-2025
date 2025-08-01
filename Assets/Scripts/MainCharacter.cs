@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using static GridManager;
 using Unity.VisualScripting;
+using UnityEngine.EventSystems;
 
 public class MainCharacter : MonoBehaviour
 {
@@ -19,9 +20,11 @@ public class MainCharacter : MonoBehaviour
     // Events
     public event Action<List<Turn>> TurnEnded;
 
+    public bool IsInteractable { get; set; } = true;
+
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && IsInteractable)
         {
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mouseWorldPos.z = 0;
@@ -48,14 +51,13 @@ public class MainCharacter : MonoBehaviour
         }
     }
 
-
     public void TeleportMainCharacter(Tile newTile)
     {
         _isSelected = false;
         RemoveHightlights();
         Debug.Log("Player moved to " + newTile.name);
         _availableTiles.Clear();
-        transform.position = _gridManager.GetTileCenterPosition(newTile);
+        SetPositionWithLockedZ(_gridManager.GetTileCenterPosition(newTile));
         _currentPosition = new Vector2(newTile.X, newTile.Y);
     }
 
@@ -68,7 +70,7 @@ public class MainCharacter : MonoBehaviour
         Debug.Log("Player moved to " + newTile.name);
 
         _availableTiles.Clear();
-
+        IsInteractable = false;
         StartCoroutine(MoveAlongPath(path));
     }
 
@@ -77,6 +79,7 @@ public class MainCharacter : MonoBehaviour
         foreach (Tile tile in path)
         {
             Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
+            targetPos.z = -5;
 
             if (_currentPosition.x < tile.X)
             {
@@ -101,13 +104,14 @@ public class MainCharacter : MonoBehaviour
                 yield return null;
             }
 
+            SetPositionWithLockedZ(targetPos);
+
             _currentPosition = new Vector2(tile.X, tile.Y);
 
             // Optional: Wait between steps to show movement rhythm
             yield return new WaitForSeconds(0.1f);
 
             // Log or animate step if needed
-
             Debug.Log("Step to " + tile.name);
 
             if (tile.TileType == TileType.AppTile)
@@ -124,6 +128,7 @@ public class MainCharacter : MonoBehaviour
             TurnEnded?.Invoke(_turnsThisLoop);
         }
         this.GetComponent<Animator>().SetTrigger("idle");
+        IsInteractable = true;
     }
 
     public void Init(int[,] mapData, Vector2 startPosition)
@@ -137,7 +142,7 @@ public class MainCharacter : MonoBehaviour
             return;
         }
         Vector3 pos = _gridManager.GetTileCenterPosition(startPosition);
-        transform.position = pos;
+        SetPositionWithLockedZ(pos);
 
         _currentPosition = startPosition;
 
@@ -154,7 +159,7 @@ public class MainCharacter : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (enabled)
+        if (IsInteractable)
         {
             _availableTiles = _gridManager.GetReachableTiles(_currentPosition, _loopManager.curMaxTurns - GetCurrentTurn());
             HighlightPotentialDestinationTiles();
@@ -189,5 +194,11 @@ public class MainCharacter : MonoBehaviour
     public int GetCurrentTurn()
     {
         return _turnsThisLoop.Count;
+    }
+
+    // We lock the Z coordinate to prevent accidentally change the Z coordinate of the main character
+    // Otherwise it might break ray cast system.
+    private void SetPositionWithLockedZ(Vector3 targetPos) {
+        transform.position = new Vector3(targetPos.x, targetPos.y, -5);
     }
 }
