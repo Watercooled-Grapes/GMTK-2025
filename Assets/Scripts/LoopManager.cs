@@ -19,14 +19,14 @@ public class LoopManager : MonoBehaviour
         _loopInstances = new List<GameObject>();
     }
 
-    public void Init()
+    public void Init(MainCharacter mainCharacter)
     {
         curMaxTurns = maxTurns;
         _codeLineManager = FindFirstObjectByType<CodeLineManager>();
         _codeLineManager.Init(maxTurns);
         _infoTextManager = FindFirstObjectByType<InfoTextManager>();
         _infoTextManager.UpdateTurnLoopInfo(maxTurns, maxLoops - CurrentLoops);
-        _mainCharacter = FindFirstObjectByType<MainCharacter>();
+        _mainCharacter = mainCharacter;
     }
 
 
@@ -60,34 +60,44 @@ public class LoopManager : MonoBehaviour
         _codeLineManager.UpdateCode(1);
         levelManager.ResumeLevel();
 
+        
         levelManager.RestartLevelWithLoop();
         CurrentLoops++;
         _infoTextManager.UpdateTurnLoopInfo(maxTurns, maxLoops - CurrentLoops);
-        levelManager.ResumeLevel();
+
+        RestartLevelIfNecessary();
     }
 
-    public void OnTurnEnd(List<Turn> turns)
+    private void RestartLevelIfNecessary()
     {
-        // Updates all clones to take their next step
+        if (CurrentLoops+1 >= maxLoops)
+        {
+            // TODO: Full Reset the level here @MinghaoLi
+            Debug.Log("####FAILED LEVEL####");
+        }
+    }
+    
+    /**
+     * Returns false when no further turns can be made, true otherwise
+     */
+    public void EndTurn(List<Turn> turns)
+    {
+        // Complete the turn and update all clones to take their next step
         foreach (var loopInstance in _loopInstances)
         {
             loopInstance.GetComponent<LoopInstance>().ReplayNext();
         }
-
-        _codeLineManager.UpdateCode(turns.Count + 1);
-        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - turns.Count, maxLoops - CurrentLoops);
-
-        if (CurrentLoops >= maxLoops)
-        {
-            // TODO: Full Reset the level here @MinghaoLi
-            // 1) nothing is moving 2) we are not at goal 3) no more loops available
-        }
-        else if (turns.Count >= curMaxTurns)
+        
+        // if no more turns can be made, Restart the loop
+        if (turns.Count >= curMaxTurns)
         {
             LevelManager levelManager = FindFirstObjectByType<LevelManager>();
             levelManager.PauseLevel();
             StartCoroutine(RestartLevelWithLoop(1, turns, levelManager));
         }
+        
+        _codeLineManager.UpdateCode(turns.Count + 1);
+        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - turns.Count, maxLoops - CurrentLoops);
     }
 
     public void addTurns(int n)
@@ -95,5 +105,17 @@ public class LoopManager : MonoBehaviour
         curMaxTurns += n;
         _codeLineManager.addLines(n);
         _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - _mainCharacter.GetCurrentTurn(), maxLoops - CurrentLoops);
+    }
+
+    public void addLoops(int n)
+    {
+        maxLoops += n;
+        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - _mainCharacter.GetCurrentTurn(), maxLoops - CurrentLoops);
+
+    }
+
+    public bool HasTurnsRemaining()
+    {
+        return curMaxTurns > _mainCharacter.GetCurrentTurn();
     }
 }

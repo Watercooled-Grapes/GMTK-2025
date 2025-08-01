@@ -65,11 +65,10 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Init Loop Manager");
         _loopManager = FindFirstObjectByType<LoopManager>();
         if (_loopManager != null) {
-            _loopManager.Init();
+            _loopManager.Init(_mainCharacter);
         } else {
             Debug.LogError("LoopManager is NULL");
         }
-        _mainCharacter.TurnEnded += _loopManager.OnTurnEnd;
 
         Debug.Log("Init Folders");
         GameObject[] folders = GameObject.FindGameObjectsWithTag("Folder");

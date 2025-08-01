@@ -18,7 +18,7 @@ public class MainCharacter : MonoBehaviour
     private LoopManager _loopManager;
 
     // Events
-    public event Action<List<Turn>> TurnEnded;
+    // public event Action<List<Turn>> TurnEnded;
 
     public bool IsInteractable { get; set; } = true;
 
@@ -78,7 +78,7 @@ public class MainCharacter : MonoBehaviour
     {
         foreach (Tile tile in path)
         {
-            bool appBrokenBeforeMove = tile.IsAppDeleted;
+            bool isAppDeleted = tile.IsAppDeleted;
             Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
             targetPos.z = -5;
 
@@ -115,28 +115,52 @@ public class MainCharacter : MonoBehaviour
             // Log or animate step if needed
             Debug.Log("Step to " + tile.name);
 
-            BroadcastTurnEnded(tile, _currentPosition, appBrokenBeforeMove);
+            if (!isAppDeleted)
+            {
+                BroadCastTurnEndedOnConsumable(tile, _currentPosition);
+            }
+            else
+            {
+                BroadcastTurnEnded(_currentPosition);
+            }
         }
         this.GetComponent<Animator>().SetTrigger("idle");
         IsInteractable = true;
     }
 
-    private void BroadcastTurnEnded(Tile tile, Vector2 currentPosition, bool appBrokenBeforeMove)
+    private void BroadCastTurnEndedOnConsumable(Tile tile, Vector2 currentPosition)
     {
-        AppController appController = null;
-        if (!appBrokenBeforeMove && tile.TileType == TileType.AppTile)
+        // The tileType indicates the consumable type. This method is used for consumables which modify multiple turns 
+        switch (tile.TileType)
         {
-            // This is the first time we touch this app as the MC, we should cache this info for clones
-            
+            case TileType.AppTile:
+                for (int i = 0; i < AppController.AppDeleteTurnsCost; i++)
+                {
+                    if (_loopManager.HasTurnsRemaining())
+                    {
+                        Turn turn = new Turn
+                        {
+                            Position = currentPosition,
+                            Type = Turn.TurnType.DeleteApp
+                        };
+                        _turnsThisLoop.Add(turn);
+
+                        _loopManager.EndTurn(_turnsThisLoop);
+                    }
+                }
+                break;
         }
+    }
+    
+    private void BroadcastTurnEnded(Vector2 currentPosition)
+    {
         Turn turn = new Turn
         {
             Position = currentPosition,
-            AppController = appController,
         };
         _turnsThisLoop.Add(turn);
 
-        TurnEnded?.Invoke(_turnsThisLoop);
+        _loopManager.EndTurn(_turnsThisLoop);
     }
     
     public void Init(int[,] mapData, Vector2 startPosition)

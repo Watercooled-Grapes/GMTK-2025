@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class AppController : MonoBehaviour
 {
-    // public static int appBreakCost = 5;
+    public static int AppDeleteTurnsCost = 5;
     [SerializeField] private ParticleSystem _particleSystem;
     private Tile _tile;
     private int _loopDestroyedIn;
+    [SerializeField] private int loopsToAddOnDestroy = 1;
     
     public bool BeenConsumedAtSomePoint {get; private set;} = false;
     public void Init(Tile tile)
@@ -43,6 +44,8 @@ public class AppController : MonoBehaviour
             RunDestroySeqeuence();
         } else if (!BeenConsumedAtSomePoint && col.gameObject.GetComponent<MainCharacter>() != null)
         {
+            FindFirstObjectByType<LoopManager>()
+                .addLoops(loopsToAddOnDestroy);
             BeenConsumedAtSomePoint = true;
             _loopDestroyedIn = LoopManager.CurrentLoops;
             RunDestroySeqeuence();
@@ -54,7 +57,7 @@ public class AppController : MonoBehaviour
         CinemachineImpulseSource cinemachineImpulseSource =
             GetComponent<CinemachineImpulseSource>();
         cinemachineImpulseSource.GenerateImpulse();
-            
+        
         if (_tile != null && _tile.TileType == GridManager.TileType.AppTile)
         {
             _tile.IsAppDeleted = true;

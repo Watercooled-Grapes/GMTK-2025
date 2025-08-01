@@ -11,12 +11,11 @@ public struct Turn
     public Vector2 Position;
     public Tile Tile;
     public TurnType Type;
-    public AppController AppController;
 
     public enum TurnType
     {
         Move,
-        BreakApp,
+        DeleteApp,
         TeleportFolder,
         RunExecutable,
     }
