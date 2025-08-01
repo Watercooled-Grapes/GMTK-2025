@@ -21,7 +21,10 @@ public class MainCharacter : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mouseScreenPos = Input.mousePosition;
+            mouseScreenPos.z = Mathf.Abs(Camera.main.transform.position.z);
+
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
             mouseWorldPos.z = 0;
 
             // Clicking main character itself
