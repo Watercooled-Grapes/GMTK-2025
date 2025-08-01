@@ -150,7 +150,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 881e121c92af9824a87fe10a34396092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  appBreakCost: 5
   _particleSystem: {fileID: 3413226578932269457}
 --- !u!50 &7082111827711029174
 Rigidbody2D:

@@ -38,7 +38,7 @@ public class LevelManager : MonoBehaviour
         _gridManager = FindFirstObjectByType<GridManager>();
         if (_gridManager != null) {
             _gridManager.GenerateGrid(_mapData);
-            _gridManager.GenerateApps(_mapData);
+            _gridManager.GenerateAppsIfMissing();
             Resetable += _gridManager.OnResetForLoop;
 
         } else {

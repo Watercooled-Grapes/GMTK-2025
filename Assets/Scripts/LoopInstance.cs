@@ -33,7 +33,7 @@ public class LoopInstance : MonoBehaviour
             Debug.Log("Current turn out of bounds of turns");
             return;
         }
-        // TODO: Implement throwing
+
         Turn turn = _turns[_currentTurn];
         StartCoroutine(MoveToTile(turn.Position));
         _currentTurn++;

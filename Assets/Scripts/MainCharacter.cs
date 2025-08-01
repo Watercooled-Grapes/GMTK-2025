@@ -114,11 +114,6 @@ public class MainCharacter : MonoBehaviour
             // Log or animate step if needed
             Debug.Log("Step to " + tile.name);
 
-            if (tile.TileType == TileType.AppTile)
-            {
-                tile.appBroken = true;
-            }
-
             Turn turn = new Turn
             {
                 Position = _currentPosition
