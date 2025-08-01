@@ -70,6 +70,14 @@ public class LevelManager : MonoBehaviour
             Debug.LogError("LoopManager is NULL");
         }
         _mainCharacter.TurnEnded += _loopManager.OnTurnEnd;
+
+        Debug.Log("Init Folders");
+        GameObject[] folders = GameObject.FindGameObjectsWithTag("Folder");
+        foreach (GameObject go in folders)
+        {
+            Debug.Log(go);
+            go.GetComponent<FolderScript>().Init(_mapData);
+        }
     }
     
     private void LoadMap()

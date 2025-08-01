@@ -5,6 +5,7 @@ public class InfoTextManager : MonoBehaviour
 {
     private TMP_Text tmp;
     private string[] lines;
+    [SerializeField] private string baseText;
 
     void Awake()
     {
@@ -15,7 +16,8 @@ public class InfoTextManager : MonoBehaviour
 
     public void UpdateTurnLoopInfo(int turnsLeft, int loopsLeft)
     {
-        tmp.text = "turns left: " + turnsLeft + "\n";
+        tmp.text = baseText + "\n";
+        tmp.text += "turns left: " + turnsLeft + "\n";
         tmp.text += "loops left: " + loopsLeft;
     }
 }

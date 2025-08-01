@@ -129,7 +129,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1400446999403647100, guid: fbc1b03e7f5ac44c980fe6f4a82a33c2, type: 3}
       propertyPath: _mapFileName
-      value: Maps/level_1
+      value: Maps/level_4
       objectReference: {fileID: 0}
     - target: {fileID: 6289385235736511645, guid: fbc1b03e7f5ac44c980fe6f4a82a33c2, type: 3}
       propertyPath: m_Name
@@ -599,10 +599,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
-    - target: {fileID: 3889025282373359338, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
-      propertyPath: baseText
-      value: Welcome to Execution Order!
-      objectReference: {fileID: 0}
     - target: {fileID: 4712046387622032008, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -682,10 +678,6 @@ PrefabInstance:
     - target: {fileID: 4712046387622032008, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7764473060023482614, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -52.199997
       objectReference: {fileID: 0}
     - target: {fileID: 7918819267349435187, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       propertyPath: m_Camera
@@ -810,7 +802,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692579060136354305, guid: 9dcd2c91a4c83c645a72d38b78fe6002, type: 3}
       propertyPath: maxTurns
-      value: 9
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7702738823489071431, guid: 9dcd2c91a4c83c645a72d38b78fe6002, type: 3}
       propertyPath: m_LocalPosition.x

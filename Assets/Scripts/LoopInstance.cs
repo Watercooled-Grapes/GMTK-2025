@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class LoopInstance : MonoBehaviour
@@ -29,7 +30,36 @@ public class LoopInstance : MonoBehaviour
         }
         // TODO: Implement throwing
         Turn turn = _turns[_currentTurn];
-        transform.position = turn.Position;
+        StartCoroutine(MoveToSquare(turn.Position));
         _currentTurn++;
     }
+
+    private IEnumerator MoveToSquare(Vector2 target)
+    {
+        if (transform.position.x < target.x)
+        {
+            this.GetComponent<Animator>().SetTrigger("right");
+        }
+        else if (transform.position.x > target.x)
+        {
+            this.GetComponent<Animator>().SetTrigger("left");
+        }
+        else if (transform.position.y < target.y)
+        {
+            this.GetComponent<Animator>().SetTrigger("up");
+        }
+        else
+        {
+            this.GetComponent<Animator>().SetTrigger("down");
+        }
+
+        while ((new Vector2(transform.position.x, transform.position.y) - target).sqrMagnitude > 0.01f)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, target, 5f * Time.deltaTime);
+            yield return null;
+        }
+
+        this.GetComponent<Animator>().SetTrigger("idle");
+    }
 }
+
