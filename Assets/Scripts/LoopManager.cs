@@ -17,7 +17,7 @@ public class LoopManager : MonoBehaviour
         _loopInstances = new List<GameObject>();
     }
 
-    void Awake()
+    public void Init()
     {
         _codeLineManager = FindFirstObjectByType<CodeLineManager>();
         _codeLineManager.Init(maxTurns);
@@ -40,7 +40,7 @@ public class LoopManager : MonoBehaviour
             loopInstance.GetComponent<LoopInstance>().Reset();
         }
     }
-    
+
     IEnumerator RestartLevelWithLoop(float delayTime, List<Turn> turns, LevelManager levelManager)
     {
 

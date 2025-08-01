@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
@@ -6,6 +7,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Color _baseColor, _offsetColor, _wallColor;
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
+    [SerializeField] private TMP_Text _textMesh;
 
     private SpriteRenderer _highlightRenderer;
     private Coroutine _fadeCoroutine;
@@ -118,5 +120,9 @@ public class Tile : MonoBehaviour
         }
 
         _highlight.transform.localScale = targetScale;
+    }
+
+    public void DisplayText(string text) {
+        _textMesh.text = text;
     }
 }
