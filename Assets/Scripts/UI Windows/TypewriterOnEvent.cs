@@ -27,19 +27,11 @@ public class TypewriterOnEvent : MonoBehaviour
     [SerializeField][Range(0.1f, 0.5f)] private float sendDoneDelay = 0.25f; 
 
     public event Action StartGameInput;
+    private bool done = false;
 
-    // we gon make this supah cool later with epic screen cracking and guy popping out, but just change scenes for now
-    void StartGame()
-    {
-        SceneManager.LoadScene(sceneName:"Level1");
-    } 
 
     private void Awake()
     {
-        ///////
-        StartGameInput += StartGame;
-        ///////
-
 
         prevObject.GetComponent<AppearAfterTypeWriter>().AfterAppearing += StartTyping;
 
@@ -57,7 +49,11 @@ public class TypewriterOnEvent : MonoBehaviour
         if (Input.anyKey)
         {
             if (_typewriterCoroutine != null) StopCoroutine(_typewriterCoroutine);
-            if (_textBox.maxVisibleCharacters > 0) StartGameInput.Invoke();
+            if (_textBox.maxVisibleCharacters > 0 && !done)
+            {
+                StartGameInput.Invoke();
+                done = true;
+            }
         }
     }
 
