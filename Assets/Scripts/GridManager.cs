@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
  
 public class GridManager : MonoBehaviour {
@@ -9,7 +10,15 @@ public class GridManager : MonoBehaviour {
     [SerializeField] private Transform _cam;
  
     private Dictionary<Vector2, Tile> _tiles;
-
+    public enum TileType
+    {
+        EmptyTile = 0,
+        WallTile = 1,
+        StartTile = 2,
+        EndTile = 3,
+        AppTile = 5,
+    }
+    
     public void GenerateGrid(int[,] mapData)
     {
         int width = mapData.GetLength(0);
@@ -22,7 +31,7 @@ public class GridManager : MonoBehaviour {
                 spawnedTile.name = $"Tile {x} {y}";
 
                 bool isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
-                bool isWall = mapData[x, y] == 1;
+                bool isWall = mapData[x, y] == (int)TileType.WallTile;
 
                 spawnedTile.Init(isOffset, x, y, isWall);
 
@@ -93,5 +102,57 @@ public class GridManager : MonoBehaviour {
     {
         // TODO: Reset the map
         GenerateGrid(mapData);
+    }
+    
+    
+    public static Vector2Int? FindFirstPositionOfType(int[,] mapData, GridManager.TileType tileType)
+    {
+        int width = mapData.GetLength(0);
+        int height = mapData.GetLength(1);
+        int tileValue = (int)tileType;
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (mapData[x, y] == tileValue)
+                {
+                    return new Vector2Int(x, y);
+                }
+            }
+        }
+
+        return null;
+    }        
+
+    public static List<Vector2Int> FindAllPositionOfType(int[,] mapData, TileType tileType)
+    {
+        int width = mapData.GetLength(0);
+        int height = mapData.GetLength(1);
+        int tileValue = (int)tileType;
+        List<Vector2Int> positions = new List<Vector2Int>();
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (mapData[x, y] == tileValue)
+                {
+                    positions.Add(new Vector2Int(x, y));
+                }
+            }
+        }
+
+        return positions;
+    }
+
+    public void GenerateApps(int[,] mapData)
+    {
+        List<Vector2Int> appPositions = FindAllPositionOfType(mapData, GridManager.TileType.AppTile);
+
+        foreach (var appPosition in appPositions)
+        {
+            
+        }
     }
 }

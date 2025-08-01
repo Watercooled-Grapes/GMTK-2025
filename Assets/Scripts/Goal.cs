@@ -25,7 +25,7 @@ public class Goal : MonoBehaviour
         return null;
     }
 
-    public void Init(int[,] mapData)
+    public void Init(Vector2Int? startPos)
     {
         _gridManager = FindFirstObjectByType<GridManager>();
         if (_gridManager == null)
@@ -34,7 +34,6 @@ public class Goal : MonoBehaviour
             return;
         }
 
-        Vector2Int? startPos = FindStartPosition(mapData, 3);
         if (startPos == null)
         {
             Debug.LogError("Start position not found in map data!");

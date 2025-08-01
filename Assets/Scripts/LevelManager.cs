@@ -15,6 +15,7 @@ public class LevelManager : MonoBehaviour
 
     private int[,] _mapData;
     public Vector2 StartPosition { get; private set; }
+    [SerializeField] private List<GameObject> _appPrefabs;
 
     void Start()
     {
@@ -22,8 +23,9 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Loading Map");
         LoadMap();
 
-        Vector2Int? startPosition = FindStartPosition(_mapData, 2);
-        // 2 is the player start marker
+        Vector2Int? startPosition = GridManager.FindFirstPositionOfType(_mapData, GridManager.TileType.StartTile);
+        Vector2Int? endPosition = GridManager.FindFirstPositionOfType(_mapData, GridManager.TileType.EndTile);
+
         if (startPosition == null)
         {
             Debug.LogError("Start position not found in map data!");
@@ -36,6 +38,7 @@ public class LevelManager : MonoBehaviour
         _gridManager = FindFirstObjectByType<GridManager>();
         if (_gridManager != null) {
             _gridManager.GenerateGrid(_mapData);
+            _gridManager.GenerateApps(_mapData);
             Resetable += _gridManager.OnResetForLoop;
 
         } else {
@@ -54,7 +57,7 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Init Goal");
         _goal = FindFirstObjectByType<Goal>();
         if (_goal != null) {
-            _goal.Init(_mapData);
+            _goal.Init(endPosition);
         } else {
             Debug.LogError("Goal is NULL");
         }
@@ -63,25 +66,6 @@ public class LevelManager : MonoBehaviour
         _loopManager = FindFirstObjectByType<LoopManager>();
         _mainCharacter.TurnEnded += _loopManager.OnTurnEnd;
     }
-
-    private Vector2Int? FindStartPosition(int[,] mapData, int startValue)
-    {
-        int width = mapData.GetLength(0);
-        int height = mapData.GetLength(1);
-
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                if (mapData[x, y] == startValue)
-                {
-                    return new Vector2Int(x, y);
-                }
-            }
-        }
-
-        return null;
-    }    
     
     private void LoadMap()
     {
