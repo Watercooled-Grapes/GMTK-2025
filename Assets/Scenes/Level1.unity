@@ -405,6 +405,22 @@ PrefabInstance:
       propertyPath: _pos.y
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2058569874846807532, guid: 82d8aaff8222e477a8ad7655fc69ad81, type: 3}
+      propertyPath: m_Size.x
+      value: 1.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 2058569874846807532, guid: 82d8aaff8222e477a8ad7655fc69ad81, type: 3}
+      propertyPath: m_Size.y
+      value: 1.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 2058569874846807532, guid: 82d8aaff8222e477a8ad7655fc69ad81, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2058569874846807532, guid: 82d8aaff8222e477a8ad7655fc69ad81, type: 3}
+      propertyPath: m_EdgeRadius
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5315473256346007216, guid: 82d8aaff8222e477a8ad7655fc69ad81, type: 3}
       propertyPath: m_SortingOrder
       value: 1
