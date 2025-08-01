@@ -66,7 +66,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: sampletext
+  m_text: Hi! If you're seeing this text, it's totally not because the game is broken,
+    you actually found an easter egg! So pat yourself on the back and restart the
+    game!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 29dc6731ba9141b4da1b636538525829, type: 2}
   m_sharedMaterial: {fileID: -716378269701167266, guid: 29dc6731ba9141b4da1b636538525829, type: 2}
@@ -1302,7 +1304,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: sampletext
+  m_text: Hi! If you're seeing this text, it's totally not because the game is broken,
+    you actually found an easter egg! So pat yourself on the back and restart the
+    game!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 29dc6731ba9141b4da1b636538525829, type: 2}
   m_sharedMaterial: {fileID: -716378269701167266, guid: 29dc6731ba9141b4da1b636538525829, type: 2}
@@ -1385,3 +1389,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2fceb27110c50a47a0a7bbfb57e0d6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseText: 
