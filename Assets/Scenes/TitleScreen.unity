@@ -139,6 +139,35 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3436859146265424428, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
+      propertyPath: m_text
+      value: "def main:\n  while (true):\n    print(\"welcome to Execution Order\")\n   
+        if (player.input()):\n      break\nend"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889458218677185170, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
+      propertyPath: m_text
+      value: execution_order.exe
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889458218677185170, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
+      propertyPath: m_margin.w
+      value: -7.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889458218677185170, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
+      propertyPath: m_margin.z
+      value: -154.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889458218677185170, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 29dc6731ba9141b4da1b636538525829, type: 2}
+    - target: {fileID: 3889458218677185170, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -716378269701167266, guid: 29dc6731ba9141b4da1b636538525829, type: 2}
+    - target: {fileID: 3889458218677185170, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4712046387622032008, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -227,12 +256,17 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 757879047}
+    - target: {fileID: 7918819267349435187, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8263698632165908485, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0.8999939
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8961724067468779371, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4712046387622032008, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       insertIndex: 0
@@ -515,7 +549,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prevObject: {fileID: 993710004}
-  charactersPerSecond: 20
+  charactersPerSecond: 50
   sendDoneDelay: 0.25
 --- !u!114 &460242105
 MonoBehaviour:
@@ -537,55 +571,53 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'this line will print forever
+  m_text: 'welcome to Execution Order
 
-    this line will print forever
+    welcome to Execution Order
 
-    this
-    line will print forever
+    welcome
+    to Execution Order
 
-    this line will print forever
+    welcome to Execution Order
 
-    this line will
-    print forever
+    welcome to Execution
+    Order
 
-    this line will print forever
+    welcome to Execution Order
 
-    this line will print forever
+    welcome to Execution Order
 
-    this
-    line will print forever
+    welcome
+    to Execution Order
 
-    this line will print forever
+    welcome to Execution Order
 
-    this line will
-    print forever
+    welcome to Execution
+    Order
 
-    this line will print forever
+    welcome to Execution Order
 
-    this line will print forever
+    welcome to Execution Order
 
-    this
-    line will print forever
+    welcome
+    to Execution Order
 
-    this line will print forever
+    welcome to Execution Order
 
-    this line will
-    print forever
+    welcome to Execution
+    Order
 
-    this line will print forever
+    welcome to Execution Order
 
-    this line will print forever
+    welcome to Execution Order
 
-    this
-    line will print forever
+    welcome
+    to Execution Order
 
-    this line will print forever
+    welcome to Execution Order
 
-    this line will
-    print forever
-
-    this line will print forever'
+    welcome to Execution
+    Order'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 29dc6731ba9141b4da1b636538525829, type: 2}
   m_sharedMaterial: {fileID: -716378269701167266, guid: 29dc6731ba9141b4da1b636538525829, type: 2}
