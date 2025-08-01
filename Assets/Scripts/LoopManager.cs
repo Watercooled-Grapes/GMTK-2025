@@ -40,6 +40,7 @@ public class LoopManager : MonoBehaviour
             loopInstance.GetComponent<LoopInstance>().Reset();
         }
     }
+    
     IEnumerator RestartLevelWithLoop(float delayTime, List<Turn> turns, LevelManager levelManager)
     {
 

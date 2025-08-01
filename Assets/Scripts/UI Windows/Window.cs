@@ -7,5 +7,5 @@ public class Window : MonoBehaviour
     public const float maxHeight = 600;
     public const float maxWidth = 800;
 
-    public enum Orientation {TL, TR, BL, BR};
+    public enum Orientation { TL, TR, BL, BR };
 }

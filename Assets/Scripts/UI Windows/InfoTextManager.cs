@@ -9,8 +9,6 @@ public class InfoTextManager : MonoBehaviour
     void Awake()
     {
         tmp = this.GetComponent<TMP_Text>();
-
-        UpdateTurnLoopInfo(1, 1);
     }
 
     public void UpdateTurnLoopInfo(int turnsLeft, int loopsLeft)
