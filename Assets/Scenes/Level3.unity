@@ -237,6 +237,67 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 370694ac9e97f4d43bd9f1171fe1f6ed, type: 3}
+--- !u!1001 &187406233
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3020419972429279072, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3020419972429279072, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3020419972429279072, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3020419972429279072, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3020419972429279072, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3020419972429279072, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3020419972429279072, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3020419972429279072, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3020419972429279072, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3020419972429279072, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4178669051376518258, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
+      propertyPath: m_Name
+      value: App
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302903679101595422, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
+      propertyPath: appBreakCost
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,7 +603,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 446382618817459637, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -431
+      value: -382.32
       objectReference: {fileID: 0}
     - target: {fileID: 2145254048398185776, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       propertyPath: m_Name
@@ -550,7 +611,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3889025282373359338, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       propertyPath: baseText
-      value: 'Did you know: terminating apps frees memory!'
+      value: 'Did you know: terminating apps frees memory! It takes some time to
+        do so though...'
       objectReference: {fileID: 0}
     - target: {fileID: 4712046387622032008, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       propertyPath: m_Pivot.x
@@ -755,7 +817,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692579060136354305, guid: 9dcd2c91a4c83c645a72d38b78fe6002, type: 3}
       propertyPath: maxLoops
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5692579060136354305, guid: 9dcd2c91a4c83c645a72d38b78fe6002, type: 3}
       propertyPath: maxTurns
@@ -819,3 +881,4 @@ SceneRoots:
   - {fileID: 1821869362}
   - {fileID: 1070611479}
   - {fileID: 161486497}
+  - {fileID: 187406233}

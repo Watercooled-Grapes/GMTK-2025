@@ -17,10 +17,18 @@ public class MainCharacter : MonoBehaviour
     private GridManager _gridManager;
     private LoopManager _loopManager;
 
+    private AudioSource _audioSource; 
+    [SerializeField] private AudioClip _stepSoundEffect; 
+
     // Events
     public event Action<List<Turn>> TurnEnded;
 
     public bool IsInteractable { get; set; } = true;
+
+    void Start()
+    {
+        _audioSource = GetComponent<AudioSource>();  
+    }
 
     void Update()
     {
@@ -82,6 +90,8 @@ public class MainCharacter : MonoBehaviour
         {
             Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
             targetPos.z = -5;
+
+            _audioSource.PlayOneShot(_stepSoundEffect);
 
             if (_currentPosition.x < tile.X)
             {
