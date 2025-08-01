@@ -7,13 +7,14 @@ public class GridManager : MonoBehaviour {
     [SerializeField] private int _width, _height;
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Transform _cam;
+    [SerializeField] private CameraController _cameraController;
  
     private Dictionary<Vector2, Tile> _tiles;
 
     public void GenerateGrid(int[,] mapData)
     {
-        int width = mapData.GetLength(0);
-        int height = mapData.GetLength(1);
+        int width = mapData.GetLength(1);
+        int height = mapData.GetLength(0);
         _tiles = new Dictionary<Vector2, Tile>();
 
         for (int x = 0; x < width; x++) {
@@ -30,7 +31,7 @@ public class GridManager : MonoBehaviour {
             }
         }
 
-        _cam.transform.position = new Vector3(width / 2f - 0.5f, height / 2f - 0.5f, -30);
+        _cameraController.CenterAndZoom(width, height);
     }
 
  
