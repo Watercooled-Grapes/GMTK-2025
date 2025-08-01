@@ -6,13 +6,13 @@ using System.Collections.Generic;
 public class MainCharacter : MonoBehaviour
 {
     [SerializeField] private Vector2 _currentPosition;
-    [SerializeField] private int _steps = 5;
     private List<Turn> _turnsThisLoop = new List<Turn>();
 
     private bool _isSelected = false;
-    private List<Tile> _availableTiles;
+    private Dictionary<Tile, int> _availableTiles;
 
     private GridManager _gridManager;
+    private LoopManager _loopManager;
 
     // Events
     public event Action<List<Turn>> TurnEnded;
@@ -37,7 +37,7 @@ public class MainCharacter : MonoBehaviour
             if (_isSelected)
             {
                 Tile targetTile = _gridManager.GetTileByWorldCoordinate(mouseWorldPos);
-                if (targetTile != null && !targetTile.IsWall && _availableTiles.Contains(targetTile))
+                if (targetTile != null && !targetTile.IsWall && _availableTiles.ContainsKey(targetTile))
                 {
                     MoveMainCharacter(targetTile);
                 }
@@ -48,21 +48,44 @@ public class MainCharacter : MonoBehaviour
     private void MoveMainCharacter(Tile newTile)
     {
         // Move player to the tile
-        transform.position = _gridManager.GetTileCenterPosition(newTile);
+        List<Tile> path = _gridManager.GetPathToTile(_currentPosition, newTile);
         _isSelected = false;
-        RemoveHightlights(_availableTiles);
-        _currentPosition = new Vector2(newTile.X, newTile.Y);
+        RemoveHightlights();
         Debug.Log("Player moved to " + newTile.name);
 
         _availableTiles.Clear();
 
-        Turn turn = new Turn
-        {
-            Position = _currentPosition
-        };
-        _turnsThisLoop.Add(turn);
+        StartCoroutine(MoveAlongPath(path));
+    }
 
-        TurnEnded?.Invoke(_turnsThisLoop);
+    private IEnumerator MoveAlongPath(List<Tile> path)
+    {
+        foreach (Tile tile in path)
+        {
+            Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
+            while ((transform.position - targetPos).sqrMagnitude > 0.01f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPos, 5f * Time.deltaTime);
+                yield return null;
+            }
+
+            _currentPosition = new Vector2(tile.X, tile.Y);
+
+            // Optional: Wait between steps to show movement rhythm
+            yield return new WaitForSeconds(0.1f);
+
+            // Log or animate step if needed
+            Debug.Log("Step to " + tile.name);
+
+
+            Turn turn = new Turn
+            {
+                Position = _currentPosition
+            };
+            _turnsThisLoop.Add(turn);
+
+            TurnEnded?.Invoke(_turnsThisLoop);
+        }
     }
 
     public void Init(int[,] mapData, Vector2 startPosition)
@@ -83,34 +106,39 @@ public class MainCharacter : MonoBehaviour
         _turnsThisLoop.Clear();
         if (_availableTiles != null)
         {
-            RemoveHightlights(_availableTiles);
+            RemoveHightlights();
             _availableTiles.Clear();
+
         }
+
+        _loopManager = FindFirstObjectByType<LoopManager>();
     }
 
     private void OnMouseDown()
     {
         if (enabled)
         {
-            _availableTiles = _gridManager.GetReachableTiles(_currentPosition, _steps);
-            HighlightPotentialDestinationTiles(_availableTiles);
+            _availableTiles = _gridManager.GetReachableTiles(_currentPosition, _loopManager.maxTurns - GetCurrentTurn());
+            HighlightPotentialDestinationTiles();
             _isSelected = true;
         }
     }
 
-    private void HighlightPotentialDestinationTiles(List<Tile> tiles)
+    private void HighlightPotentialDestinationTiles()
     {
-        foreach (Tile tile in tiles)
+        foreach (var kvp in _availableTiles)
         {
-            tile.HighlightAsMoveOption();
+            kvp.Key.HighlightAsMoveOption();
+            kvp.Key.DisplayText(kvp.Value.ToString());
         }
     }
 
-    private void RemoveHightlights(List<Tile> tiles)
+    private void RemoveHightlights()
     {
-        foreach (Tile tile in tiles)
+        foreach (var kvp in _availableTiles)
         {
-            tile.RemoveHighlight();
+            kvp.Key.RemoveHighlight();
+            kvp.Key.DisplayText("");
         }
     }
 
