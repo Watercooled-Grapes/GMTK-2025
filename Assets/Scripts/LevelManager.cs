@@ -62,6 +62,14 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Init Loop Manager");
         _loopManager = FindFirstObjectByType<LoopManager>();
         _mainCharacter.TurnEnded += _loopManager.OnTurnEnd;
+
+        Debug.Log("Init Folders");
+        GameObject[] folders = GameObject.FindGameObjectsWithTag("Folder");
+        foreach (GameObject go in folders)
+        {
+            Debug.Log(go);
+            go.GetComponent<FolderScript>().Init(_mapData);
+        }
     }
 
     private Vector2Int? FindStartPosition(int[,] mapData, int startValue)
