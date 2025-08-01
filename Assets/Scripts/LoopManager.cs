@@ -7,6 +7,7 @@ public class LoopManager : MonoBehaviour
     private List<GameObject> _loopInstances;
     [SerializeField] private int maxLoops;
     public int maxTurns;
+    public int remainingTurns;
     private int _currentLoops;
     [SerializeField] private GameObject _clonePrefab;
     private CodeLineManager _codeLineManager;

@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using static GridManager;
 
 public class Tile : MonoBehaviour
 {
@@ -15,8 +16,9 @@ public class Tile : MonoBehaviour
     
     public int X { get; set; } = 0;
     public int Y { get; set; } = 0;
-
-    public bool IsWall { get; set; } = false;
+    
+    public TileType TileType { get; set; }
+    public bool appBroken = true;
 
     // IsOccupied does not block character moving
     public bool IsOccupied { get; set; } = false;
@@ -25,11 +27,11 @@ public class Tile : MonoBehaviour
 
     private const float SELECTED_COLOR_ALPHA = 0.4f;
 
-    public void Init(bool isOffset, int x, int y, bool isWall = false)
+    public void Init(bool isOffset, int x, int y, TileType tileType = TileType.EmptyTile)
     {
-        IsWall = isWall;
-        _renderer.color = IsWall ? _wallColor : (isOffset ? _offsetColor : _baseColor);
-
+        TileType = tileType;
+        _renderer.color = tileType == TileType.WallTile ? _wallColor : (isOffset ? _offsetColor : _baseColor);
+        appBroken = tileType != TileType.AppTile;
         _highlightRenderer = _highlight.GetComponent<SpriteRenderer>();
         SetAlpha(0f);
         _highlight.transform.localScale = Vector3.one;
@@ -40,7 +42,7 @@ public class Tile : MonoBehaviour
 
     void OnMouseEnter()
     {
-        if (IsWall) return;
+        if (TileType == TileType.WallTile) return;
         StartFade(SELECTED_COLOR_ALPHA, 0.2f);
 
         if (IsOccupied) return;
