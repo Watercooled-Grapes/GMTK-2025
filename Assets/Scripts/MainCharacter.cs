@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 using static GridManager;
+using Unity.VisualScripting;
 
 public class MainCharacter : MonoBehaviour
 {
@@ -38,7 +39,7 @@ public class MainCharacter : MonoBehaviour
             if (_isSelected)
             {
                 Tile targetTile = _gridManager.GetTileByWorldCoordinate(mouseWorldPos);
-                
+
                 if (targetTile != null && targetTile.TileType != TileType.WallTile && _availableTiles.ContainsKey(targetTile))
                 {
                     MoveMainCharacter(targetTile);
@@ -67,7 +68,7 @@ public class MainCharacter : MonoBehaviour
         Debug.Log("Player moved to " + newTile.name);
 
         _availableTiles.Clear();
-        
+
         StartCoroutine(MoveAlongPath(path));
     }
 
@@ -113,7 +114,7 @@ public class MainCharacter : MonoBehaviour
             {
                 tile.appBroken = true;
             }
-            
+
             Turn turn = new Turn
             {
                 Position = _currentPosition

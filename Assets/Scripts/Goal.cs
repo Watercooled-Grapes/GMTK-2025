@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Goal : MonoBehaviour
 {
@@ -47,8 +48,9 @@ public class Goal : MonoBehaviour
         _pos = start;
     }
 
-    void Win()
+    public void Win()
     {
-        // TODO: do something
+        // just go to next scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
