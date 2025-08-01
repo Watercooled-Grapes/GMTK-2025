@@ -35,4 +35,9 @@ public class CodeLineManager : MonoBehaviour
             tmp.text += i + 1 + "|   " + printText + "\n";
         }
     }
+
+    public void addLines(int n)
+    {
+        for (int i = 0; i < n; i++) lines.Insert(1, "   move();");
+    }
 }

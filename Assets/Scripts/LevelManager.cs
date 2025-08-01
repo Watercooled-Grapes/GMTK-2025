@@ -78,6 +78,13 @@ public class LevelManager : MonoBehaviour
             Debug.Log(go);
             go.GetComponent<FolderScript>().Init(_mapData);
         }
+
+        Debug.Log("Init EXE");
+        GameObject[] exes = GameObject.FindGameObjectsWithTag("Exes");
+        foreach (GameObject go in exes)
+        {
+            go.GetComponent<ExeScript>().Init(_mapData);
+        }
     }
     
     private void LoadMap()
