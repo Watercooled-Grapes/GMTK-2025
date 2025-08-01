@@ -100,6 +100,8 @@ public class MainCharacter : MonoBehaviour
                 yield return null;
             }
 
+            transform.position = targetPos;
+
             _currentPosition = new Vector2(tile.X, tile.Y);
 
             // Optional: Wait between steps to show movement rhythm
