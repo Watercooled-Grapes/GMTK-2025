@@ -13,6 +13,21 @@ public class LoopManager : MonoBehaviour
     private CodeLineManager _codeLineManager;
     private InfoTextManager _infoTextManager;
     private MainCharacter _mainCharacter;
+    private int _tilesToMove;
+    public int tilesToMove {
+        get
+            {
+                return _tilesToMove; 
+            }
+        set
+        {
+        _tilesToMove = value; 
+        foreach (var loopInstance in _loopInstances)
+            {
+            loopInstance.GetComponent<LoopInstance>().tilesToMove = tilesToMove;
+            }
+        }
+    }
 
     private LoopManager()
     {

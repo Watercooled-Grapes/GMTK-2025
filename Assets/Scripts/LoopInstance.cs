@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using System;
 
 public class LoopInstance : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class LoopInstance : MonoBehaviour
     private Vector2 _startPosition;
     private int _currentTurn;
     public int LoopCreatedIn { get; private set; }
+    public int tilesToMove;
 
     private Animator _animator;
 
@@ -37,21 +39,18 @@ public class LoopInstance : MonoBehaviour
         }
 
         Turn turn = _turns[_currentTurn];
-        StartCoroutine(MoveToTile(turn.Position));
-        _currentTurn++;
-    }
+        float deltaX = turn.Position.x - transform.position.x;
+        float deltaY = turn.Position.y - transform.position.y;
 
-    private IEnumerator MoveToTile(Vector2 target)
-    {
-        if (transform.position.x < target.x)
+        if (Math.Abs(deltaX) > Math.Abs(deltaY) && deltaX > 0)
         {
             _animator.SetTrigger("right");
         }
-        else if (transform.position.x > target.x)
+        else if (Math.Abs(deltaX) > Math.Abs(deltaY) && deltaX < 0)
         {
             _animator.SetTrigger("left");
         }
-        else if (transform.position.y < target.y)
+        else if (Math.Abs(deltaY) > Math.Abs(deltaX) && deltaY > 0)
         {
             _animator.SetTrigger("up");
         }
@@ -59,19 +58,22 @@ public class LoopInstance : MonoBehaviour
         {
             _animator.SetTrigger("down");
         }
+        StartCoroutine(MoveToTile(turn.Position));
+        _currentTurn++;
+    }
 
+    private IEnumerator MoveToTile(Vector2 target)
+    {
         while ((new Vector2(transform.position.x, transform.position.y) - target).sqrMagnitude > 0.01f)
         {
             transform.position = Vector2.MoveTowards(transform.position, target, 5f * Time.deltaTime);
             yield return null;
         }
-
-        _animator.SetTrigger("idle");
-    }
-
-    public Turn GetCurrentTurn()
-    {
-        return _turns[_currentTurn];
+        tilesToMove--;
+        if (tilesToMove <= 0)
+        {
+            _animator.SetTrigger("idle");
+        }   
     }
 }
 
