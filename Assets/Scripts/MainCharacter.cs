@@ -71,11 +71,13 @@ public class MainCharacter : MonoBehaviour
 
         _availableTiles.Clear();
         IsInteractable = false;
+        _loopManager.tilesToMove = path.Count;
         StartCoroutine(MoveAlongPath(path));
     }
 
     private IEnumerator MoveAlongPath(List<Tile> path)
     {
+        Animator _animator = this.GetComponent<Animator>();
         foreach (Tile tile in path)
         {
             Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
@@ -83,19 +85,19 @@ public class MainCharacter : MonoBehaviour
 
             if (_currentPosition.x < tile.X)
             {
-                this.GetComponent<Animator>().SetTrigger("right");
+                _animator.SetTrigger("right");
             }
             else if (_currentPosition.x > tile.X)
             {
-                this.GetComponent<Animator>().SetTrigger("left");
+                _animator.SetTrigger("left");
             }
             else if (_currentPosition.y < tile.Y)
             {
-                this.GetComponent<Animator>().SetTrigger("up");
+                _animator.SetTrigger("up");
             }
             else
             {
-                this.GetComponent<Animator>().SetTrigger("down");
+                _animator.SetTrigger("down");
             }
 
             while ((transform.position - targetPos).sqrMagnitude > 0.01f)
@@ -127,7 +129,7 @@ public class MainCharacter : MonoBehaviour
 
             TurnEnded?.Invoke(_turnsThisLoop);
         }
-        this.GetComponent<Animator>().SetTrigger("idle");
+        _animator.SetTrigger("idle");
         IsInteractable = true;
     }
 
@@ -198,7 +200,16 @@ public class MainCharacter : MonoBehaviour
 
     // We lock the Z coordinate to prevent accidentally change the Z coordinate of the main character
     // Otherwise it might break ray cast system.
-    private void SetPositionWithLockedZ(Vector3 targetPos) {
+    private void SetPositionWithLockedZ(Vector3 targetPos)
+    {
         transform.position = new Vector3(targetPos.x, targetPos.y, -5);
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.TryGetComponent(out Goal goal))
+        {
+            goal.Win();
+        }
     }
 }

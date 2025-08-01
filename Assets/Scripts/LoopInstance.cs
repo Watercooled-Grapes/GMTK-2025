@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using System;
 
 public class LoopInstance : MonoBehaviour
 {
     private List<Turn> _turns;
     private Vector2 _startPosition;
     private int _currentTurn;
+    public int tilesToMove;
 
     private Animator _animator;
-
 
     public void Init(List<Turn> turns, Vector2 startPosition)
     {
@@ -34,22 +35,20 @@ public class LoopInstance : MonoBehaviour
             return;
         }
         // TODO: Implement throwing
-        Turn turn = _turns[_currentTurn];
-        StartCoroutine(MoveToTile(turn.Position));
-        _currentTurn++;
-    }
 
-    private IEnumerator MoveToTile(Vector2 target)
-    {
-        if (transform.position.x < target.x)
+        Turn turn = _turns[_currentTurn];
+        float deltaX = turn.Position.x - transform.position.x;
+        float deltaY = turn.Position.y - transform.position.y;
+
+        if (Math.Abs(deltaX) > Math.Abs(deltaY) && deltaX > 0)
         {
             _animator.SetTrigger("right");
         }
-        else if (transform.position.x > target.x)
+        else if (Math.Abs(deltaX) > Math.Abs(deltaY) && deltaX < 0)
         {
             _animator.SetTrigger("left");
         }
-        else if (transform.position.y < target.y)
+        else if (Math.Abs(deltaY) > Math.Abs(deltaX) && deltaY > 0)
         {
             _animator.SetTrigger("up");
         }
@@ -57,14 +56,22 @@ public class LoopInstance : MonoBehaviour
         {
             _animator.SetTrigger("down");
         }
+        StartCoroutine(MoveToTile(turn.Position));
+        _currentTurn++;
+    }
 
+    private IEnumerator MoveToTile(Vector2 target)
+    {
         while ((new Vector2(transform.position.x, transform.position.y) - target).sqrMagnitude > 0.01f)
         {
             transform.position = Vector2.MoveTowards(transform.position, target, 5f * Time.deltaTime);
             yield return null;
         }
-
-        _animator.SetTrigger("idle");
+        tilesToMove--;
+        if (tilesToMove <= 0)
+        {
+            _animator.SetTrigger("idle");
+        }   
     }
 }
 
