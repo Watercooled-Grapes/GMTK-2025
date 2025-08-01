@@ -17,6 +17,9 @@ public class MainCharacter : MonoBehaviour
     private GridManager _gridManager;
     private LoopManager _loopManager;
 
+    // I hate this
+    private const int LOCKED_Z = -5;
+
     // Events
     public event Action<List<Turn>> TurnEnded;
 
@@ -74,46 +77,53 @@ public class MainCharacter : MonoBehaviour
         StartCoroutine(MoveAlongPath(path));
     }
 
+    public IEnumerator MoveToTileSmooth(Tile tile, int speed) {
+        IsInteractable = false;
+        Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
+        targetPos.z = LOCKED_Z;
+
+        if (_currentPosition.x < tile.X)
+        {
+            this.GetComponent<Animator>().SetTrigger("right");
+        }
+        else if (_currentPosition.x > tile.X)
+        {
+            this.GetComponent<Animator>().SetTrigger("left");
+        }
+        else if (_currentPosition.y < tile.Y)
+        {
+            this.GetComponent<Animator>().SetTrigger("up");
+        }
+        else
+        {
+            this.GetComponent<Animator>().SetTrigger("down");
+        }
+
+        while ((transform.position - targetPos).sqrMagnitude > 0.01f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+            yield return null;
+        }
+
+        SetPositionWithLockedZ(targetPos);
+
+        _currentPosition = new Vector2(tile.X, tile.Y);
+
+        // Optional: Wait between steps to show movement rhythm
+        yield return new WaitForSeconds(0.1f);
+
+        // Log or animate step if needed
+        Debug.Log("Step to " + tile.name);
+
+        this.GetComponent<Animator>().SetTrigger("idle");
+        IsInteractable = true;
+    }
+
     private IEnumerator MoveAlongPath(List<Tile> path)
     {
         foreach (Tile tile in path)
         {
-            Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
-            targetPos.z = -5;
-
-            if (_currentPosition.x < tile.X)
-            {
-                this.GetComponent<Animator>().SetTrigger("right");
-            }
-            else if (_currentPosition.x > tile.X)
-            {
-                this.GetComponent<Animator>().SetTrigger("left");
-            }
-            else if (_currentPosition.y < tile.Y)
-            {
-                this.GetComponent<Animator>().SetTrigger("up");
-            }
-            else
-            {
-                this.GetComponent<Animator>().SetTrigger("down");
-            }
-
-            while ((transform.position - targetPos).sqrMagnitude > 0.01f)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, targetPos, 5f * Time.deltaTime);
-                yield return null;
-            }
-
-            SetPositionWithLockedZ(targetPos);
-
-            _currentPosition = new Vector2(tile.X, tile.Y);
-
-            // Optional: Wait between steps to show movement rhythm
-            yield return new WaitForSeconds(0.1f);
-
-            // Log or animate step if needed
-            Debug.Log("Step to " + tile.name);
-
+            yield return StartCoroutine(MoveToTileSmooth(tile, 5));
             if (tile.TileType == TileType.AppTile)
             {
                 tile.appBroken = true;
@@ -121,14 +131,13 @@ public class MainCharacter : MonoBehaviour
 
             Turn turn = new Turn
             {
-                Position = _currentPosition
+                Position = _currentPosition,
+                TileObj = tile
             };
             _turnsThisLoop.Add(turn);
 
             TurnEnded?.Invoke(_turnsThisLoop);
         }
-        this.GetComponent<Animator>().SetTrigger("idle");
-        IsInteractable = true;
     }
 
     public void Init(int[,] mapData, Vector2 startPosition)
@@ -198,7 +207,7 @@ public class MainCharacter : MonoBehaviour
 
     // We lock the Z coordinate to prevent accidentally change the Z coordinate of the main character
     // Otherwise it might break ray cast system.
-    private void SetPositionWithLockedZ(Vector3 targetPos) {
-        transform.position = new Vector3(targetPos.x, targetPos.y, -5);
+    public void SetPositionWithLockedZ(Vector3 targetPos) {
+        transform.position = new Vector3(targetPos.x, targetPos.y, LOCKED_Z);
     }
 }

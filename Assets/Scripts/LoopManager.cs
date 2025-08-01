@@ -46,7 +46,20 @@ public class LoopManager : MonoBehaviour
         }
     }
 
-    IEnumerator RestartLevelWithLoop(float delayTime, List<Turn> turns, LevelManager levelManager)
+    private IEnumerator PlayRewindAnimation(List<Turn> turns)
+    {
+        Debug.Log(turns.Count);
+        // Reverse the list of turns to rewind
+        for (int i = turns.Count - 1; i >= 0; i--)
+        {
+            Tile previousTile = turns[i].TileObj;
+
+            // Optional: Smooth movement (Lerp over time)
+            yield return StartCoroutine(_mainCharacter.MoveToTileSmooth(previousTile, 10));
+        }
+    }
+
+    private IEnumerator RestartLevelWithLoop(float delayTime, List<Turn> turns, LevelManager levelManager)
     {
         curMaxTurns = maxTurns;
 
@@ -60,6 +73,8 @@ public class LoopManager : MonoBehaviour
         _loopInstances.Add(clone);
         _codeLineManager.UpdateCode(1);
         levelManager.ResumeLevel();
+
+        yield return StartCoroutine(PlayRewindAnimation(turns));
 
         levelManager.RestartLevelWithLoop();
         _currentLoops++;

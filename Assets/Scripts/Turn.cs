@@ -9,6 +9,8 @@ using UnityEngine;
 public struct Turn
 {
     public Vector2 Position;
+
+    public Tile TileObj;
     
     // TODO: Throwing will require thrown object + end location
 }
