@@ -13,7 +13,7 @@ public class CameraController : MonoBehaviour
     public void CenterAndZoom(int gridWidth, int gridHeight)
     {
         // Center the camera on the board
-        transform.position = new Vector3(gridWidth / 2f - 0.5f, gridHeight / 2f - 0.5f, -10f);
+        transform.position = new Vector3(gridWidth / 2f - 0.5f, gridHeight / 2f - 0.5f, -20f);
 
         // Zoom out to fit the entire board (with padding)
         float aspectRatio = (float)Screen.width / Screen.height;

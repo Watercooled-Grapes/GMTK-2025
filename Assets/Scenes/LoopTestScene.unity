@@ -413,7 +413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 990723845895843789, guid: 48ce86436a386d5488f86718715e8a12, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1932929382037221016, guid: 48ce86436a386d5488f86718715e8a12, type: 3}
       propertyPath: weight
@@ -562,11 +562,11 @@ PrefabInstance:
       objectReference: {fileID: 519420031}
     - target: {fileID: 7918819267349435187, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       propertyPath: m_RenderMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7918819267349435187, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       propertyPath: m_SortingOrder
-      value: 0
+      value: 1000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -653,6 +653,10 @@ PrefabInstance:
     - target: {fileID: 607700261858262617, guid: 9dcd2c91a4c83c645a72d38b78fe6002, type: 3}
       propertyPath: m_Name
       value: LoopManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5692579060136354305, guid: 9dcd2c91a4c83c645a72d38b78fe6002, type: 3}
+      propertyPath: maxTurns
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7702738823489071431, guid: 9dcd2c91a4c83c645a72d38b78fe6002, type: 3}
       propertyPath: m_LocalPosition.x
