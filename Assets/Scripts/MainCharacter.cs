@@ -21,7 +21,7 @@ public class MainCharacter : MonoBehaviour
     [SerializeField] private AudioClip _stepSoundEffect; 
 
     // Events
-    public event Action<List<Turn>> TurnEnded;
+    // public event Action<List<Turn>> TurnEnded;
 
     public bool IsInteractable { get; set; } = true;
 
@@ -88,6 +88,7 @@ public class MainCharacter : MonoBehaviour
         Animator _animator = this.GetComponent<Animator>();
         foreach (Tile tile in path)
         {
+            bool isAppDeleted = tile.IsAppDeleted;
             Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
             targetPos.z = -5;
 
@@ -126,23 +127,54 @@ public class MainCharacter : MonoBehaviour
             // Log or animate step if needed
             Debug.Log("Step to " + tile.name);
 
-            if (tile.TileType == TileType.AppTile)
+            if (!isAppDeleted)
             {
-                tile.appBroken = true;
+                BroadCastTurnEndedOnConsumable(tile, _currentPosition);
             }
-
-            Turn turn = new Turn
+            else
             {
-                Position = _currentPosition
-            };
-            _turnsThisLoop.Add(turn);
-
-            TurnEnded?.Invoke(_turnsThisLoop);
+                BroadcastTurnEnded(_currentPosition);
+            }
         }
         _animator.SetTrigger("idle");
         IsInteractable = true;
     }
 
+    private void BroadCastTurnEndedOnConsumable(Tile tile, Vector2 currentPosition)
+    {
+        // The tileType indicates the consumable type. This method is used for consumables which modify multiple turns 
+        switch (tile.TileType)
+        {
+            case TileType.AppTile:
+                for (int i = 0; i < AppController.AppDeleteTurnsCost; i++)
+                {
+                    if (_loopManager.HasTurnsRemaining())
+                    {
+                        Turn turn = new Turn
+                        {
+                            Position = currentPosition,
+                            Type = Turn.TurnType.DeleteApp
+                        };
+                        _turnsThisLoop.Add(turn);
+
+                        _loopManager.EndTurn(_turnsThisLoop);
+                    }
+                }
+                break;
+        }
+    }
+    
+    private void BroadcastTurnEnded(Vector2 currentPosition)
+    {
+        Turn turn = new Turn
+        {
+            Position = currentPosition,
+        };
+        _turnsThisLoop.Add(turn);
+
+        _loopManager.EndTurn(_turnsThisLoop);
+    }
+    
     public void Init(int[,] mapData, Vector2 startPosition)
     {
         _gridManager = FindFirstObjectByType<GridManager>();

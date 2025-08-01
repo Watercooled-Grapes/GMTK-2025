@@ -8,8 +8,7 @@ public class LoopManager : MonoBehaviour
     [SerializeField] private int maxLoops;
     public int maxTurns;
     public int curMaxTurns;
-    public int remainingTurns;
-    private int _currentLoops;
+    public static int CurrentLoops = 0;
     [SerializeField] private GameObject _clonePrefab;
     private CodeLineManager _codeLineManager;
     private InfoTextManager _infoTextManager;
@@ -35,14 +34,14 @@ public class LoopManager : MonoBehaviour
         _loopInstances = new List<GameObject>();
     }
 
-    public void Init()
+    public void Init(MainCharacter mainCharacter)
     {
         curMaxTurns = maxTurns;
         _codeLineManager = FindFirstObjectByType<CodeLineManager>();
         _codeLineManager.Init(maxTurns);
         _infoTextManager = FindFirstObjectByType<InfoTextManager>();
-        _infoTextManager.UpdateTurnLoopInfo(maxTurns, maxLoops - _currentLoops);
-        _mainCharacter = FindFirstObjectByType<MainCharacter>();
+        _infoTextManager.UpdateTurnLoopInfo(maxTurns, maxLoops - CurrentLoops);
+        _mainCharacter = mainCharacter;
     }
 
 
@@ -71,45 +70,67 @@ public class LoopManager : MonoBehaviour
         // 1) nothing is moving 2) we are not at goal 3) we HAVE loops available
         GameObject clone = Instantiate(_clonePrefab, Vector2.zero, Quaternion.identity);
         clone.SetActive(false);
-        clone.GetComponent<LoopInstance>().Init(new List<Turn>(turns), levelManager.StartPosition);
+        clone.GetComponent<LoopInstance>().Init(new List<Turn>(turns), levelManager.StartPosition, CurrentLoops);
         _loopInstances.Add(clone);
         _codeLineManager.UpdateCode(1);
         levelManager.ResumeLevel();
 
+        
         levelManager.RestartLevelWithLoop();
-        _currentLoops++;
-        _infoTextManager.UpdateTurnLoopInfo(maxTurns, maxLoops - _currentLoops);
-        levelManager.ResumeLevel();
+        CurrentLoops++;
+        _infoTextManager.UpdateTurnLoopInfo(maxTurns, maxLoops - CurrentLoops);
+
+        RestartLevelIfNecessary();
     }
 
-    public void OnTurnEnd(List<Turn> turns)
+    private void RestartLevelIfNecessary()
     {
-        // Updates all clones to take their next step
+        if (CurrentLoops+1 >= maxLoops)
+        {
+            // TODO: Full Reset the level here @MinghaoLi
+            Debug.Log("####FAILED LEVEL####");
+        }
+    }
+    
+    /**
+     * Returns false when no further turns can be made, true otherwise
+     */
+    public void EndTurn(List<Turn> turns)
+    {
+        // Complete the turn and update all clones to take their next step
         foreach (var loopInstance in _loopInstances)
         {
             loopInstance.GetComponent<LoopInstance>().ReplayNext();
         }
-
-        _codeLineManager.UpdateCode(turns.Count + 1);
-        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - turns.Count, maxLoops - _currentLoops);
-
-        if (_currentLoops >= maxLoops)
-        {
-            // TODO: Full Reset the level here @MinghaoLi
-            // 1) nothing is moving 2) we are not at goal 3) no more loops available
-        }
-        else if (turns.Count >= curMaxTurns)
+        
+        // if no more turns can be made, Restart the loop
+        if (turns.Count >= curMaxTurns)
         {
             LevelManager levelManager = FindFirstObjectByType<LevelManager>();
             levelManager.PauseLevel();
             StartCoroutine(RestartLevelWithLoop(1, turns, levelManager));
         }
+        
+        _codeLineManager.UpdateCode(turns.Count + 1);
+        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - turns.Count, maxLoops - CurrentLoops);
     }
 
     public void addTurns(int n)
     {
         curMaxTurns += n;
         _codeLineManager.addLines(n);
-        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - _mainCharacter.GetCurrentTurn(), maxLoops - _currentLoops);
+        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - _mainCharacter.GetCurrentTurn(), maxLoops - CurrentLoops);
+    }
+
+    public void addLoops(int n)
+    {
+        maxLoops += n;
+        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - _mainCharacter.GetCurrentTurn(), maxLoops - CurrentLoops);
+
+    }
+
+    public bool HasTurnsRemaining()
+    {
+        return curMaxTurns > _mainCharacter.GetCurrentTurn();
     }
 }

@@ -293,6 +293,7 @@ GameObject:
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -450,6 +451,18 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &519420034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc1e204b5ea35462bac3936d5e3d6e97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -744,6 +757,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7764473060023482614, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -52.199997
+      objectReference: {fileID: 0}
     - target: {fileID: 7918819267349435187, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       propertyPath: m_Camera
       value: 
@@ -814,6 +831,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 519420032}
     - target: {fileID: 5228699467898139263, guid: 586cea9dd65264021a7440c90cbed85d, type: 3}
+      propertyPath: _cameraController
+      value: 
+      objectReference: {fileID: 519420034}
+    - target: {fileID: 5228699467898139263, guid: 586cea9dd65264021a7440c90cbed85d, type: 3}
       propertyPath: _appPrefabs.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -839,8 +860,12 @@ PrefabInstance:
       value: LoopManager
       objectReference: {fileID: 0}
     - target: {fileID: 5692579060136354305, guid: 9dcd2c91a4c83c645a72d38b78fe6002, type: 3}
+      propertyPath: maxLoops
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5692579060136354305, guid: 9dcd2c91a4c83c645a72d38b78fe6002, type: 3}
       propertyPath: maxTurns
-      value: 4
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7702738823489071431, guid: 9dcd2c91a4c83c645a72d38b78fe6002, type: 3}
       propertyPath: m_LocalPosition.x

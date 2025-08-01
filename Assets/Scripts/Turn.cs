@@ -9,6 +9,14 @@ using UnityEngine;
 public struct Turn
 {
     public Vector2 Position;
-    
-    // TODO: Throwing will require thrown object + end location
+    public Tile Tile;
+    public TurnType Type;
+
+    public enum TurnType
+    {
+        Move,
+        DeleteApp,
+        TeleportFolder,
+        RunExecutable,
+    }
 }

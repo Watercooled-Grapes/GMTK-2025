@@ -11,6 +11,7 @@ public class GridManager : MonoBehaviour {
     [SerializeField] private CameraController _cameraController;
  
     private Dictionary<Vector2, Tile> _tiles;
+    private Dictionary<Tile, GameObject> _apps;
     public enum TileType
     {
         EmptyTile = 0,
@@ -25,7 +26,8 @@ public class GridManager : MonoBehaviour {
         int width = mapData.GetLength(1);
         int height = mapData.GetLength(0);
         _tiles = new Dictionary<Vector2, Tile>();
-
+        _apps = new Dictionary<Tile, GameObject>();
+        
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 var spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);
@@ -36,7 +38,15 @@ public class GridManager : MonoBehaviour {
 
                 spawnedTile.Init(isOffset, x, y, tileType);
 
-                _tiles[new Vector2(x, y)] = spawnedTile;
+                Vector2 position = new Vector2(x, y);
+                _tiles[position] = spawnedTile;
+
+                if (tileType == TileType.AppTile && _appPrefabs.Count > 0)
+                {
+                    GameObject appPrefab = _appPrefabs[UnityEngine.Random.Range(0, _appPrefabs.Count)];
+                    GameObject appClone = Instantiate(appPrefab, position, Quaternion.identity);
+                    _apps[spawnedTile] = appClone;
+                }
             }
         }
 
@@ -65,9 +75,10 @@ public class GridManager : MonoBehaviour {
             for (int i = 1; i <= turns; i++) {
                 Vector2 nextPos = startPos + dir * i;
                 Tile tile = GetTileAtPosition(nextPos);
-                if (tile == null || tile.TileType == TileType.WallTile) break;
+                if (tile == null || tile.TileType == TileType.WallTile 
+                                 || (tile.IsAppScheduledForDeletion && !tile.IsAppDeleted)) break;
                 reachableTiles.Add(tile, i);
-                if (!tile.appBroken)
+                if (!tile.IsAppDeleted)
                 {
                     break;
                 }
@@ -106,7 +117,7 @@ public class GridManager : MonoBehaviour {
     public void OnResetForLoop(int[,] mapData, Vector2 startPosition)
     {
         // TODO: Reset the map
-        // GenerateGrid(mapData);
+        GenerateAppsIfMissing();
     }
     
     public List<Tile> GetPathToTile(Vector2 fromPosition, Tile toTile)
@@ -162,38 +173,14 @@ public class GridManager : MonoBehaviour {
         return null;
     }        
 
-    public static List<Vector2Int> FindAllPositionOfType(int[,] mapData, TileType tileType)
+    public void GenerateAppsIfMissing()
     {
-        int width = mapData.GetLength(0);
-        int height = mapData.GetLength(1);
-        int tileValue = (int)tileType;
-        List<Vector2Int> positions = new List<Vector2Int>();
-
-        for (int x = 0; x < width; x++)
+        foreach (var app in _apps)
         {
-            for (int y = 0; y < height; y++)
-            {
-                if (mapData[x, y] == tileValue)
-                {
-                    positions.Add(new Vector2Int(x, y));
-                }
-            }
-        }
-
-        return positions;
-    }
-
-    public void GenerateApps(int[,] mapData)
-    {
-        List<Vector2Int> appPositions = FindAllPositionOfType(mapData, TileType.AppTile);
-
-        foreach (var appPosition in appPositions)
-        {
-            if (_appPrefabs.Count > 0)
-            {
-                GameObject appPrefab = _appPrefabs[UnityEngine.Random.Range(0, _appPrefabs.Count)];
-                Instantiate(appPrefab, (Vector2)appPosition, Quaternion.identity);
-            }
+            Tile tile = app.Key;
+            GameObject appInstance = app.Value;
+            AppController appController = appInstance.GetComponent<AppController>();
+            appController.Init(tile);
         }
     }
 }
