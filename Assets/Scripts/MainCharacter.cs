@@ -63,6 +63,24 @@ public class MainCharacter : MonoBehaviour
         foreach (Tile tile in path)
         {
             Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
+
+            if (_currentPosition.x < tile.X)
+            {
+                this.GetComponent<Animator>().SetTrigger("right");
+            }
+            else if (_currentPosition.x > tile.X)
+            {
+                this.GetComponent<Animator>().SetTrigger("left");
+            }
+            else if (_currentPosition.y < tile.Y)
+            {
+                this.GetComponent<Animator>().SetTrigger("up");
+            }
+            else
+            {
+                this.GetComponent<Animator>().SetTrigger("down");
+            }
+
             while ((transform.position - targetPos).sqrMagnitude > 0.01f)
             {
                 transform.position = Vector3.MoveTowards(transform.position, targetPos, 5f * Time.deltaTime);
@@ -75,6 +93,7 @@ public class MainCharacter : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
 
             // Log or animate step if needed
+
             Debug.Log("Step to " + tile.name);
 
 
@@ -86,6 +105,7 @@ public class MainCharacter : MonoBehaviour
 
             TurnEnded?.Invoke(_turnsThisLoop);
         }
+        this.GetComponent<Animator>().SetTrigger("idle");
     }
 
     public void Init(int[,] mapData, Vector2 startPosition)
