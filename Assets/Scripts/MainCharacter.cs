@@ -6,13 +6,13 @@ using System.Collections.Generic;
 public class MainCharacter : MonoBehaviour
 {
     [SerializeField] private Vector2 _currentPosition;
-    [SerializeField] private int _steps = 5;
     private List<Turn> _turnsThisLoop = new List<Turn>();
 
     private bool _isSelected = false;
     private List<Tile> _availableTiles;
 
     private GridManager _gridManager;
+    private LoopManager _loopManager;
 
     // Events
     public event Action<List<Turn>> TurnEnded;
@@ -86,13 +86,15 @@ public class MainCharacter : MonoBehaviour
             RemoveHightlights(_availableTiles);
             _availableTiles.Clear();
         }
+
+        _loopManager = FindFirstObjectByType<LoopManager>();
     }
 
     private void OnMouseDown()
     {
         if (enabled)
         {
-            _availableTiles = _gridManager.GetReachableTiles(_currentPosition, _steps);
+            _availableTiles = _gridManager.GetReachableTiles(_currentPosition, _loopManager.maxTurns - GetCurrentTurn());
             HighlightPotentialDestinationTiles(_availableTiles);
             _isSelected = true;
         }
