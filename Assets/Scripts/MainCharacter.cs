@@ -132,6 +132,8 @@ public class MainCharacter : MonoBehaviour
             // Log or animate step if needed
             Debug.Log("Step to " + tile.name);
 
+            Boolean turnAdded = false;
+
 
             foreach (GameObject go in _exes)
             {
@@ -144,6 +146,7 @@ public class MainCharacter : MonoBehaviour
                     };
                     _turnsThisLoop.Add(turn);
                     _loopManager.EndTurn(_turnsThisLoop);
+                    turnAdded = true;
                     break;
                 }
             }
@@ -161,11 +164,15 @@ public class MainCharacter : MonoBehaviour
                     };
                     _turnsThisLoop.Add(turn);
                     _loopManager.EndTurn(_turnsThisLoop);
+                    turnAdded = true;
                     break;
                 }
             }
 
-            BroadcastTurnEnded(_currentPosition);
+            if (!turnAdded)
+            {
+                BroadcastTurnEnded(_currentPosition);
+            }
         }
         _animator.SetTrigger("idle");
         IsInteractable = true;
