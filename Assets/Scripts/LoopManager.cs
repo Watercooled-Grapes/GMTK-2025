@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LoopManager : MonoBehaviour
 {
@@ -85,10 +86,9 @@ public class LoopManager : MonoBehaviour
 
     private void RestartLevelIfNecessary()
     {
-        if (CurrentLoops >= maxLoops)
+        if (CurrentLoops >= maxLoops && GameManager.Instance.CurrentState == GameState.PLAYING)
         {
-            // TODO: Full Reset the level here @MinghaoLi
-            Debug.Log("####FAILED LEVEL####");
+            GameManager.Instance.LoadNextLevelWithCutscene(SceneManager.GetActiveScene().buildIndex);
         }
     }
     
