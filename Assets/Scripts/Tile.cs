@@ -1,16 +1,22 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Xml;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using static GridManager;
 
 public class Tile : MonoBehaviour
 {
     [SerializeField] private Color _baseColor, _offsetColor, _wallColor;
+    [SerializeField] private Color _lineColor;
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
     [SerializeField] private TMP_Text _textMesh;
 
+    private List<LineRenderer> _crosshatching = new List<LineRenderer>();
     private SpriteRenderer _highlightRenderer;
+    private LineRenderer _lineRenderer;
     private Coroutine _fadeCoroutine;
     private Coroutine _scaleCoroutine;
     
@@ -28,41 +34,133 @@ public class Tile : MonoBehaviour
 
     private const float SELECTED_COLOR_ALPHA = 0.4f;
 
+
     public void Init(bool isOffset, int x, int y, TileType tileType = TileType.EmptyTile)
     {
         TileType = tileType;
-        _renderer.color = tileType == TileType.WallTile ? _wallColor : (isOffset ? _offsetColor : _baseColor);
+
+        X = x;
+        Y = y;
+
+        if (tileType != TileType.WallTile)
+        {
+            initLineRenderer();
+            initHatchRenderer();
+        }
+
+        _renderer.color = tileType == TileType.WallTile ? _wallColor : _baseColor;
         IsAppDeleted = tileType != TileType.AppTile;
         _highlightRenderer = _highlight.GetComponent<SpriteRenderer>();
         SetAlpha(0f);
         _highlight.transform.localScale = Vector3.one;
 
-        X = x;
-        Y = y;
+    }
+
+    void initLineRenderer()
+    {
+        _lineRenderer = GetComponent<LineRenderer>();
+        _lineRenderer.material = new Material(Shader.Find("Unlit/Texture"));
+        _lineRenderer.startColor = _lineColor;
+        _lineRenderer.endColor = _lineColor;
+        _lineRenderer.startWidth = 0.05f;
+        _lineRenderer.endWidth = 0.05f;
+
+        _lineRenderer.positionCount = 4;
+
+        _lineRenderer.SetPosition(0, new Vector3(X - 0.5f, Y - 0.5f, 0));
+        _lineRenderer.SetPosition(1, new Vector3(X + 0.5f, Y - 0.5f, 0));
+        _lineRenderer.SetPosition(2, new Vector3(X + 0.5f, Y + 0.5f, 0));
+        _lineRenderer.SetPosition(3, new Vector3(X - 0.5f, Y + 0.5f, 0));
+
+        _lineRenderer.loop = true;
+    }
+
+    void enableHatch()
+    {
+        foreach (LineRenderer lr in _crosshatching)
+        {
+            lr.enabled = true;
+        }
+    }
+
+    void disableHatch()
+    {
+        foreach (LineRenderer lr in _crosshatching)
+        {
+            lr.enabled = false;
+        }
+    }
+
+    void initHatchRenderer()
+    {
+        for (int i = 1; i <= 5; i++)
+        {
+            GameObject child = new GameObject("hatch");
+            child.transform.parent = this.transform;
+            LineRenderer newLine = child.AddComponent<LineRenderer>();
+            newLine.material = new Material(Shader.Find("Unlit/Texture"));
+            newLine.startColor = _lineColor;
+            newLine.endColor = _lineColor;
+            newLine.startWidth = 0.05f;
+            newLine.endWidth = 0.05f;
+            newLine.positionCount = 2;
+
+            newLine.SetPosition(0, new Vector3(X - 0.5f + (i * (1 / 5f)), Y - 0.5f, 0));
+            newLine.SetPosition(1, new Vector3(X - 0.5f, Y - 0.5f + (i * (1 / 5f)), 0));
+
+            newLine.sortingOrder = 3;
+
+            _crosshatching.Add(newLine);
+        }
+
+        for (int i = 1; i <= 5; i++)
+        {
+            GameObject child = new GameObject("hatch");
+            child.transform.parent = this.transform;
+            LineRenderer newLine = child.AddComponent<LineRenderer>();
+            newLine.material = new Material(Shader.Find("Unlit/Texture"));
+            newLine.startColor = _lineColor;
+            newLine.endColor = _lineColor;
+            newLine.startWidth = 0.05f;
+            newLine.endWidth = 0.05f;
+            newLine.positionCount = 2;
+
+            newLine.SetPosition(0, new Vector3(X + 0.5f - (i * (1 / 5f)), Y + 0.5f, 0));
+            newLine.SetPosition(1, new Vector3(X + 0.5f, Y + 0.5f - (i * (1 / 5f)), 0));
+
+            newLine.sortingOrder = 3;
+            _crosshatching.Add(newLine);
+        }
+
+        disableHatch();
     }
 
     void OnMouseEnter()
     {
         if (TileType == TileType.WallTile) return;
-        StartFade(SELECTED_COLOR_ALPHA, 0.2f);
+        enableHatch();
+        //StartFade(SELECTED_COLOR_ALPHA, 0.2f);
 
-        if (IsOccupied) return;
-        StartScale(Vector3.one * 1.05f, 0.25f);
+        //if (IsOccupied) return;
+        //StartScale(Vector3.one * 1.05f, 0.25f);
     }
 
     void OnMouseExit()
     {
-        StartScale(Vector3.one, 0.25f);
-        if (_isHighlighted) return;
-        StartFade(0f, 0.2f);
+        disableHatch();
+        //StartScale(Vector3.one, 0.25f);
+        //if (_isHighlighted) return;
+        //StartFade(0f, 0.2f);
     }
 
-    public void HighlightAsMoveOption() {
+    public void HighlightAsMoveOption()
+    {
         SetAlpha(SELECTED_COLOR_ALPHA);
         _isHighlighted = true;
     }
 
-    public void RemoveHighlight() {
+    public void RemoveHighlight()
+    {
         SetAlpha(0f);
         _isHighlighted = false;
     }
