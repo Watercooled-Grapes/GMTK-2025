@@ -17,6 +17,7 @@ public class MainCharacter : MonoBehaviour
     private GridManager _gridManager;
     private LoopManager _loopManager;
     private GameObject[] _exes;
+    private GameObject[] _folders;
 
     private AudioSource _audioSource; 
     [SerializeField] private AudioClip _stepSoundEffect; 
@@ -144,6 +145,23 @@ public class MainCharacter : MonoBehaviour
                 }
             }
 
+            foreach (GameObject go in _folders)
+            {
+                Debug.Log(go);
+                FolderScript f = go.GetComponent<FolderScript>().tryTp();
+                if (f != null)
+                {
+                    Turn turn = new Turn
+                    {
+                        Position = _currentPosition,
+                        tp = f
+                    };
+                    _turnsThisLoop.Add(turn);
+                    _loopManager.EndTurn(_turnsThisLoop);
+                    break;
+                }
+            }
+
             if (!isAppDeleted)
             {
                 BroadCastTurnEndedOnConsumable(tile, _currentPosition);
@@ -217,6 +235,7 @@ public class MainCharacter : MonoBehaviour
 
         _loopManager = FindFirstObjectByType<LoopManager>();
         _exes = GameObject.FindGameObjectsWithTag("Exes");
+        _folders = GameObject.FindGameObjectsWithTag("Folder");
     }
 
     private void OnMouseDown()
