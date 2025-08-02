@@ -24,8 +24,6 @@ public class Tile : MonoBehaviour
     public int Y { get; set; } = 0;
     
     [SerializeField] public TileType TileType { get; set; }
-    public bool IsAppDeleted { get; set; }  = true;
-    public bool IsAppScheduledForDeletion { get; set; }  = false;
 
     // IsOccupied does not block character moving
     public bool IsOccupied { get; set; } = false;
@@ -49,7 +47,6 @@ public class Tile : MonoBehaviour
         }
 
         _renderer.color = tileType == TileType.WallTile ? _wallColor : _baseColor;
-        IsAppDeleted = tileType != TileType.AppTile;
         _highlightRenderer = _highlight.GetComponent<SpriteRenderer>();
         SetAlpha(0f);
         _highlight.transform.localScale = Vector3.one;
@@ -139,18 +136,11 @@ public class Tile : MonoBehaviour
     {
         if (TileType == TileType.WallTile) return;
         enableHatch();
-        //StartFade(SELECTED_COLOR_ALPHA, 0.2f);
-
-        //if (IsOccupied) return;
-        //StartScale(Vector3.one * 1.05f, 0.25f);
     }
 
     void OnMouseExit()
     {
         disableHatch();
-        //StartScale(Vector3.one, 0.25f);
-        //if (_isHighlighted) return;
-        //StartFade(0f, 0.2f);
     }
 
     public void HighlightAsMoveOption()
@@ -163,31 +153,6 @@ public class Tile : MonoBehaviour
     {
         SetAlpha(0f);
         _isHighlighted = false;
-    }
-
-    private void StartFade(float targetAlpha, float duration)
-    {
-        if (_fadeCoroutine != null)
-            StopCoroutine(_fadeCoroutine);
-
-        _fadeCoroutine = StartCoroutine(FadeHighlight(targetAlpha, duration));
-    }
-
-    private IEnumerator FadeHighlight(float targetAlpha, float duration)
-    {
-        float startAlpha = _highlightRenderer.color.a;
-        float time = 0f;
-
-        while (time < duration)
-        {
-            float t = time / duration;
-            float currentAlpha = Mathf.Lerp(startAlpha, targetAlpha, t);
-            SetAlpha(currentAlpha);
-            time += Time.deltaTime;
-            yield return null;
-        }
-
-        SetAlpha(targetAlpha);
     }
 
     private void SetAlpha(float alpha)

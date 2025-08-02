@@ -3,20 +3,17 @@ using UnityEngine;
 public class ExeScript : MonoBehaviour
 {
     [SerializeField] private Vector2 _pos;
-    [SerializeField] private int turnsToAdd;
+    [SerializeField] private int _turnsToAdd;
 
     private MainCharacter _player;
     private GridManager _gridManager;
     private LoopManager _loopManager;
-    private bool canBeCollected = true;
+    private bool _collectable = true;
 
-    public void Start()
+    public void Init(int[,] mapData)
     {
         _player = LevelManager.Instance.MainCharacter;
         _loopManager = LevelManager.Instance.LoopManager;
-    }
-    public void Init(int[,] mapData)
-    {
         _gridManager = LevelManager.Instance.GridManager;
         if (_gridManager == null)
         {
@@ -25,16 +22,18 @@ public class ExeScript : MonoBehaviour
         }
         Vector3 pos = _gridManager.GetTileCenterPosition(_pos);
         transform.position = pos;
+
+        _loopManager.RegisterTriggerableCallback(_pos, (_) => TryCollect());
     }
 
-    public ExeScript tryCollect()
+    public ExeScript TryCollect()
     {
-        if (canBeCollected && _player._currentPosition == _pos)
+        if (_collectable && _player._currentPosition == _pos)
         {
-            Debug.Log("collect exe");
-            _loopManager.addTurns(turnsToAdd);
+            Debug.Log("Collect exe");
+            _loopManager.addTurns(_turnsToAdd);
             GetComponent<SpriteRenderer>().enabled = false;
-            canBeCollected = false;
+            _collectable = false;
             return this;
         }
         return null;
@@ -45,15 +44,9 @@ public class ExeScript : MonoBehaviour
         GetComponent<SpriteRenderer>().enabled = true;
     }
 
-    public void ghostCollect()
+    public void CollectByClone()
     {
-        _loopManager.addTurns(turnsToAdd);
+        _loopManager.addTurns(_turnsToAdd);
         GetComponent<SpriteRenderer>().enabled = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

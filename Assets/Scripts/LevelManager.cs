@@ -55,7 +55,6 @@ public class LevelManager : MonoBehaviour
         _gridManager = FindFirstObjectByType<GridManager>();
         if (_gridManager != null) {
             _gridManager.GenerateGrid(_mapData);
-            _gridManager.GenerateAppsIfMissing();
             ResetableCallbacks += _gridManager.OnResetForLoop;
 
         } else {
@@ -65,7 +64,7 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Init Loop Manager");
         _loopManager = FindFirstObjectByType<LoopManager>();
         if (_loopManager != null) {
-            _loopManager.Init(_mainCharacter);
+            _loopManager.Init();
         } else {
             Debug.LogError("LoopManager is NULL");
         }
@@ -116,6 +115,14 @@ public class LevelManager : MonoBehaviour
         {
             go.GetComponent<LeverScript>().Init();
             ResetableCallbacks += go.GetComponent<LeverScript>().OnResetForLoop;
+        }
+
+        GameObject[] apps = GameObject.FindGameObjectsWithTag("Apps");
+        foreach (GameObject go in apps)
+        {
+            Debug.Log("creating apps");
+            go.GetComponent<AppController>().Init();
+            ResetableCallbacks += go.GetComponent<AppController>().OnResetForLoop;
         }
     }
     

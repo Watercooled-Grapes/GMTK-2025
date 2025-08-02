@@ -6,18 +6,15 @@ using UnityEngine;
 public class GridManager : MonoBehaviour {
     [SerializeField] private int _width, _height;
     [SerializeField] private Tile _tilePrefab;
-    [SerializeField] private List<GameObject> _appPrefabs; // honest we should just have 1, at most 3
     [SerializeField] private CameraController _cameraController;
  
     private Dictionary<Vector2, Tile> _tiles;
-    private Dictionary<Tile, GameObject> _apps;
     public enum TileType
     {
         EmptyTile = 0,
         WallTile = 1,
         StartTile = 2,
         EndTile = 3,
-        AppTile = 5,
     }
     
     public void GenerateGrid(int[,] mapData)
@@ -26,7 +23,6 @@ public class GridManager : MonoBehaviour {
         int height = mapData.GetLength(0);
         _cameraController.CenterAndZoom(width, height);
         _tiles = new Dictionary<Vector2, Tile>();
-        _apps = new Dictionary<Tile, GameObject>();
         
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -40,17 +36,9 @@ public class GridManager : MonoBehaviour {
 
                 Vector2 position = new Vector2(x, y);
                 _tiles[position] = spawnedTile;
-
-                if (tileType == TileType.AppTile && _appPrefabs.Count > 0)
-                {
-                    GameObject appPrefab = _appPrefabs[UnityEngine.Random.Range(0, _appPrefabs.Count)];
-                    GameObject appClone = Instantiate(appPrefab, position, Quaternion.identity);
-                    _apps[spawnedTile] = appClone;
-                }
             }
         }
     }
-
  
     public Tile GetTileAtPosition(Vector2 pos)
     {
@@ -73,13 +61,8 @@ public class GridManager : MonoBehaviour {
             for (int i = 1; i <= turns; i++) {
                 Vector2 nextPos = startPos + dir * i;
                 Tile tile = GetTileAtPosition(nextPos);
-                if (tile == null || tile.TileType == TileType.WallTile 
-                                 || (tile.IsAppScheduledForDeletion && !tile.IsAppDeleted)) break;
+                if (tile == null || tile.TileType == TileType.WallTile || tile.IsOccupied) break;
                 reachableTiles.Add(tile, i);
-                if (!tile.IsAppDeleted)
-                {
-                    break;
-                }
             }
         }
 
@@ -94,14 +77,7 @@ public class GridManager : MonoBehaviour {
 
     public Vector3 GetTileCenterPosition(Tile tile)
     {
-        if (tile != null)
-        {
-            return tile.transform.position;
-        }
-        else
-        {
-            return Vector3.zero;
-        }
+        return tile.transform.position;
     }
 
     public Tile GetTileByWorldCoordinate(Vector3 worldPos)
@@ -114,8 +90,7 @@ public class GridManager : MonoBehaviour {
 
     public void OnResetForLoop(int[,] mapData, Vector2 startPosition)
     {
-        // TODO: Reset the map
-        GenerateAppsIfMissing();
+        // WHAT ARE YOU LOOKING AT?????
     }
     
     public List<Tile> GetPathToTile(Vector2 fromPosition, Tile toTile)
@@ -169,16 +144,5 @@ public class GridManager : MonoBehaviour {
         }
 
         throw new InvalidOperationException($"Tile of type {tileType} was not found in the map."); 
-    }        
-
-    public void GenerateAppsIfMissing()
-    {
-        foreach (var app in _apps)
-        {
-            Tile tile = app.Key;
-            GameObject appInstance = app.Value;
-            AppController appController = appInstance.GetComponent<AppController>();
-            appController.Init(tile);
-        }
     }
 }

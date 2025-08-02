@@ -18,9 +18,11 @@ public class FolderScript : MonoBehaviour
         }
         Vector3 pos = _gridManager.GetTileCenterPosition(_pos);
         transform.position = pos;
+
+        LevelManager.Instance.LoopManager.RegisterTriggerableCallback(_pos, (_) => TryTeleport());
     }
 
-    public FolderScript tryTp()
+    public FolderScript TryTeleport()
     {
         if (tpToFolder == null)
         {
@@ -37,18 +39,8 @@ public class FolderScript : MonoBehaviour
         return null;
     }
 
-    public Vector2 getLocation()
+    public Vector2 GetTeleportLocation()
     {
-        return _pos;
-    }
-
-    public Vector2 tpLocation()
-    {
-        return tpToFolder.GetComponent<FolderScript>().getLocation();
-    }
-
-    public void Update()
-    {
-        
+        return tpToFolder.GetComponent<FolderScript>()._pos;
     }
 }
