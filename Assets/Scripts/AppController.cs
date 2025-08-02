@@ -57,6 +57,7 @@ public class AppController : MonoBehaviour
                     {
                         Position = LevelManager.Instance.MainCharacter.GetCurrentPosition(),
                         Tile = _tile,
+                        TeleportToPos = null,
                     };
                     LevelManager.Instance.MainCharacter.AddTurn(turn);
                     LevelManager.Instance.LoopManager.EndTurn(LevelManager.Instance.MainCharacter.GetTurns(), false);

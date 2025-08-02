@@ -27,7 +27,7 @@ public class FolderScript : MonoBehaviour
     {
         if (tpToFolder == null)
         {
-            Debug.LogError($"Please check Teleport folder, it is not configured properly. Name: {name}");
+            return;
         }
 
         _player = LevelManager.Instance.MainCharacter;

@@ -10,5 +10,5 @@ public struct Turn
 {
     public Vector2 Position;
     public Tile Tile;
-    public Vector2 TeleportToPos;
+    public Vector2? TeleportToPos;
 }
