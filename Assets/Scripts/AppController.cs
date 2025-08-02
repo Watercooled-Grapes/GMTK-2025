@@ -44,8 +44,7 @@ public class AppController : MonoBehaviour
             RunDestroySeqeuence();
         } else if (!BeenConsumedAtSomePoint && col.gameObject.GetComponent<MainCharacter>() != null)
         {
-            FindFirstObjectByType<LoopManager>()
-                .addLoops(loopsToAddOnDestroy);
+            LevelManager.Instance.LoopManager.addLoops(loopsToAddOnDestroy);
             BeenConsumedAtSomePoint = true;
             _loopDestroyedIn = LoopManager.CurrentLoops;
             RunDestroySeqeuence();

@@ -12,12 +12,12 @@ public class ExeScript : MonoBehaviour
 
     public void Start()
     {
-        _player = FindFirstObjectByType<MainCharacter>();
-        _loopManager = FindFirstObjectByType<LoopManager>();
+        _player = LevelManager.Instance.MainCharacter;
+        _loopManager = LevelManager.Instance.LoopManager;
     }
     public void Init(int[,] mapData)
     {
-        _gridManager = FindFirstObjectByType<GridManager>();
+        _gridManager = LevelManager.Instance.GridManager;
         if (_gridManager == null)
         {
             Debug.LogError("GridManager not found!");

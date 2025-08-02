@@ -28,7 +28,7 @@ public class Goal : MonoBehaviour
 
     public void Init(Vector2Int? startPos)
     {
-        _gridManager = FindFirstObjectByType<GridManager>();
+        _gridManager = LevelManager.Instance.GridManager;
         if (_gridManager == null)
         {
             Debug.LogError("GridManager not found!");

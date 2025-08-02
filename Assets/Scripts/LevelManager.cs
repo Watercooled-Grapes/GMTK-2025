@@ -7,15 +7,34 @@ public class LevelManager : MonoBehaviour
     private GridManager _gridManager;
     private MainCharacter _mainCharacter;
     private LoopManager _loopManager;
-
-    public event Action<int[,], Vector2> Resetable;
     private Goal _goal;
+
+    public GridManager GridManager => _gridManager;
+    public MainCharacter MainCharacter => _mainCharacter;
+    public LoopManager LoopManager => _loopManager;
+    public Goal Goal => _goal;
+
+    public event Action<int[,], Vector2> ResetableGameObjs;
 
     [SerializeField] private string _mapFileName;
 
     private int[,] _mapData;
     public Vector2 StartPosition { get; private set; }
     [SerializeField] private List<GameObject> _appPrefabs;
+
+    public static LevelManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Debug.LogWarning("Multiple LevelManager instances found. Destroying this one.");
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
 
     void Start()
     {
@@ -34,22 +53,31 @@ public class LevelManager : MonoBehaviour
         StartPosition = startPosition.Value;
         
         // Grid manager should be initialized before the main character
+        // WARNING: the initialize orders matters.
         Debug.Log("Init Grid Manager");
         _gridManager = FindFirstObjectByType<GridManager>();
         if (_gridManager != null) {
             _gridManager.GenerateGrid(_mapData);
             _gridManager.GenerateAppsIfMissing();
-            Resetable += _gridManager.OnResetForLoop;
+            ResetableGameObjs += _gridManager.OnResetForLoop;
 
         } else {
             Debug.LogError("Grid Manager is NULL");
+        }
+   
+        Debug.Log("Init Loop Manager");
+        _loopManager = FindFirstObjectByType<LoopManager>();
+        if (_loopManager != null) {
+            _loopManager.Init(_mainCharacter);
+        } else {
+            Debug.LogError("LoopManager is NULL");
         }
 
         Debug.Log("Init Main Character");
         _mainCharacter = FindFirstObjectByType<MainCharacter>();
         if (_mainCharacter != null) {
             _mainCharacter.Init(_mapData, StartPosition);
-            Resetable += _mainCharacter.OnResetForLoop;
+            ResetableGameObjs += _mainCharacter.OnResetForLoop;
         } else {
             Debug.LogError("Main Character is NULL");
         }
@@ -60,14 +88,6 @@ public class LevelManager : MonoBehaviour
             _goal.Init(endPosition);
         } else {
             Debug.LogError("Goal is NULL");
-        }
-        
-        Debug.Log("Init Loop Manager");
-        _loopManager = FindFirstObjectByType<LoopManager>();
-        if (_loopManager != null) {
-            _loopManager.Init(_mainCharacter);
-        } else {
-            Debug.LogError("LoopManager is NULL");
         }
 
         Debug.Log("Init Folders");
@@ -83,7 +103,7 @@ public class LevelManager : MonoBehaviour
         foreach (GameObject go in exes)
         {
             go.GetComponent<ExeScript>().Init(_mapData);
-            Resetable += go.GetComponent<ExeScript>().OnResetForLoop;
+            ResetableGameObjs += go.GetComponent<ExeScript>().OnResetForLoop;
         }
     }
     
@@ -113,8 +133,7 @@ public class LevelManager : MonoBehaviour
 
     public void RestartLevelWithLoop()
     {
-        Resetable?.Invoke(_mapData, StartPosition);
-
+        ResetableGameObjs?.Invoke(_mapData, StartPosition);
         _loopManager.InitLoopInstances();
     }
 
