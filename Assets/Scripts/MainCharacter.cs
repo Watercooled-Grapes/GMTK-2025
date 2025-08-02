@@ -184,8 +184,6 @@ public class MainCharacter : MonoBehaviour
     {
         if (IsInteractable)
         {
-            Debug.Log("GridManager", _gridManager);
-            Debug.Log("_loopManager", _loopManager);
             _availableTiles = LevelManager.Instance.GridManager.GetReachableTiles(_currentPosition, LevelManager.Instance.LoopManager.curMaxTurns - GetCurrentTurn());
             HighlightPotentialDestinationTiles();
             _isSelected = true;

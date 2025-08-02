@@ -14,18 +14,19 @@ public class AppController : MonoBehaviour
     
     private bool _consumedOnce = false;
     private Tile _tile;
+    private SpriteRenderer _renderer;
 
     private LoopManager _loopManager;
 
     void Start()
     {
-        GetComponent<SpriteRenderer>().sprite = sprites[Random.Range(0, sprites.Length)];
+        _renderer = GetComponent<SpriteRenderer>();
+        _renderer.enabled = true;
+        _renderer.sprite = sprites[Random.Range(0, sprites.Length)];
     }
 
     public void Init()
     {
-        gameObject.SetActive(true);
-        GetComponent<Renderer>().enabled = true;
         _loopManager = LevelManager.Instance.LoopManager;
         transform.position = LevelManager.Instance.GridManager.GetTileCenterPosition(_pos);
         _loopManager.RegisterTriggerableCallback(_pos, Trigger);
@@ -35,24 +36,22 @@ public class AppController : MonoBehaviour
     
     IEnumerator DelayedDestroy(float delayTime)
     {
-        GetComponent<Renderer>().enabled = false;
+        _renderer.enabled = false;
         _particleSystem.Play();
         GetComponent<AudioSource>().PlayOneShot(explosionSound);
         yield return new WaitForSeconds(delayTime);
         
-        gameObject.SetActive(false);
         _tile.IsOccupied = false;
     }
     
-    public void Trigger(int loopCreatedIn)
+    public void Trigger(int loopIndex)
     {
-        Debug.Log("AppController callback " + loopCreatedIn);
-        if (!_consumedOnce && loopCreatedIn == -1)
+        if (!_consumedOnce && loopIndex == LevelManager.Instance.LoopManager.CurrentLoops)
         {
             // Consume it only when this is a main character
             for (int i = 0; i < AppController.APP_DELETE_TURNS_COST; i++)
             {
-                if (_loopManager.HasTurnsRemaining())
+                if (LevelManager.Instance.LoopManager.HasTurnsRemaining())
                 {
                     Turn turn = new Turn
                     {
@@ -60,20 +59,27 @@ public class AppController : MonoBehaviour
                         Tile = _tile,
                     };
                     LevelManager.Instance.MainCharacter.AddTurn(turn);
+                    LevelManager.Instance.LoopManager.EndTurn(LevelManager.Instance.MainCharacter.GetTurns(), false);
+                } else {
+                    break;
                 }
             }
-            _loopManager.EndTurn(LevelManager.Instance.MainCharacter.GetTurns());
 
             _consumedOnce = true;
 
+            _loopDestroyedIn = LevelManager.Instance.LoopManager.CurrentLoops;
             LevelManager.Instance.LoopManager.addLoops(loopsToAddOnDestroy);
-            _loopDestroyedIn = LoopManager.CurrentLoops;
+            RunDestroySequence();
+        } else if (!_consumedOnce && _loopDestroyedIn == loopIndex)
+        {
+            // If the clone consumes it, make the tile accessible for the main character.
+            _tile.IsOccupied = false;
+            RunDestroySequence();
+            _consumedOnce = true;
         }
-
-        RunDestroySeqeuence();
     }
 
-    private void RunDestroySeqeuence()
+    private void RunDestroySequence()
     {
         CinemachineImpulseSource cinemachineImpulseSource = GetComponent<CinemachineImpulseSource>();
         cinemachineImpulseSource.GenerateImpulse();
@@ -83,9 +89,16 @@ public class AppController : MonoBehaviour
 
     public void OnResetForLoop(int[,] mapData, Vector2 pos)
     {
-        GetComponent<Renderer>().enabled = true;
-        gameObject.SetActive(true);
+        if (_consumedOnce)
+        {
+            Color color = _renderer.color;
+            color.a = 0.3f;
+            _renderer.color = color;
+        }
+        _renderer.enabled = true;
 
         _tile.IsOccupied = _consumedOnce;
+
+        _consumedOnce = false;
     }
 }

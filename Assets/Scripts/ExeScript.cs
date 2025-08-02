@@ -8,7 +8,16 @@ public class ExeScript : MonoBehaviour
     private MainCharacter _player;
     private GridManager _gridManager;
     private LoopManager _loopManager;
-    private bool _collectable = true;
+    private bool _collected = false;
+    private int _collectedIn;
+    private Tile _tile;
+
+    private SpriteRenderer _renderer;
+
+    void Start()
+    {
+        _renderer = GetComponent<SpriteRenderer>();
+    }
 
     public void Init(int[,] mapData)
     {
@@ -20,7 +29,8 @@ public class ExeScript : MonoBehaviour
             Debug.LogError("GridManager not found!");
             return;
         }
-        Vector3 pos = _gridManager.GetTileCenterPosition(_pos);
+        _tile = _gridManager.GetTileAtPosition(_pos);
+        Vector3 pos = _gridManager.GetTileCenterPosition(_tile);
         transform.position = pos;
 
         _loopManager.RegisterTriggerableCallback(_pos, TryCollect);
@@ -28,22 +38,31 @@ public class ExeScript : MonoBehaviour
 
     public void TryCollect(int loopIndex)
     {
-        if (_collectable)
+        // Not collected ever since level started OR
+        // the one that triggers this is the clone that has previously collected it
+        if (!_collected || (loopIndex != _loopManager.CurrentLoops && _collectedIn == loopIndex))
         {
             _loopManager.addTurns(_turnsToAdd);
-            GetComponent<SpriteRenderer>().enabled = false;
-            _collectable = false;
+            _renderer.enabled = false;
+            _collected = true;
+            _collectedIn = loopIndex;
         }
     }
 
     public void OnResetForLoop(int[,] mapData, Vector2 startPosition)
     {
-        GetComponent<SpriteRenderer>().enabled = true;
+       _renderer.enabled = true;
+        if (_collected)
+        {
+            Color color = _renderer.color;
+            color.a = 0.3f;
+            _renderer.color = color;
+        }
     }
 
     public void CollectByClone()
     {
         _loopManager.addTurns(_turnsToAdd);
-        GetComponent<SpriteRenderer>().enabled = false;
+        _renderer.enabled = false;
     }
 }

@@ -10,7 +10,7 @@ public class LoopManager : MonoBehaviour
     [SerializeField] private int maxLoops;
     public int maxTurns;
     public int curMaxTurns;
-    public static int CurrentLoops = 0;
+    public int CurrentLoops { get; private set; } = 0;
     [SerializeField] private GameObject _clonePrefab;
     private CodeLineManager _codeLineManager;
     private InfoTextManager _infoTextManager;
@@ -25,7 +25,7 @@ public class LoopManager : MonoBehaviour
         _tilesToMove = value; 
         foreach (var loopInstance in _loopInstances)
             {
-            loopInstance.GetComponent<LoopInstance>().tilesToMove = tilesToMove;
+                loopInstance.GetComponent<LoopInstance>().tilesToMove = tilesToMove;
             }
         }
     }
@@ -114,19 +114,20 @@ public class LoopManager : MonoBehaviour
         }
     }
     
-    public void EndTurn(List<Turn> turns)
+    public void EndTurn(List<Turn> turns, bool emitMessage=true)
     {
         Turn currentTurn = turns[turns.Count - 1];
 
         // The main character
-        InvokeCallbacksForPosition(currentTurn.Position, -1);
+        if (emitMessage) InvokeCallbacksForPosition(currentTurn.Position, CurrentLoops);
         
         // Complete the turn and update all clones to take their next step
+        Debug.Log("Number of clones " + _loopInstances.Count);
         foreach (var loopInstanceObj in _loopInstances)
         {
             LoopInstance loopInstance = loopInstanceObj.GetComponent<LoopInstance>();
+            if (emitMessage) InvokeCallbacksForPosition(loopInstance.GetCurrentTilePosition(), loopInstance.LoopCreatedIn);
             loopInstance.ReplayNext();
-            InvokeCallbacksForPosition(loopInstance.GetCurrentTilePosition(), loopInstance.LoopCreatedIn);
         }
 
         _codeLineManager.UpdateCode(turns.Count + 1);
