@@ -30,8 +30,8 @@ public class CodeLineManager : MonoBehaviour
             string printText = lines[i];
             if (i == pos)
             {
-                string highlightedText = lines[i].Insert(0, "<mark=#ffff00aa>");
-                printText = highlightedText.Insert(lines[i].Length + "<mark=#ffff00aa>".Length, "</mark>");
+                string highlightedText = lines[i].Insert(0, "<mark=#ffffff50>");
+                printText = highlightedText.Insert(lines[i].Length + "<mark=#ffffff50>".Length, "</mark>");
             }
             // tmp.text += i + 1 + "|   " + printText + "\n";
             tmp.text += printText + "\n";

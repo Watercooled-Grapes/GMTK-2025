@@ -11,6 +11,7 @@ public class AppController : MonoBehaviour
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private Vector2 _pos;
     private bool _consumed = false;
+    [SerializeField] private AudioClip explosionSound;
     
 
     private LoopManager _loopManager;
@@ -33,6 +34,7 @@ public class AppController : MonoBehaviour
     {
         GetComponent<Renderer>().enabled = false;
         _particleSystem.Play();
+        GetComponent<AudioSource>().PlayOneShot(explosionSound);
         yield return new WaitForSeconds(delayTime);
         
         gameObject.SetActive(false);
