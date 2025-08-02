@@ -137,13 +137,12 @@ public class LevelManager : MonoBehaviour
         string[] lines = textAsset.text.Trim().Split('\n');
         int height = lines.Length;
         int width = lines[0].Split(',').Length;
-
-        _mapData = new int[height, width];
-
-        for (int y = 0; y < height; y++) {
-            string[] cells = lines[y].Trim().Split(',');
+        
+        _mapData = new int[width, height];
+        for (int y = height-1; y >= 0; y--) {
+            string[] cells = lines[height-1-y].Trim().Split(',');
             for (int x = 0; x < width; x++) {
-                _mapData[x, height - 1 - y] = int.Parse(cells[x]);  // flip Y
+                _mapData[x, y] = int.Parse(cells[x].Trim());  // flip Y
             }
         }
 

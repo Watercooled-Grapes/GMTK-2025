@@ -19,8 +19,8 @@ public class GridManager : MonoBehaviour {
     
     public void GenerateGrid(int[,] mapData)
     {
-        int width = mapData.GetLength(1);
-        int height = mapData.GetLength(0);
+        int width = mapData.GetLength(0);
+        int height = mapData.GetLength(1);
         _cameraController.CenterAndZoom(width, height);
         _tiles = new Dictionary<Vector2, Tile>();
         

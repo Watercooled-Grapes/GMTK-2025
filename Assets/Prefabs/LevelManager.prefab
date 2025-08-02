@@ -47,7 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mapFileName: 
-  _appPrefabs: []
+  _appPrefabs:
+  - {fileID: 4178669051376518258, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
 --- !u!1001 &5633333681758613267
 PrefabInstance:
   m_ObjectHideFlags: 0
