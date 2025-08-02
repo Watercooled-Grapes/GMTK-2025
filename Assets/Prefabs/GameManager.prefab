@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cutsceneObject: {fileID: 0}
+  turnoffSound: {fileID: 8300000, guid: f78793d49d2a65d449a666bd97ce4e44, type: 3}
