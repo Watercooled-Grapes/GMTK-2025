@@ -8,7 +8,13 @@ using UnityEngine.EventSystems;
 
 public class MainCharacter : MonoBehaviour
 {
+    public enum PopupTypes { Str, Img };
+
     [SerializeField] public Vector2 _currentPosition;
+    [SerializeField] private PopupManager _popupManager;
+    [SerializeField] private List<int> popupOnTurns;
+    [SerializeField] private List<PopupTypes> popupType;
+    private int _popupTypeIt = 0;
     private List<Turn> _turnsThisLoop = new List<Turn>();
 
     private bool _isSelected = false;
@@ -205,6 +211,12 @@ public class MainCharacter : MonoBehaviour
             Position = currentPosition,
         };
         _turnsThisLoop.Add(turn);
+
+        if (popupOnTurns.Contains(_turnsThisLoop.Count))
+        {
+            _popupManager.SpawnPopup(popupType[_popupTypeIt]);
+            _popupTypeIt++;
+        }
 
         _loopManager.EndTurn(_turnsThisLoop);
     }
