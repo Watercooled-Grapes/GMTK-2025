@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class FolderScript : MonoBehaviour
@@ -30,6 +31,9 @@ public class FolderScript : MonoBehaviour
         _player = LevelManager.Instance.MainCharacter;
         if (_player._currentPosition == _pos)
         {
+            CinemachineImpulseSource cinemachineImpulseSource = GetComponent<CinemachineImpulseSource>();
+            cinemachineImpulseSource.GenerateImpulse();
+
             Vector2 tpPos = tpToFolder.GetComponent<FolderScript>()._pos;
             _player.TeleportMainCharacter(_gridManager.GetTileAtPosition(tpPos));
             return this;
