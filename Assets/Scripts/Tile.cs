@@ -94,7 +94,7 @@ public class Tile : MonoBehaviour
             GameObject child = new GameObject("hatch");
             child.transform.parent = this.transform;
             LineRenderer newLine = child.AddComponent<LineRenderer>();
-            newLine.material = new Material(Shader.Find("Unlit/Texture"));
+            newLine.material = new Material(Shader.Find("Unlit/Transparent"));
             newLine.startColor = _lineColor;
             newLine.endColor = _lineColor;
             newLine.startWidth = 0.05f;
@@ -114,7 +114,7 @@ public class Tile : MonoBehaviour
             GameObject child = new GameObject("hatch");
             child.transform.parent = this.transform;
             LineRenderer newLine = child.AddComponent<LineRenderer>();
-            newLine.material = new Material(Shader.Find("Unlit/Texture"));
+            newLine.material = new Material(Shader.Find("Unlit/Transparent"));
             newLine.startColor = _lineColor;
             newLine.endColor = _lineColor;
             newLine.startWidth = 0.05f;
