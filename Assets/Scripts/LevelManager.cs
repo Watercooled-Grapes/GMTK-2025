@@ -14,17 +14,18 @@ public class LevelManager : MonoBehaviour
     public LoopManager LoopManager => _loopManager;
     public Goal Goal => _goal;
 
-    public event Action<int[,], Vector2> ResetableGameObjs;
+    public event Action<int[,], Vector2> ResetableCallbacks;
 
     [SerializeField] private string _mapFileName;
 
     private int[,] _mapData;
     public Vector2 StartPosition { get; private set; }
+    public Vector2 EndPosition { get; private set; }
     [SerializeField] private List<GameObject> _appPrefabs;
 
     public static LevelManager Instance { get; private set; }
 
-    private void Awake()
+    void Start()
     {
         if (Instance != null && Instance != this)
         {
@@ -34,23 +35,19 @@ public class LevelManager : MonoBehaviour
         }
 
         Instance = this;
-    }
 
-    void Start()
-    {
         // Load map
         Debug.Log("Loading Map");
         LoadMap();
 
-        Vector2Int? startPosition = GridManager.FindFirstPositionOfType(_mapData, GridManager.TileType.StartTile);
-        Vector2Int? endPosition = GridManager.FindFirstPositionOfType(_mapData, GridManager.TileType.EndTile);
+        StartPosition = GridManager.FindFirstPositionOfType(_mapData, GridManager.TileType.StartTile);
+        EndPosition = GridManager.FindFirstPositionOfType(_mapData, GridManager.TileType.EndTile);
 
-        if (startPosition == null)
+        if (StartPosition == null)
         {
             Debug.LogError("Start position not found in map data!");
             return;
         }
-        StartPosition = startPosition.Value;
         
         // Grid manager should be initialized before the main character
         // WARNING: the initialize orders matters.
@@ -59,7 +56,7 @@ public class LevelManager : MonoBehaviour
         if (_gridManager != null) {
             _gridManager.GenerateGrid(_mapData);
             _gridManager.GenerateAppsIfMissing();
-            ResetableGameObjs += _gridManager.OnResetForLoop;
+            ResetableCallbacks += _gridManager.OnResetForLoop;
 
         } else {
             Debug.LogError("Grid Manager is NULL");
@@ -77,7 +74,7 @@ public class LevelManager : MonoBehaviour
         _mainCharacter = FindFirstObjectByType<MainCharacter>();
         if (_mainCharacter != null) {
             _mainCharacter.Init(_mapData, StartPosition);
-            ResetableGameObjs += _mainCharacter.OnResetForLoop;
+            ResetableCallbacks += _mainCharacter.OnResetForLoop;
         } else {
             Debug.LogError("Main Character is NULL");
         }
@@ -85,7 +82,7 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Init Goal");
         _goal = FindFirstObjectByType<Goal>();
         if (_goal != null) {
-            _goal.Init(endPosition);
+            _goal.Init(EndPosition);
         } else {
             Debug.LogError("Goal is NULL");
         }
@@ -103,7 +100,22 @@ public class LevelManager : MonoBehaviour
         foreach (GameObject go in exes)
         {
             go.GetComponent<ExeScript>().Init(_mapData);
-            ResetableGameObjs += go.GetComponent<ExeScript>().OnResetForLoop;
+            ResetableCallbacks += go.GetComponent<ExeScript>().OnResetForLoop;
+        }
+
+        Debug.Log("Init Doors and Levers");
+        GameObject[] gates = GameObject.FindGameObjectsWithTag("Gates");
+        foreach (GameObject go in gates)
+        {
+            go.GetComponent<GateScript>().Init();
+            ResetableCallbacks += go.GetComponent<GateScript>().OnResetForLoop;
+        }
+
+        GameObject[] levers = GameObject.FindGameObjectsWithTag("Levers");
+        foreach (GameObject go in levers)
+        {
+            go.GetComponent<LeverScript>().Init();
+            ResetableCallbacks += go.GetComponent<LeverScript>().OnResetForLoop;
         }
     }
     
@@ -133,7 +145,7 @@ public class LevelManager : MonoBehaviour
 
     public void RestartLevelWithLoop()
     {
-        ResetableGameObjs?.Invoke(_mapData, StartPosition);
+        ResetableCallbacks?.Invoke(_mapData, StartPosition);
         _loopManager.InitLoopInstances();
     }
 

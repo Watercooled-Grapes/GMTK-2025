@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AppController : MonoBehaviour
 {
-    public static int AppDeleteTurnsCost = 5;
+    public static int AppDeleteTurnsCost = 3;
     [SerializeField] private ParticleSystem _particleSystem;
     private Tile _tile;
     private int _loopDestroyedIn;

@@ -6,7 +6,6 @@ using UnityEngine;
 public class GridManager : MonoBehaviour {
     [SerializeField] private int _width, _height;
     [SerializeField] private Tile _tilePrefab;
-    [SerializeField] private Transform _cam;
     [SerializeField] private List<GameObject> _appPrefabs; // honest we should just have 1, at most 3
     [SerializeField] private CameraController _cameraController;
  
@@ -152,7 +151,7 @@ public class GridManager : MonoBehaviour {
         return path;
     }
     
-    public static Vector2Int? FindFirstPositionOfType(int[,] mapData, GridManager.TileType tileType)
+    public static Vector2Int FindFirstPositionOfType(int[,] mapData, GridManager.TileType tileType)
     {
         int width = mapData.GetLength(0);
         int height = mapData.GetLength(1);
@@ -169,7 +168,7 @@ public class GridManager : MonoBehaviour {
             }
         }
 
-        return null;
+        throw new InvalidOperationException($"Tile of type {tileType} was not found in the map."); 
     }        
 
     public void GenerateAppsIfMissing()
