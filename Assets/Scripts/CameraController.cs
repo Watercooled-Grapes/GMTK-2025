@@ -17,8 +17,8 @@ public class CameraController : MonoBehaviour
 
         // Zoom out to fit the entire board (with padding)
         float aspectRatio = (float)Screen.width / Screen.height;
-        float verticalSize = gridHeight / 2f + 1f;
-        float horizontalSize = (gridWidth / 2f + 1f) / aspectRatio;
+        float verticalSize = gridHeight / 2f + 2.5f;
+        float horizontalSize = (gridWidth / 2f + 2.5f) / aspectRatio;
 
         _cam.orthographicSize = Mathf.Max(verticalSize, horizontalSize);
     }

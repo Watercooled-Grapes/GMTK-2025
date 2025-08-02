@@ -56,7 +56,7 @@ public class Tile : MonoBehaviour
     void initLineRenderer()
     {
         _lineRenderer = GetComponent<LineRenderer>();
-        _lineRenderer.material = new Material(Shader.Find("Unlit/Texture"));
+        _lineRenderer.material = new Material(Shader.Find("Unlit/Transparent"));
         _lineRenderer.startColor = _lineColor;
         _lineRenderer.endColor = _lineColor;
         _lineRenderer.startWidth = 0.05f;
