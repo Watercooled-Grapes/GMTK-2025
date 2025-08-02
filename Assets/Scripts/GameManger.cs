@@ -2,6 +2,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
+public enum GameState {
+    CUTSCENE = 0,
+    PLAYING = 1,
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -11,6 +16,9 @@ public class GameManager : MonoBehaviour
     private AsyncOperation loadingOperation;
 
     public int CurrentSceneIndex { get; private set; }
+
+    // GameState is a lock to prevent race condition
+    public GameState CurrentState { get; private set; }
 
     private void Awake()
     {
@@ -26,27 +34,13 @@ public class GameManager : MonoBehaviour
         if (cutsceneObject == null) {
             Debug.LogError("Please configure cutscene display for GameManager. The cutscene display can be found in prefabs");
         }
-    }
 
-    public void LoadScene(string sceneName)
-    {
-        StartCoroutine(LoadSceneAsync(sceneName));
-    }
-
-    private IEnumerator LoadSceneAsync(string sceneName)
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
-
-        CurrentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        CurrentState = GameState.PLAYING;
     }
 
     public void LoadNextLevelWithCutscene(int nextSceneIndex)
     {
+        CurrentState = GameState.CUTSCENE;
         StartCoroutine(PlayCutsceneAndLoad(nextSceneIndex));
     }
 
@@ -62,13 +56,12 @@ public class GameManager : MonoBehaviour
 
     public void OnCutsceneFinished()
     {
-        Debug.Log("Cutscene Finished");
         StartCoroutine(FinishSceneTransition());
     }
 
     private IEnumerator FinishSceneTransition()
     {
-        cutsceneObject.SetActive(false);
+        yield return new WaitForSeconds(1f);
 
         loadingOperation.allowSceneActivation = true;
 
@@ -77,6 +70,8 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
+        cutsceneObject.SetActive(false);
+        CurrentState = GameState.PLAYING;
         CurrentSceneIndex = SceneManager.GetActiveScene().buildIndex;
     }
 }
