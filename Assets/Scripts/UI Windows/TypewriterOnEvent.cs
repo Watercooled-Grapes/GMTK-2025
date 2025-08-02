@@ -29,9 +29,12 @@ public class TypewriterOnEvent : MonoBehaviour
     public event Action StartGameInput;
     private bool done = false;
 
+    private AudioSource _audioSource;
+
 
     private void Awake()
     {
+        _audioSource = GetComponent<AudioSource>();
 
         prevObject.GetComponent<AppearAfterTypeWriter>().AfterAppearing += StartTyping;
 
@@ -48,6 +51,7 @@ public class TypewriterOnEvent : MonoBehaviour
     {
         if (Input.anyKey)
         {
+            _audioSource.Stop();
             if (_typewriterCoroutine != null) StopCoroutine(_typewriterCoroutine);
             if (_textBox.maxVisibleCharacters > 0 && !done)
             {
@@ -71,6 +75,7 @@ public class TypewriterOnEvent : MonoBehaviour
 
         // Start the typewriter
         _typewriterCoroutine = StartCoroutine(Typewriter());
+        _audioSource.Play();
     }
 
     private void OnEnable()
