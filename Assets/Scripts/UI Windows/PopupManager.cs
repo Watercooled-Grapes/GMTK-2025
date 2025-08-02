@@ -1,6 +1,8 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using static MainCharacter;
 using Random = UnityEngine.Random;
 
 public class PopupManager : MonoBehaviour
@@ -8,17 +10,28 @@ public class PopupManager : MonoBehaviour
     [SerializeField] private GameObject popup;
     [SerializeField] private string[] titles;
     [SerializeField] private string[] contents;
+    [SerializeField] private Sprite[] sprites;
 
-    public void Update()
+    public void SpawnPopup(PopupTypes type)
     {
-        if (Random.Range(0, 100) == 1)
+        popup.transform.GetChild(0).GetComponent<DragWindow>().canvas = transform.parent.GetComponent<Canvas>();
+        popup.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = titles[Random.Range(0, titles.Length)];
+        switch (type)
         {
-            int textIndex = Random.Range(0, titles.Length);
-            popup.transform.GetChild(0).GetComponent<DragWindow>().canvas = transform.parent.GetComponent<Canvas>();
-            popup.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = titles[textIndex];
-            popup.transform.GetChild(1).GetComponent<TMP_Text>().text = contents[textIndex];
-            Instantiate(popup, transform); 
+            case (PopupTypes.Str):
+                popup.GetComponent<Image>().sprite = null;
+                popup.GetComponent<Image>().color = new Color(0, 0, 0, 0.45f);
+                popup.transform.GetChild(1).GetComponent<TMP_Text>().text = contents[Random.Range(0, contents.Length)];
+                Instantiate(popup, transform);
+                break;
+            case (PopupTypes.Img):
+                popup.GetComponent<Image>().sprite = sprites[Random.Range(0,sprites.Length)];
+                popup.GetComponent<Image>().color = new Color(255, 255, 255, 1);
+                popup.transform.GetChild(1).GetComponent<TMP_Text>().text = "";
+                Instantiate(popup, transform);
+                break;
         }
-    
+
+
     }
 }
