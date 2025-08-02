@@ -22,8 +22,6 @@ public class MainCharacter : MonoBehaviour
 
     private GridManager _gridManager;
     private LoopManager _loopManager;
-    private GameObject[] _exes;
-    private GameObject[] _folders;
 
     private AudioSource _audioSource; 
     private Animator _animator;
@@ -133,47 +131,7 @@ public class MainCharacter : MonoBehaviour
             // Log or animate step if needed
             Debug.Log("Step to " + tile.name);
 
-            Boolean turnAdded = false;
-
-
-            foreach (GameObject go in _exes)
-            {
-                ExeScript e = go.GetComponent<ExeScript>().TryCollect();
-                if (e != null)
-                {
-                    Turn turn = new Turn {
-                        Position = _currentPosition,
-                        exe = e
-                    };
-                    _turnsThisLoop.Add(turn);
-                    _loopManager.EndTurn(_turnsThisLoop);
-                    turnAdded = true;
-                    break;
-                }
-            }
-
-            foreach (GameObject go in _folders)
-            {
-                Debug.Log(go);
-                FolderScript f = go.GetComponent<FolderScript>().TryTeleport();
-                if (f != null)
-                {
-                    Turn turn = new Turn
-                    {
-                        Position = _currentPosition,
-                        tp = f
-                    };
-                    _turnsThisLoop.Add(turn);
-                    _loopManager.EndTurn(_turnsThisLoop);
-                    turnAdded = true;
-                    break;
-                }
-            }
-
-            if (!turnAdded)
-            {
-                BroadcastTurnEnded(_currentPosition);
-            }
+            BroadcastTurnEnded(_currentPosition);
         }
         _animator.SetTrigger("idle");
         IsInteractable = true;
@@ -220,8 +178,6 @@ public class MainCharacter : MonoBehaviour
         }
 
         _loopManager = LevelManager.Instance.LoopManager;
-        _exes = GameObject.FindGameObjectsWithTag("Exes");
-        _folders = GameObject.FindGameObjectsWithTag("Folder");
     }
 
     private void OnMouseDown()

@@ -72,7 +72,7 @@ public class LoopManager : MonoBehaviour
         }
     }
 
-    IEnumerator RestartLevelWithLoop(float delayTime, List<Turn> turns, LevelManager levelManager)
+    IEnumerator RestartLevelWithLoop(float delayTime, List<Turn> turns)
     {
         curMaxTurns = maxTurns;
 
@@ -82,13 +82,13 @@ public class LoopManager : MonoBehaviour
         // 1) nothing is moving 2) we are not at goal 3) we HAVE loops available
         GameObject clone = Instantiate(_clonePrefab, Vector2.zero, Quaternion.identity);
         clone.SetActive(false);
-        clone.GetComponent<LoopInstance>().Init(new List<Turn>(turns), levelManager.StartPosition, CurrentLoops);
+        clone.GetComponent<LoopInstance>().Init(new List<Turn>(turns), LevelManager.Instance.StartPosition, CurrentLoops);
         _loopInstances.Add(clone);
         _codeLineManager.UpdateCode(1);
-        levelManager.ResumeLevel();
+        LevelManager.Instance.ResumeLevel();
 
         
-        levelManager.RestartLevelWithLoop();
+        LevelManager.Instance.RestartLevelWithLoop();
         CurrentLoops++;
         _infoTextManager.UpdateTurnLoopInfo(maxTurns, maxLoops - CurrentLoops);
 
@@ -126,7 +126,7 @@ public class LoopManager : MonoBehaviour
         {
             LoopInstance loopInstance = loopInstanceObj.GetComponent<LoopInstance>();
             loopInstance.ReplayNext();
-            InvokeCallbacksForPosition(currentTurn.Position, loopInstance.LoopCreatedIn);
+            InvokeCallbacksForPosition(loopInstance.GetCurrentTilePosition(), loopInstance.LoopCreatedIn);
         }
 
         _codeLineManager.UpdateCode(turns.Count + 1);
@@ -137,7 +137,7 @@ public class LoopManager : MonoBehaviour
         {
             LevelManager levelManager = FindFirstObjectByType<LevelManager>();
             levelManager.PauseLevel();
-            StartCoroutine(RestartLevelWithLoop(1, turns, levelManager));
+            StartCoroutine(RestartLevelWithLoop(1, turns));
         }
     }
 

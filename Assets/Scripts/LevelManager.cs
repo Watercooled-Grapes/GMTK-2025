@@ -120,7 +120,6 @@ public class LevelManager : MonoBehaviour
         GameObject[] apps = GameObject.FindGameObjectsWithTag("Apps");
         foreach (GameObject go in apps)
         {
-            Debug.Log("creating apps");
             go.GetComponent<AppController>().Init();
             ResetableCallbacks += go.GetComponent<AppController>().OnResetForLoop;
         }
