@@ -4,33 +4,29 @@ using UnityEngine;
 
 public class AppController : MonoBehaviour
 {
-    public static int AppDeleteTurnsCost = 3;
+    public static int APP_DELETE_TURNS_COST = 3;
     [SerializeField] private ParticleSystem _particleSystem;
-    private Tile _tile;
     private int _loopDestroyedIn;
     [SerializeField] private int loopsToAddOnDestroy = 1;
     [SerializeField] private Sprite[] sprites;
+    [SerializeField] private Vector2 _pos;
+    private bool _consumed = false;
+    
+
+    private LoopManager _loopManager;
 
     void Start()
     {
         GetComponent<SpriteRenderer>().sprite = sprites[Random.Range(0, sprites.Length)];
     }
 
-    public bool BeenConsumedAtSomePoint { get; private set; } = false;
-    public void Init(Tile tile)
+    public void Init()
     {
-        _tile = tile;
-        _tile.IsAppDeleted = false;
         gameObject.SetActive(true);
         GetComponent<Renderer>().enabled = true;
-        if (BeenConsumedAtSomePoint)
-        {
-            // TODO: Show the icon with lower transparency 
-        }
-        else
-        {
-            // TODO: Show the normal icon
-        }
+        _loopManager = LevelManager.Instance.LoopManager;
+        transform.position = LevelManager.Instance.GridManager.GetTileCenterPosition(_pos);
+        _loopManager.RegisterTriggerableCallback(_pos, Trigger);
     }
     
     IEnumerator DelayedDestroy(float delayTime)
@@ -42,32 +38,44 @@ public class AppController : MonoBehaviour
         gameObject.SetActive(false);
     }
     
-    void OnTriggerEnter2D(Collider2D col)
+    public void Trigger(int loopCreatedIn)
     {
-        LoopInstance loopInstance = col.gameObject.GetComponent<LoopInstance>();
-        if (loopInstance != null && BeenConsumedAtSomePoint && loopInstance.LoopCreatedIn == _loopDestroyedIn)
+        if (!_consumed && loopCreatedIn == -1)
         {
-            RunDestroySeqeuence();
-        } else if (!BeenConsumedAtSomePoint && col.gameObject.GetComponent<MainCharacter>() != null)
-        {
+            // Consume it only when this is a main character
+            for (int i = 0; i < AppController.APP_DELETE_TURNS_COST; i++)
+            {
+                if (_loopManager.HasTurnsRemaining())
+                {
+                    Turn turn = new Turn
+                    {
+                        Position = LevelManager.Instance.MainCharacter.GetCurrentPosition(),
+                    };
+                    LevelManager.Instance.MainCharacter.AddTurn(turn);
+
+                    _loopManager.EndTurn(LevelManager.Instance.MainCharacter.GetTurns());
+                }
+            }
+
+            _consumed = true;
+
             LevelManager.Instance.LoopManager.addLoops(loopsToAddOnDestroy);
-            BeenConsumedAtSomePoint = true;
             _loopDestroyedIn = LoopManager.CurrentLoops;
-            RunDestroySeqeuence();
         }
+
+        RunDestroySeqeuence();
     }
 
     private void RunDestroySeqeuence()
     {
-        CinemachineImpulseSource cinemachineImpulseSource =
-            GetComponent<CinemachineImpulseSource>();
+        CinemachineImpulseSource cinemachineImpulseSource = GetComponent<CinemachineImpulseSource>();
         cinemachineImpulseSource.GenerateImpulse();
-        
-        if (_tile != null && _tile.TileType == GridManager.TileType.AppTile)
-        {
-            _tile.IsAppDeleted = true;
-            _tile.IsAppScheduledForDeletion = true;
-        }
+
         StartCoroutine(DelayedDestroy(0.5f));
+    }
+
+    public void OnResetForLoop(int[,] mapData, Vector2 pos)
+    {
+        // WHAT ARE YOU LOOKING AT?
     }
 }

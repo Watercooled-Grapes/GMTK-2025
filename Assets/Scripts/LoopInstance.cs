@@ -42,7 +42,7 @@ public class LoopInstance : MonoBehaviour
 
         if (turn.exe != null)
         {
-            turn.exe.ghostCollect();
+            turn.exe.CollectByClone();
         }
 
         if (turn.tp != null)

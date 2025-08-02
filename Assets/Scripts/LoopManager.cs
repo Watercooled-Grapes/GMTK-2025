@@ -14,7 +14,6 @@ public class LoopManager : MonoBehaviour
     [SerializeField] private GameObject _clonePrefab;
     private CodeLineManager _codeLineManager;
     private InfoTextManager _infoTextManager;
-    private MainCharacter _mainCharacter;
     private int _tilesToMove;
     public int tilesToMove {
         get
@@ -39,14 +38,13 @@ public class LoopManager : MonoBehaviour
         _loopInstances = new List<GameObject>();
     }
 
-    public void Init(MainCharacter mainCharacter)
+    public void Init()
     {
         curMaxTurns = maxTurns;
         _codeLineManager = FindFirstObjectByType<CodeLineManager>();
         _codeLineManager.Init(maxTurns);
         _infoTextManager = FindFirstObjectByType<InfoTextManager>();
         _infoTextManager.UpdateTurnLoopInfo(maxTurns, maxLoops - CurrentLoops);
-        _mainCharacter = mainCharacter;
     }
 
     public void RegisterTriggerableCallback(Vector2 _pos, Action<int> callback)
@@ -147,18 +145,18 @@ public class LoopManager : MonoBehaviour
     {
         curMaxTurns += n;
         _codeLineManager.addLines(n);
-        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - _mainCharacter.GetCurrentTurn(), maxLoops - CurrentLoops);
+        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - LevelManager.Instance.MainCharacter.GetCurrentTurn(), maxLoops - CurrentLoops);
     }
 
     public void addLoops(int n)
     {
         maxLoops += n;
-        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - _mainCharacter.GetCurrentTurn(), maxLoops - CurrentLoops);
+        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - LevelManager.Instance.MainCharacter.GetCurrentTurn(), maxLoops - CurrentLoops);
 
     }
 
     public bool HasTurnsRemaining()
     {
-        return curMaxTurns > _mainCharacter.GetCurrentTurn();
+        return curMaxTurns > LevelManager.Instance.MainCharacter.GetCurrentTurn();
     }
 }

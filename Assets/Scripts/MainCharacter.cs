@@ -26,16 +26,15 @@ public class MainCharacter : MonoBehaviour
     private GameObject[] _folders;
 
     private AudioSource _audioSource; 
+    private Animator _animator;
     [SerializeField] private AudioClip _stepSoundEffect; 
-
-    // Events
-    // public event Action<List<Turn>> TurnEnded;
 
     public bool IsInteractable { get; set; } = true;
 
     void Start()
     {
-        _audioSource = GetComponent<AudioSource>();  
+        _audioSource = GetComponent<AudioSource>();
+        _animator = this.GetComponent<Animator>();
     }
 
     void Update()
@@ -87,16 +86,14 @@ public class MainCharacter : MonoBehaviour
 
         _availableTiles.Clear();
         IsInteractable = false;
-        _loopManager.tilesToMove = path.Count;
+        LevelManager.Instance.LoopManager.tilesToMove = path.Count;
         StartCoroutine(MoveAlongPath(path));
     }
 
     private IEnumerator MoveAlongPath(List<Tile> path)
     {
-        Animator _animator = this.GetComponent<Animator>();
         foreach (Tile tile in path)
         {
-            bool isAppDeleted = tile.IsAppDeleted;
             Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
             targetPos.z = -5;
 
@@ -138,7 +135,7 @@ public class MainCharacter : MonoBehaviour
 
             foreach (GameObject go in _exes)
             {
-                ExeScript e = go.GetComponent<ExeScript>().tryCollect();
+                ExeScript e = go.GetComponent<ExeScript>().TryCollect();
                 if (e != null)
                 {
                     Turn turn = new Turn {
@@ -154,7 +151,7 @@ public class MainCharacter : MonoBehaviour
             foreach (GameObject go in _folders)
             {
                 Debug.Log(go);
-                FolderScript f = go.GetComponent<FolderScript>().tryTp();
+                FolderScript f = go.GetComponent<FolderScript>().TryTeleport();
                 if (f != null)
                 {
                     Turn turn = new Turn
@@ -168,40 +165,10 @@ public class MainCharacter : MonoBehaviour
                 }
             }
 
-            if (!isAppDeleted)
-            {
-                BroadCastTurnEndedOnConsumable(tile, _currentPosition);
-            }
-            else
-            {
-                BroadcastTurnEnded(_currentPosition);
-            }
+            BroadcastTurnEnded(_currentPosition);
         }
         _animator.SetTrigger("idle");
         IsInteractable = true;
-    }
-
-    private void BroadCastTurnEndedOnConsumable(Tile tile, Vector2 currentPosition)
-    {
-        // The tileType indicates the consumable type. This method is used for consumables which modify multiple turns 
-        switch (tile.TileType)
-        {
-            case TileType.AppTile:
-                for (int i = 0; i < AppController.AppDeleteTurnsCost; i++)
-                {
-                    if (_loopManager.HasTurnsRemaining())
-                    {
-                        Turn turn = new Turn
-                        {
-                            Position = currentPosition,
-                        };
-                        _turnsThisLoop.Add(turn);
-
-                        _loopManager.EndTurn(_turnsThisLoop);
-                    }
-                }
-                break;
-        }
     }
     
     private void BroadcastTurnEnded(Vector2 currentPosition)
@@ -295,5 +262,20 @@ public class MainCharacter : MonoBehaviour
     private void SetPositionWithLockedZ(Vector3 targetPos)
     {
         transform.position = new Vector3(targetPos.x, targetPos.y, -5);
+    }
+
+    public Vector2 GetCurrentPosition()
+    {
+        return _currentPosition;
+    }
+
+    public void AddTurn(Turn newTurn)
+    {
+        _turnsThisLoop.Add(newTurn);
+    }
+
+    public List<Turn> GetTurns()
+    {
+        return _turnsThisLoop;
     }
 }
