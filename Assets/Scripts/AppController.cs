@@ -68,7 +68,6 @@ public class AppController : MonoBehaviour
             _consumedOnce = true;
 
             _loopDestroyedIn = LevelManager.Instance.LoopManager.CurrentLoops;
-            LevelManager.Instance.LoopManager.addLoops(loopsToAddOnDestroy);
             RunDestroySequence();
         } else if (!_consumedOnce && _loopDestroyedIn == loopIndex)
         {

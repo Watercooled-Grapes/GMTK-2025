@@ -34,10 +34,11 @@ public class LoopInstance : MonoBehaviour
     {
         Turn turn = _turns[_currentTurn];
 
-        if (turn.tp != null)
+        if (turn.TeleportToPos != null)
         {
+            StartCoroutine(MoveToTile(turn.Position));
             transform.position = turn.Position;
-            _currentTurn = Math.Min(_currentTurn + 1,  _turns.Count - 1);
+            _currentTurn = Math.Min(_currentTurn + 1,  Math.Max(_turns.Count - 1, 0));
             return;
         }
 
@@ -61,7 +62,7 @@ public class LoopInstance : MonoBehaviour
             _animator.SetTrigger("down");
         }
         StartCoroutine(MoveToTile(turn.Position));
-        _currentTurn = Math.Min(_currentTurn + 1,  _turns.Count - 1);
+        _currentTurn = Math.Min(_currentTurn + 1,  Math.Max(_turns.Count - 1, 0));
     }
 
     private IEnumerator MoveToTile(Vector2 target)
@@ -84,4 +85,3 @@ public class LoopInstance : MonoBehaviour
         return turn.Position;
     }
 }
-
