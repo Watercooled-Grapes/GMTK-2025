@@ -92,9 +92,6 @@ public class LoopManager : MonoBehaviour
         }
     }
     
-    /**
-     * Returns false when no further turns can be made, true otherwise
-     */
     public void EndTurn(List<Turn> turns)
     {
         // Complete the turn and update all clones to take their next step
@@ -103,7 +100,7 @@ public class LoopManager : MonoBehaviour
             loopInstance.GetComponent<LoopInstance>().ReplayNext();
         }
         
-        // if no more turns can be made, Restart the loop
+        // if no more turns can be made, restart the loop
         if (turns.Count >= curMaxTurns)
         {
             LevelManager levelManager = FindFirstObjectByType<LevelManager>();

@@ -10,7 +10,7 @@ public class FolderScript : MonoBehaviour
 
     public void Init(int[,] mapData)
     {   
-        _gridManager = FindFirstObjectByType<GridManager>();
+        _gridManager = LevelManager.Instance.GridManager;
         if (_gridManager == null)
         {
             Debug.LogError("GridManager not found!");
@@ -27,7 +27,7 @@ public class FolderScript : MonoBehaviour
             return null;
         }
 
-        _player = FindFirstObjectByType<MainCharacter>();
+        _player = LevelManager.Instance.MainCharacter;
         if (_player._currentPosition == _pos)
         {
             Vector2 tpPos = tpToFolder.GetComponent<FolderScript>()._pos;

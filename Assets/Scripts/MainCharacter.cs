@@ -212,7 +212,7 @@ public class MainCharacter : MonoBehaviour
     
     public void Init(int[,] mapData, Vector2 startPosition)
     {
-        _gridManager = FindFirstObjectByType<GridManager>();
+        _gridManager = LevelManager.Instance.GridManager;
         _isSelected = false;
 
         if (_gridManager == null)
@@ -233,7 +233,7 @@ public class MainCharacter : MonoBehaviour
 
         }
 
-        _loopManager = FindFirstObjectByType<LoopManager>();
+        _loopManager = LevelManager.Instance.LoopManager;
         _exes = GameObject.FindGameObjectsWithTag("Exes");
         _folders = GameObject.FindGameObjectsWithTag("Folder");
     }
@@ -242,7 +242,9 @@ public class MainCharacter : MonoBehaviour
     {
         if (IsInteractable)
         {
-            _availableTiles = _gridManager.GetReachableTiles(_currentPosition, _loopManager.curMaxTurns - GetCurrentTurn());
+            Debug.Log("GridManager", _gridManager);
+            Debug.Log("_loopManager", _loopManager);
+            _availableTiles = LevelManager.Instance.GridManager.GetReachableTiles(_currentPosition, LevelManager.Instance.LoopManager.curMaxTurns - GetCurrentTurn());
             HighlightPotentialDestinationTiles();
             _isSelected = true;
         }
