@@ -256,7 +256,6 @@ public class MainCharacter : MonoBehaviour
     public void OnResetForLoop(int[,] mapData, Vector2 startPosition)
     {
         Init(mapData, startPosition);
-        _popupTypeIt = 0;
         _turnsThisLoop.Clear();
     }
 
