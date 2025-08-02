@@ -574,17 +574,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: App
       objectReference: {fileID: 0}
-    - target: {fileID: 7302903679101595422, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
-      propertyPath: _pos.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7302903679101595422, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
-      propertyPath: _pos.y
-      value: 6
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3553319430109423869, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
-    - {fileID: 7082111827711029174, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -793,6 +783,16 @@ PrefabInstance:
     - target: {fileID: 4400853946754431685, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_Material
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5236364522954423836, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_text
+      value: Hi! If you're seeing this text, it's totally not because the game is
+        broken, you actually found an easter egg! So pat yourself on the back and
+        restart the game!
+      objectReference: {fileID: 0}
+    - target: {fileID: 5236364522954423836, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_overflowMode
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7048874808335316422, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_Name
