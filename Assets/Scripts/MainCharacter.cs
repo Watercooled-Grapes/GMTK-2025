@@ -164,6 +164,7 @@ public class MainCharacter : MonoBehaviour
         Turn turn = new Turn
         {
             Position = _currentPosition,
+            TeleportToPos = null,
         };
 
         BroadcastTurnEnded(turn);
