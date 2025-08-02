@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Jump
+  m_Name: PressButton
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,7 +21,7 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 7006038325430919464, guid: 72fe9ec5a65eb944aa8728cb6c9b9633, type: 3}
+      value: {fileID: -6006892260338594366, guid: 72fe9ec5a65eb944aa8728cb6c9b9633, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -44,7 +44,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 7006038325430919464, guid: 72fe9ec5a65eb944aa8728cb6c9b9633, type: 3}
+    - {fileID: -6006892260338594366, guid: 72fe9ec5a65eb944aa8728cb6c9b9633, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

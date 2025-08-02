@@ -35,9 +35,12 @@ public class TypewriterEffect : MonoBehaviour
     public event Action CompleteTextRevealed;
     public event Action<char> CharacterRevealed;
 
+    private AudioSource _audioSource;
+    [SerializeField] private AudioClip[] typingSounds;
 
     private void Awake()
     {
+        _audioSource = GetComponent<AudioSource>();
         _textBox = GetComponent<TMP_Text>();
 
         _simpleDelay = new WaitForSeconds(1 / charactersPerSecond);
@@ -107,6 +110,8 @@ public class TypewriterEffect : MonoBehaviour
             char character = textInfo.characterInfo[_currentVisibleCharacterIndex].character;
 
             _textBox.maxVisibleCharacters++;
+
+            if (typingSounds.Length > 0) _audioSource.PlayOneShot(typingSounds[UnityEngine.Random.Range(0,typingSounds.Length)]);
 
             yield return CurrentlySkipping ? _skipDelay : _simpleDelay;
 

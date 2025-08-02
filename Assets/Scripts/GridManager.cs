@@ -24,6 +24,7 @@ public class GridManager : MonoBehaviour {
     {
         int width = mapData.GetLength(1);
         int height = mapData.GetLength(0);
+        _cameraController.CenterAndZoom(width, height);
         _tiles = new Dictionary<Vector2, Tile>();
 
         for (int x = 0; x < width; x++) {
@@ -39,8 +40,6 @@ public class GridManager : MonoBehaviour {
                 _tiles[new Vector2(x, y)] = spawnedTile;
             }
         }
-
-        _cameraController.CenterAndZoom(width, height);
     }
 
  
