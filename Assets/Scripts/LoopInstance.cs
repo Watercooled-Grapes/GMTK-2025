@@ -36,20 +36,18 @@ public class LoopInstance : MonoBehaviour
 
     public void ReplayNext()
     {
-        if (_currentTurn > _turns.Count-1)
+        if (_currentTurn >= _turns.Count - 1)
         {
             if (!done) StartCoroutine(Explode());
             done = true;
-            return;
         }
 
         Turn turn = _turns[_currentTurn];
+        _currentTurn = Math.Min(_currentTurn + 1,  _turns.Count - 1);
 
         if (turn.TeleportToPos != null)
         {
-            StartCoroutine(MoveToTile(turn.Position));
             transform.position = turn.TeleportToPos.Value;
-            _currentTurn++;
             _animator.SetTrigger("idle");
             return;
         }
@@ -74,7 +72,6 @@ public class LoopInstance : MonoBehaviour
             _animator.SetTrigger("down");
         }
         StartCoroutine(MoveToTile(turn.Position));
-        _currentTurn++;
     }
 
     private IEnumerator Explode()
@@ -146,6 +143,10 @@ public class LoopInstance : MonoBehaviour
 
     public Vector2 GetCurrentTilePosition()
     {
+        if (0 < _currentTurn || _currentTurn >= _turns.Count)
+        {
+            Debug.LogWarning("_currentTurn went out of range again!");
+        }
         Turn turn = _turns[Math.Min(_currentTurn, _turns.Count - 1)];
         return turn.Position;
     }
