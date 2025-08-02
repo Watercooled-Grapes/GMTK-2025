@@ -22,9 +22,6 @@ public class MainCharacter : MonoBehaviour
     private AudioSource _audioSource; 
     [SerializeField] private AudioClip _stepSoundEffect; 
 
-    private AudioSource _audioSource; 
-    [SerializeField] private AudioClip _stepSoundEffect; 
-
     // Events
     // public event Action<List<Turn>> TurnEnded;
 
