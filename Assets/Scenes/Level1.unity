@@ -1053,6 +1053,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1045099730343175196, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: randomCode.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1045099730343175196, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: 'randomCode.Array.data[0]'
+      value: move()
+      objectReference: {fileID: 0}
+    - target: {fileID: 1045099730343175196, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: 'randomCode.Array.data[1]'
+      value: print("escape")
+      objectReference: {fileID: 0}
+    - target: {fileID: 1045099730343175196, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: 'randomCode.Array.data[2]'
+      value: i += 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1045099730343175196, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: 'randomCode.Array.data[3]'
+      value: scanForVirus()
+      objectReference: {fileID: 0}
+    - target: {fileID: 1045099730343175196, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: 'randomCode.Array.data[4]'
+      value: winGame(false)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1045099730343175196, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: 'randomCode.Array.data[5]'
+      value: escape = !escape
+      objectReference: {fileID: 0}
     - target: {fileID: 2714591104664795429, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4819.4463
