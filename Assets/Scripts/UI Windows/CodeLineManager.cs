@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class CodeLineManager : MonoBehaviour
 {
+    [SerializeField] private string[] randomCode;
     private TMP_Text tmp;
     private List<string> lines;
 
@@ -17,7 +18,7 @@ public class CodeLineManager : MonoBehaviour
 
     public void Init(int numTurns)
     {
-        for (int i = 0; i < numTurns; i++) lines.Insert(1, "   move();");
+        for (int i = 0; i < numTurns; i++) lines.Insert(1, "   " + randomCode[Random.Range(0,randomCode.Length)]);
         UpdateCode(1);
     }
 
@@ -32,7 +33,8 @@ public class CodeLineManager : MonoBehaviour
                 string highlightedText = lines[i].Insert(0, "<mark=#ffff00aa>");
                 printText = highlightedText.Insert(lines[i].Length + "<mark=#ffff00aa>".Length, "</mark>");
             }
-            tmp.text += i + 1 + "|   " + printText + "\n";
+            // tmp.text += i + 1 + "|   " + printText + "\n";
+            tmp.text += printText + "\n";
         }
     }
 

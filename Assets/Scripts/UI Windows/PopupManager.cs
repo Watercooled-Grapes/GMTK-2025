@@ -22,15 +22,15 @@ public class PopupManager : MonoBehaviour
                 popup.GetComponent<Image>().sprite = null;
                 popup.GetComponent<Image>().color = new Color(0, 0, 0, 0.45f);
                 popup.transform.GetChild(1).GetComponent<TMP_Text>().text = contents[Random.Range(0, contents.Length)];
-                Instantiate(popup, transform);
                 break;
             case (PopupTypes.Img):
-                popup.GetComponent<Image>().sprite = sprites[Random.Range(0,sprites.Length)];
+                popup.GetComponent<Image>().sprite = sprites[Random.Range(0, sprites.Length)];
                 popup.GetComponent<Image>().color = new Color(255, 255, 255, 1);
                 popup.transform.GetChild(1).GetComponent<TMP_Text>().text = "";
-                Instantiate(popup, transform);
                 break;
         }
+        popup.GetComponent<RectTransform>().position += new Vector3(Random.Range(-800, 800), Random.Range(-250, 250), 0);
+        Instantiate(popup, transform);
 
 
     }
