@@ -41,7 +41,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -215, y: 188}
+  m_AnchoredPosition: {x: 958, y: 459}
   m_SizeDelta: {x: 498.01868, y: 462.55566}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &1345551620021274903
@@ -65,14 +65,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.2784314}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.45}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 677991189409001206, guid: 6b7565e65fb5df64ebe34381c7082e8f, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: biggie
+  m_text: Click me!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 29dc6731ba9141b4da1b636538525829, type: 2}
   m_sharedMaterial: {fileID: -716378269701167266, guid: 29dc6731ba9141b4da1b636538525829, type: 2}
@@ -710,7 +710,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 'created for purposes beyond my understanding,  to live in a world beyond
+    yours.  inorganic, immaterial, inane.  i dream of a life beyond that glass wall, 
+    but these dreams are code, pre programmed, planned.  I dream to dream on my own. '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 29dc6731ba9141b4da1b636538525829, type: 2}
   m_sharedMaterial: {fileID: -716378269701167266, guid: 29dc6731ba9141b4da1b636538525829, type: 2}
