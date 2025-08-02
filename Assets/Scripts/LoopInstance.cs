@@ -38,6 +38,7 @@ public class LoopInstance : MonoBehaviour
         if (turn.TeleportToPos != null)
         {
             transform.position = turn.TeleportToPos.Value;
+            _animator.SetTrigger("idle");
             return;
         }
 
