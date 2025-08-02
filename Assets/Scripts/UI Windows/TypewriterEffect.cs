@@ -38,8 +38,14 @@ public class TypewriterEffect : MonoBehaviour
     private AudioSource _audioSource;
     [SerializeField] private AudioClip[] typingSounds;
 
+    public int skipWordsForSounds = 3;
+
+    private int _typingSoundCount;
+
     private void Awake()
     {
+        _typingSoundCount = skipWordsForSounds;
+
         _audioSource = GetComponent<AudioSource>();
         _textBox = GetComponent<TMP_Text>();
 
@@ -111,13 +117,19 @@ public class TypewriterEffect : MonoBehaviour
 
             _textBox.maxVisibleCharacters++;
 
-            if (typingSounds.Length > 0) _audioSource.PlayOneShot(typingSounds[UnityEngine.Random.Range(0,typingSounds.Length)]);
+            if (typingSounds.Length > 0 && _typingSoundCount == 0) {
+                _audioSource.PlayOneShot(typingSounds[UnityEngine.Random.Range(0, typingSounds.Length)]);
+            }
+
+            _typingSoundCount--;
+            if (_typingSoundCount < 0) _typingSoundCount = skipWordsForSounds;
 
             yield return CurrentlySkipping ? _skipDelay : _simpleDelay;
 
             CharacterRevealed?.Invoke(character);
             _currentVisibleCharacterIndex++;
         }
+        
     }
 
     private void Skip(bool quickSkipNeeded = false)
