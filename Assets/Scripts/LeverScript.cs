@@ -14,6 +14,7 @@ public class LeverScript : MonoBehaviour
     public void Init() {
         _animator = GetComponent<Animator>();
         transform.position = LevelManager.Instance.GridManager.GetTileCenterPosition(_pos);
+
         LevelManager.Instance.LoopManager.RegisterTriggerableCallback(_pos, (_) => Trigger());
     }
 
@@ -34,11 +35,7 @@ public class LeverScript : MonoBehaviour
 
     public void Reset()
     {
-        if (!_isTriggered) return;
-
         _isTriggered = false;
-        Debug.Log($"{name} was reset!");
-
         foreach (var gate in _connectedGates)
         {
             gate.NotifyLeverStateChanged(this);

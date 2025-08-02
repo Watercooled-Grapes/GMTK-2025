@@ -23,20 +23,17 @@ public class ExeScript : MonoBehaviour
         Vector3 pos = _gridManager.GetTileCenterPosition(_pos);
         transform.position = pos;
 
-        _loopManager.RegisterTriggerableCallback(_pos, (_) => TryCollect());
+        _loopManager.RegisterTriggerableCallback(_pos, TryCollect);
     }
 
-    public ExeScript TryCollect()
+    public void TryCollect(int loopIndex)
     {
-        if (_collectable && _player._currentPosition == _pos)
+        if (_collectable)
         {
-            Debug.Log("Collect exe");
             _loopManager.addTurns(_turnsToAdd);
             GetComponent<SpriteRenderer>().enabled = false;
             _collectable = false;
-            return this;
         }
-        return null;
     }
 
     public void OnResetForLoop(int[,] mapData, Vector2 startPosition)

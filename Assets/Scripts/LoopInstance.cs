@@ -32,23 +32,12 @@ public class LoopInstance : MonoBehaviour
 
     public void ReplayNext()
     {
-        if (_currentTurn >= _turns.Count)
-        {
-            Debug.Log("Current turn out of bounds of turns");
-            return;
-        }
-
         Turn turn = _turns[_currentTurn];
-
-        if (turn.exe != null)
-        {
-            turn.exe.CollectByClone();
-        }
 
         if (turn.tp != null)
         {
-            transform.position = new Vector2(turn.Position.x, turn.Position.y);
-            _currentTurn++;
+            transform.position = turn.Position;
+            _currentTurn = Math.Min(_currentTurn + 1,  _turns.Count - 1);
             return;
         }
 
@@ -72,7 +61,7 @@ public class LoopInstance : MonoBehaviour
             _animator.SetTrigger("down");
         }
         StartCoroutine(MoveToTile(turn.Position));
-        _currentTurn++;
+        _currentTurn = Math.Min(_currentTurn + 1,  _turns.Count - 1);
     }
 
     private IEnumerator MoveToTile(Vector2 target)
@@ -87,6 +76,12 @@ public class LoopInstance : MonoBehaviour
         {
             _animator.SetTrigger("idle");
         }   
+    }
+
+    public Vector2 GetCurrentTilePosition()
+    {
+        Turn turn = _turns[_currentTurn];
+        return turn.Position;
     }
 }
 

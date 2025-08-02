@@ -10,8 +10,8 @@ public class AppController : MonoBehaviour
     [SerializeField] private int loopsToAddOnDestroy = 1;
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private Vector2 _pos;
-    private bool _consumed = false;
-    
+    private bool _consumedOnce = false;
+    private Tile _tile;
 
     private LoopManager _loopManager;
 
@@ -27,6 +27,8 @@ public class AppController : MonoBehaviour
         _loopManager = LevelManager.Instance.LoopManager;
         transform.position = LevelManager.Instance.GridManager.GetTileCenterPosition(_pos);
         _loopManager.RegisterTriggerableCallback(_pos, Trigger);
+
+        _tile = LevelManager.Instance.GridManager.GetTileAtPosition(_pos);
     }
     
     IEnumerator DelayedDestroy(float delayTime)
@@ -36,11 +38,13 @@ public class AppController : MonoBehaviour
         yield return new WaitForSeconds(delayTime);
         
         gameObject.SetActive(false);
+        _tile.IsOccupied = false;
     }
     
     public void Trigger(int loopCreatedIn)
     {
-        if (!_consumed && loopCreatedIn == -1)
+        Debug.Log("AppController callback " + loopCreatedIn);
+        if (!_consumedOnce && loopCreatedIn == -1)
         {
             // Consume it only when this is a main character
             for (int i = 0; i < AppController.APP_DELETE_TURNS_COST; i++)
@@ -50,14 +54,14 @@ public class AppController : MonoBehaviour
                     Turn turn = new Turn
                     {
                         Position = LevelManager.Instance.MainCharacter.GetCurrentPosition(),
+                        Tile = _tile,
                     };
                     LevelManager.Instance.MainCharacter.AddTurn(turn);
-
-                    _loopManager.EndTurn(LevelManager.Instance.MainCharacter.GetTurns());
                 }
             }
+            _loopManager.EndTurn(LevelManager.Instance.MainCharacter.GetTurns());
 
-            _consumed = true;
+            _consumedOnce = true;
 
             LevelManager.Instance.LoopManager.addLoops(loopsToAddOnDestroy);
             _loopDestroyedIn = LoopManager.CurrentLoops;
@@ -76,6 +80,9 @@ public class AppController : MonoBehaviour
 
     public void OnResetForLoop(int[,] mapData, Vector2 pos)
     {
-        // WHAT ARE YOU LOOKING AT?
+        GetComponent<Renderer>().enabled = true;
+        gameObject.SetActive(true);
+
+        _tile.IsOccupied = _consumedOnce;
     }
 }
