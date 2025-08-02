@@ -22,6 +22,7 @@ public class LevelManager : MonoBehaviour
     public Vector2 StartPosition { get; private set; }
     public Vector2 EndPosition { get; private set; }
     [SerializeField] private List<GameObject> _appPrefabs;
+    [SerializeField] private Goal goalPrefab;
 
     public static LevelManager Instance { get; private set; }
 
@@ -79,7 +80,7 @@ public class LevelManager : MonoBehaviour
         }
 
         Debug.Log("Init Goal");
-        _goal = FindFirstObjectByType<Goal>();
+        _goal = Instantiate(goalPrefab, Vector2.zero, Quaternion.identity);
         if (_goal != null) {
             _goal.Init(EndPosition);
         } else {

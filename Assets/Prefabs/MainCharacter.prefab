@@ -105,7 +105,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentPosition: {x: 0, y: 0}
-  _stepSoundEffect: {fileID: 0}
+  _popupManager: {fileID: 0}
+  popupOnTurns: 
+  popupType: 
+  _stepSoundEffect: {fileID: 8300000, guid: 27f0a1b24d236da49bbf17a1ee745bd9, type: 3}
 --- !u!61 &8584160838334496228
 BoxCollider2D:
   m_ObjectHideFlags: 0
