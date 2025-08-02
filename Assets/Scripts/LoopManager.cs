@@ -128,7 +128,8 @@ public class LoopManager : MonoBehaviour
             loopInstance.ReplayNext();
             InvokeCallbacksForPosition(currentTurn.Position, loopInstance.LoopCreatedIn);
         }
-        
+        _codeLineManager.UpdateCode(turns.Count + 1);
+        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - turns.Count, maxLoops - CurrentLoops);
         // if no more turns can be made, restart the loop
         if (turns.Count >= curMaxTurns)
         {
@@ -136,9 +137,6 @@ public class LoopManager : MonoBehaviour
             levelManager.PauseLevel();
             StartCoroutine(RestartLevelWithLoop(1, turns, levelManager));
         }
-        
-        _codeLineManager.UpdateCode(turns.Count + 1);
-        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - turns.Count, maxLoops - CurrentLoops);
     }
 
     public void addTurns(int n)
