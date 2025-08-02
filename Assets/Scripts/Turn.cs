@@ -11,6 +11,7 @@ public struct Turn
     public Vector2 Position;
     public Tile Tile;
     public TurnType Type;
+    public ExeScript exe;
 
     public enum TurnType
     {

@@ -16,6 +16,7 @@ public class MainCharacter : MonoBehaviour
 
     private GridManager _gridManager;
     private LoopManager _loopManager;
+    private GameObject[] _exes;
 
     private AudioSource _audioSource; 
     [SerializeField] private AudioClip _stepSoundEffect; 
@@ -127,6 +128,22 @@ public class MainCharacter : MonoBehaviour
             // Log or animate step if needed
             Debug.Log("Step to " + tile.name);
 
+
+            foreach (GameObject go in _exes)
+            {
+                ExeScript e = go.GetComponent<ExeScript>().tryCollect();
+                if (e != null)
+                {
+                    Turn turn = new Turn {
+                        Position = _currentPosition,
+                        exe = e
+                    };
+                    _turnsThisLoop.Add(turn);
+                    _loopManager.EndTurn(_turnsThisLoop);
+                    break;
+                }
+            }
+
             if (!isAppDeleted)
             {
                 BroadCastTurnEndedOnConsumable(tile, _currentPosition);
@@ -199,6 +216,7 @@ public class MainCharacter : MonoBehaviour
         }
 
         _loopManager = FindFirstObjectByType<LoopManager>();
+        _exes = GameObject.FindGameObjectsWithTag("Exes");
     }
 
     private void OnMouseDown()

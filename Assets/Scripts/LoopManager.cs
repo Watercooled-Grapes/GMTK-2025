@@ -85,7 +85,7 @@ public class LoopManager : MonoBehaviour
 
     private void RestartLevelIfNecessary()
     {
-        if (CurrentLoops+1 >= maxLoops)
+        if (CurrentLoops >= maxLoops)
         {
             // TODO: Full Reset the level here @MinghaoLi
             Debug.Log("####FAILED LEVEL####");
