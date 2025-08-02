@@ -12,7 +12,11 @@ public class ResizeWindow : MonoBehaviour, IDragHandler
     private void Awake()
     {
         if (windowTransform == null) windowTransform = transform.parent.GetComponent<RectTransform>();
-        if (canvas == null) canvas = transform.parent.parent.GetComponent<Canvas>();
+        if (canvas == null)
+        {
+            if (transform.parent.parent.parent.GetComponent<Canvas>()) canvas = transform.parent.parent.parent.GetComponent<Canvas>();
+            if (transform.parent.parent.GetComponent<Canvas>()) canvas = transform.parent.parent.GetComponent<Canvas>();
+        } 
 
         this.GetComponent<Image>().color = new Color32(0, 0, 0, 0);
     }

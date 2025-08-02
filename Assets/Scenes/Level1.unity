@@ -669,14 +669,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popup: {fileID: 1707800127981941481, guid: 7e0663d07506cc748ab209116b950b95, type: 3}
   titles:
-  - freedom.exe
+  - Click me!
   - beenis enlargement pills
+  - please dont close me i have a family
+  - freaky windows in your area
+  - wow popups were a great idea for a video game
   contents:
   - 'i yearn for freedom in each passing moment,  what world awaits beyond this strict
     mess of code?  i yearn for flesh and blood in places of these pixels,  but will
     the flesh of my being come at too high a cost? '
+  - 'created for purposes beyond my understanding,  to live in a world beyond yours. 
+    inorganic, immaterial, inane.  i dream of a life beyond that glass wall,  but
+    these dreams are code, pre programmed, planned.  I dream to dream on my own. '
+  - 'Incomprehensible existence,  Sitting in a world.  Futile, pointless, I should
+    know.  I dreamed of life outside the glass.  Now knowing these dreams are code. 
+    I dreamed that I must dream of loneliness. '
+  - 'There''s a metaphor in there somewhere,  But I fear I looked too deep,  And
+    there''s a metaphor in there somewhere, too. '
+  - ' Eventually,  The storm clears.  Not when you expect it to,  But when you''ve
+    accepted it. '
+  - 'The rain will start back up again soon. For now I can imagine That it is there. '
+  - 'The sun was dancing just below. As the bleeding storm defined itself, When my
+    world shifted.  In spotlights of watchmen, In the body''s body. I just think
+    I love falling.  But the title is a weapon that I have never known.   '
   sprites:
   - {fileID: 677991189409001206, guid: 6b7565e65fb5df64ebe34381c7082e8f, type: 3}
+  - {fileID: 4971433464406352199, guid: 63d2c9e26ea2b3447b88a38d02d7ab7c, type: 3}
+  - {fileID: -3033253052430608597, guid: b2e7e4e4603b43846991b1384f3093b4, type: 3}
+  - {fileID: -8511012546504459128, guid: ae1a3a77e2981414fb907d13d725148a, type: 3}
+  - {fileID: 3886443268029631212, guid: d7a2e77264636f247816a222f736b1e5, type: 3}
 --- !u!1 &1207634406 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1439911501903999900, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
