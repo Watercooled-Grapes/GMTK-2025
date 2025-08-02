@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efa956818ed084346b27b19e29867f89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cutsceneObject: {fileID: 0}
+  cutsceneObject: {fileID: 1205623905772213665, guid: ab0858355a2704bd697c077329de27b8, type: 3}
   turnoffSound: {fileID: 8300000, guid: f78793d49d2a65d449a666bd97ce4e44, type: 3}

@@ -22,6 +22,7 @@ public class LevelManager : MonoBehaviour
     public Vector2 StartPosition { get; private set; }
     public Vector2 EndPosition { get; private set; }
     [SerializeField] private List<GameObject> _appPrefabs;
+    [SerializeField] private Goal goalPrefab;
 
     public static LevelManager Instance { get; private set; }
 
@@ -79,7 +80,7 @@ public class LevelManager : MonoBehaviour
         }
 
         Debug.Log("Init Goal");
-        _goal = FindFirstObjectByType<Goal>();
+        _goal = Instantiate(goalPrefab, Vector2.zero, Quaternion.identity);
         if (_goal != null) {
             _goal.Init(EndPosition);
         } else {
@@ -136,13 +137,12 @@ public class LevelManager : MonoBehaviour
         string[] lines = textAsset.text.Trim().Split('\n');
         int height = lines.Length;
         int width = lines[0].Split(',').Length;
-
-        _mapData = new int[height, width];
-
-        for (int y = 0; y < height; y++) {
-            string[] cells = lines[y].Trim().Split(',');
+        
+        _mapData = new int[width, height];
+        for (int y = height-1; y >= 0; y--) {
+            string[] cells = lines[height-1-y].Trim().Split(',');
             for (int x = 0; x < width; x++) {
-                _mapData[x, height - 1 - y] = int.Parse(cells[x]);  // flip Y
+                _mapData[x, y] = int.Parse(cells[x].Trim());  // flip Y
             }
         }
 
