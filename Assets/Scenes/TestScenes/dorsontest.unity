@@ -453,6 +453,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainCharacter
       objectReference: {fileID: 0}
+    - target: {fileID: 1482186432358994783, guid: c6e6ee92196d14c16b000729adf05c05, type: 3}
+      propertyPath: _stepSoundEffect
+      value: 
+      objectReference: {fileID: 8300000, guid: 27f0a1b24d236da49bbf17a1ee745bd9, type: 3}
+    - target: {fileID: 2409130297730563090, guid: c6e6ee92196d14c16b000729adf05c05, type: 3}
+      propertyPath: m_Pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2409130297730563090, guid: c6e6ee92196d14c16b000729adf05c05, type: 3}
+      propertyPath: m_Volume
+      value: 0.35
+      objectReference: {fileID: 0}
     - target: {fileID: 3572065343469405318, guid: c6e6ee92196d14c16b000729adf05c05, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -730,6 +742,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1518547257}
+    - target: {fileID: 1795026092209421534, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2714591104664795429, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -21.37833
@@ -769,6 +785,14 @@ PrefabInstance:
     - target: {fileID: 2714591104664795429, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3494747670563209505, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4400853946754431685, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7048874808335316422, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_Name

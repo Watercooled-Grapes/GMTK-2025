@@ -97,6 +97,7 @@ public class MainCharacter : MonoBehaviour
             Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
             targetPos.z = -5;
 
+            _audioSource.pitch = 1 + UnityEngine.Random.Range(-0.2f,0.2f);
             _audioSource.PlayOneShot(_stepSoundEffect);
 
             if (_currentPosition.x < tile.X)
