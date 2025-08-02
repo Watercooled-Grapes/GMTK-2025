@@ -3,8 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class Goal : MonoBehaviour
 {
-    [SerializeField] private Vector2 _pos;
-
     private GridManager _gridManager;
 
     private Vector2Int? FindStartPosition(int[,] mapData, int startValue)
@@ -26,7 +24,7 @@ public class Goal : MonoBehaviour
         return null;
     }
 
-    public void Init(Vector2Int? startPos)
+    public void Init(Vector2 pos)
     {
         _gridManager = LevelManager.Instance.GridManager;
         if (_gridManager == null)
@@ -35,20 +33,19 @@ public class Goal : MonoBehaviour
             return;
         }
 
-        if (startPos == null)
+        if (pos == null)
         {
             Debug.LogError("Start position not found in map data!");
             return;
         }
 
-        Vector2Int start = startPos.Value;
-        Vector3 pos = _gridManager.GetTileCenterPosition(start);
-        transform.position = pos;
-
-        _pos = start;
+        Vector3 posVector3 = _gridManager.GetTileCenterPosition(pos);
+        transform.position = posVector3;
+        
+        LevelManager.Instance.LoopManager.RegisterTriggerableCallback(pos, (_) => Trigger());
     }
 
-    public void Win()
+    public void Trigger()
     {
         GameManager.Instance.LoadNextLevelWithCutscene(SceneManager.GetActiveScene().buildIndex + 1);
     }

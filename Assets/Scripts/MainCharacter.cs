@@ -188,7 +188,6 @@ public class MainCharacter : MonoBehaviour
                         Turn turn = new Turn
                         {
                             Position = currentPosition,
-                            Type = Turn.TurnType.DeleteApp
                         };
                         _turnsThisLoop.Add(turn);
 
@@ -284,13 +283,5 @@ public class MainCharacter : MonoBehaviour
     private void SetPositionWithLockedZ(Vector3 targetPos)
     {
         transform.position = new Vector3(targetPos.x, targetPos.y, -5);
-    }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.TryGetComponent(out Goal goal))
-        {
-            goal.Win();
-        }
     }
 }

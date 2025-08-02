@@ -10,15 +10,6 @@ public struct Turn
 {
     public Vector2 Position;
     public Tile Tile;
-    public TurnType Type;
     public ExeScript exe;
     public FolderScript tp;
-
-    public enum TurnType
-    {
-        Move,
-        DeleteApp,
-        TeleportFolder,
-        RunExecutable,
-    }
 }

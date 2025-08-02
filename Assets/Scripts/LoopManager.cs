@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +31,9 @@ public class LoopManager : MonoBehaviour
         }
     }
 
+    // Broadcast the signal when moving onto the tile position
+    public Dictionary<Vector2, List<Action<int>>> TriggerableCallbacks = new();
+
     private LoopManager()
     {
         _loopInstances = new List<GameObject>();
@@ -45,6 +49,15 @@ public class LoopManager : MonoBehaviour
         _mainCharacter = mainCharacter;
     }
 
+    public void RegisterTriggerableCallback(Vector2 _pos, Action<int> callback)
+    {
+        if (!TriggerableCallbacks.ContainsKey(_pos))
+        {
+            TriggerableCallbacks[_pos] = new List<Action<int>>();
+        }
+
+        TriggerableCallbacks[_pos].Add(callback);
+    }
 
     public void Reset()
     {
@@ -91,13 +104,31 @@ public class LoopManager : MonoBehaviour
             GameManager.Instance.LoadNextLevelWithCutscene(SceneManager.GetActiveScene().buildIndex);
         }
     }
+
+    private void InvokeCallbacksForPosition(Vector2 pos, int loopIndex)
+    {
+        if (!TriggerableCallbacks.ContainsKey(pos)) {
+            return;
+        }
+        foreach (var callback in TriggerableCallbacks[pos])
+        {
+            callback.Invoke(loopIndex);
+        }
+    }
     
     public void EndTurn(List<Turn> turns)
     {
+        Turn currentTurn = turns[turns.Count - 1];
+
+        // The main character
+        InvokeCallbacksForPosition(currentTurn.Position, -1);
+        
         // Complete the turn and update all clones to take their next step
-        foreach (var loopInstance in _loopInstances)
+        foreach (var loopInstanceObj in _loopInstances)
         {
-            loopInstance.GetComponent<LoopInstance>().ReplayNext();
+            LoopInstance loopInstance = loopInstanceObj.GetComponent<LoopInstance>();
+            loopInstance.ReplayNext();
+            InvokeCallbacksForPosition(currentTurn.Position, loopInstance.LoopCreatedIn);
         }
         
         // if no more turns can be made, restart the loop

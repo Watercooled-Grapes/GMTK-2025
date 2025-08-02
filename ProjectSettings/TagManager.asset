@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - Folder
+  - Exes
+  - Gates
+  - Levers
   layers:
   - Default
   - TransparentFX
