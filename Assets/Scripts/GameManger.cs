@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     public GameObject cutsceneObject;
+    [SerializeField] private AudioClip turnoffSound;
     private AsyncOperation loadingOperation;
 
     public int CurrentSceneIndex { get; private set; }
@@ -50,6 +51,7 @@ public class GameManager : MonoBehaviour
         loadingOperation.allowSceneActivation = false;
 
         cutsceneObject.SetActive(true);
+        GetComponent<AudioSource>().PlayOneShot(turnoffSound);
 
         yield break;
     }

@@ -41,7 +41,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -307, y: 99}
+  m_AnchoredPosition: {x: -215, y: 188}
   m_SizeDelta: {x: 498.01868, y: 462.55566}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &1345551620021274903
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: eatin that cheese
+  m_text: biggie
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 29dc6731ba9141b4da1b636538525829, type: 2}
   m_sharedMaterial: {fileID: -716378269701167266, guid: 29dc6731ba9141b4da1b636538525829, type: 2}
@@ -710,7 +710,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: you'll never believe what this man did with his loop...
+  m_text: she loop on my game til i
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 29dc6731ba9141b4da1b636538525829, type: 2}
   m_sharedMaterial: {fileID: -716378269701167266, guid: 29dc6731ba9141b4da1b636538525829, type: 2}

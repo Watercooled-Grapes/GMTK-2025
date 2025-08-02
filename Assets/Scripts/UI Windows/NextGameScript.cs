@@ -14,6 +14,6 @@ public class NextGameScript : MonoBehaviour
     IEnumerator DelayedStart()
     {
         yield return new WaitForSeconds(delayUntilNextLevel);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        FindFirstObjectByType<GameManager>().LoadNextLevelWithCutscene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

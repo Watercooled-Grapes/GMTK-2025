@@ -11,6 +11,7 @@ public class CrackIntro : MonoBehaviour
     [SerializeField] GameObject prevObject;
     [SerializeField] private ParticleSystem _particleSystem;
     [SerializeField] private AudioClip glassBreakingSound;
+    [SerializeField] private AudioClip bounceSound;
     private AudioSource _audioSource;
     CinemachineImpulseSource cinemachineImpulseSource;
     public PlayableDirector dir;
@@ -53,6 +54,7 @@ public class CrackIntro : MonoBehaviour
         cinemachineImpulseSource.GenerateImpulse();
          _audioSource.PlayOneShot(glassBreakingSound);
         yield return new WaitForSeconds(delayBeforeLilGuy);
+        _audioSource.PlayOneShot(bounceSound);
         dir.Play();
         lilGuy.color = new Color(lilGuy.color.r, lilGuy.color.g, lilGuy.color.b, 1);
     }
