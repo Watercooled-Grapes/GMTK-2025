@@ -50,7 +50,6 @@ public class Goal : MonoBehaviour
 
     public void Win()
     {
-        // just go to next scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        GameManager.Instance.LoadNextLevelWithCutscene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
