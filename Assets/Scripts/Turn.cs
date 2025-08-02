@@ -10,6 +10,5 @@ public struct Turn
 {
     public Vector2 Position;
     public Tile Tile;
-    public ExeScript exe;
-    public FolderScript tp;
+    public Vector2 TeleportToPos;
 }

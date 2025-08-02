@@ -10,7 +10,7 @@ public class LoopManager : MonoBehaviour
     [SerializeField] private int maxLoops;
     public int maxTurns;
     public int curMaxTurns;
-    public static int CurrentLoops = 0;
+    public int CurrentLoops { get; private set; } = 0;
     [SerializeField] private GameObject _clonePrefab;
     private CodeLineManager _codeLineManager;
     private InfoTextManager _infoTextManager;
@@ -25,7 +25,7 @@ public class LoopManager : MonoBehaviour
         _tilesToMove = value; 
         foreach (var loopInstance in _loopInstances)
             {
-            loopInstance.GetComponent<LoopInstance>().tilesToMove = tilesToMove;
+                loopInstance.GetComponent<LoopInstance>().tilesToMove = tilesToMove;
             }
         }
     }
@@ -72,7 +72,7 @@ public class LoopManager : MonoBehaviour
         }
     }
 
-    IEnumerator RestartLevelWithLoop(float delayTime, List<Turn> turns, LevelManager levelManager)
+    IEnumerator RestartLevelWithLoop(float delayTime, List<Turn> turns)
     {
         curMaxTurns = maxTurns;
 
@@ -82,13 +82,13 @@ public class LoopManager : MonoBehaviour
         // 1) nothing is moving 2) we are not at goal 3) we HAVE loops available
         GameObject clone = Instantiate(_clonePrefab, Vector2.zero, Quaternion.identity);
         clone.SetActive(false);
-        clone.GetComponent<LoopInstance>().Init(new List<Turn>(turns), levelManager.StartPosition, CurrentLoops);
+        clone.GetComponent<LoopInstance>().Init(new List<Turn>(turns), LevelManager.Instance.StartPosition, CurrentLoops);
         _loopInstances.Add(clone);
         _codeLineManager.UpdateCode(1);
-        levelManager.ResumeLevel();
+        LevelManager.Instance.ResumeLevel();
 
         
-        levelManager.RestartLevelWithLoop();
+        LevelManager.Instance.RestartLevelWithLoop();
         CurrentLoops++;
         _infoTextManager.UpdateTurnLoopInfo(maxTurns, maxLoops - CurrentLoops);
 
@@ -114,19 +114,20 @@ public class LoopManager : MonoBehaviour
         }
     }
     
-    public void EndTurn(List<Turn> turns)
+    public void EndTurn(List<Turn> turns, bool emitMessage=true)
     {
         Turn currentTurn = turns[turns.Count - 1];
 
         // The main character
-        InvokeCallbacksForPosition(currentTurn.Position, -1);
+        if (emitMessage) InvokeCallbacksForPosition(currentTurn.Position, CurrentLoops);
         
         // Complete the turn and update all clones to take their next step
+        Debug.Log("Number of clones " + _loopInstances.Count);
         foreach (var loopInstanceObj in _loopInstances)
         {
             LoopInstance loopInstance = loopInstanceObj.GetComponent<LoopInstance>();
+            if (emitMessage) InvokeCallbacksForPosition(loopInstance.GetCurrentTilePosition(), loopInstance.LoopCreatedIn);
             loopInstance.ReplayNext();
-            InvokeCallbacksForPosition(currentTurn.Position, loopInstance.LoopCreatedIn);
         }
 
         _codeLineManager.UpdateCode(turns.Count + 1);
@@ -137,7 +138,7 @@ public class LoopManager : MonoBehaviour
         {
             LevelManager levelManager = FindFirstObjectByType<LevelManager>();
             levelManager.PauseLevel();
-            StartCoroutine(RestartLevelWithLoop(1, turns, levelManager));
+            StartCoroutine(RestartLevelWithLoop(1, turns));
         }
     }
 

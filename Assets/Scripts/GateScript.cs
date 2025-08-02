@@ -6,6 +6,7 @@ public class GateScript : MonoBehaviour
     [SerializeField] private List<LeverScript> _requiredLevers;
     [SerializeField] private Vector2 _pos;
     private bool _isOpen = false;
+    private Tile _tile;
 
     private SpriteRenderer _spriteRenderer;
 
@@ -15,13 +16,16 @@ public class GateScript : MonoBehaviour
     private Color _openColor = Color.green;
 
     public void Init() {
-        transform.position = LevelManager.Instance.GridManager.GetTileCenterPosition(_pos);
+        _tile =  LevelManager.Instance.GridManager.GetTileAtPosition(_pos);
+        transform.position = LevelManager.Instance.GridManager.GetTileCenterPosition(_tile);
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
         if (_spriteRenderer != null)
         {
             _spriteRenderer.color = _closedColor;
         }
+
+        _tile.IsOccupied = true;
     }
 
     public void NotifyLeverStateChanged(LeverScript changedLever)
@@ -32,7 +36,6 @@ public class GateScript : MonoBehaviour
         {
             if (!lever.IsTriggered)
             {
-                Debug.Log($"{name} is still locked (waiting for all levers)");
                 return;
             }
         }
@@ -45,18 +48,18 @@ public class GateScript : MonoBehaviour
         _isOpen = true;
         Debug.Log($"{name} is now OPEN!");
 
-        // You can disable the collider or play animation/sound here
-        // TODO: open gate logic goes here.
         if (_spriteRenderer != null)
         {
             _spriteRenderer.color = _openColor;
         }
+        _tile.IsOccupied = false;
     }
 
     public void Reset()
     {
         _isOpen = false;
-        Debug.Log($"{name} is now CLOSED!");
+        _tile.IsOccupied = true;
+        _spriteRenderer.color = _closedColor;
     }
 
     public void OnResetForLoop(int[,] mapData, Vector2 pos) {

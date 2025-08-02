@@ -22,12 +22,12 @@ public class MainCharacter : MonoBehaviour
 
     private GridManager _gridManager;
     private LoopManager _loopManager;
-    private GameObject[] _exes;
-    private GameObject[] _folders;
 
     private AudioSource _audioSource; 
     private Animator _animator;
     [SerializeField] private AudioClip _stepSoundEffect; 
+
+    public Vector2? DestPosition { get; set; } = null;
 
     public bool IsInteractable { get; set; } = true;
 
@@ -57,6 +57,7 @@ public class MainCharacter : MonoBehaviour
             if (_isSelected)
             {
                 Tile targetTile = _gridManager.GetTileByWorldCoordinate(mouseWorldPos);
+                DestPosition = new Vector2(targetTile.X, targetTile.Y);
 
                 if (targetTile != null && targetTile.TileType != TileType.WallTile && _availableTiles.ContainsKey(targetTile))
                 {
@@ -70,10 +71,15 @@ public class MainCharacter : MonoBehaviour
     {
         _isSelected = false;
         RemoveHightlights();
-        Debug.Log("Player moved to " + newTile.name);
         _availableTiles.Clear();
         SetPositionWithLockedZ(_gridManager.GetTileCenterPosition(newTile));
         _currentPosition = new Vector2(newTile.X, newTile.Y);
+        Turn newTurn = new Turn
+        {
+            Position = _currentPosition,
+            TeleportToPos = new Vector2(newTile.X, newTile.Y),
+        };
+        BroadcastTurnEnded(newTurn);
     }
 
     private void MoveMainCharacter(Tile newTile)
@@ -133,58 +139,15 @@ public class MainCharacter : MonoBehaviour
             // Log or animate step if needed
             Debug.Log("Step to " + tile.name);
 
-            Boolean turnAdded = false;
-
-
-            foreach (GameObject go in _exes)
-            {
-                ExeScript e = go.GetComponent<ExeScript>().TryCollect();
-                if (e != null)
-                {
-                    Turn turn = new Turn {
-                        Position = _currentPosition,
-                        exe = e
-                    };
-                    _turnsThisLoop.Add(turn);
-                    _loopManager.EndTurn(_turnsThisLoop);
-                    turnAdded = true;
-                    break;
-                }
-            }
-
-            foreach (GameObject go in _folders)
-            {
-                Debug.Log(go);
-                FolderScript f = go.GetComponent<FolderScript>().TryTeleport();
-                if (f != null)
-                {
-                    Turn turn = new Turn
-                    {
-                        Position = _currentPosition,
-                        tp = f
-                    };
-                    _turnsThisLoop.Add(turn);
-                    _loopManager.EndTurn(_turnsThisLoop);
-                    turnAdded = true;
-                    break;
-                }
-            }
-
-            if (!turnAdded)
-            {
-                BroadcastTurnEnded(_currentPosition);
-            }
+            BroadcastTurnEnded();
         }
         _animator.SetTrigger("idle");
+        DestPosition = null;
         IsInteractable = true;
     }
-    
-    private void BroadcastTurnEnded(Vector2 currentPosition)
+
+    private void BroadcastTurnEnded(Turn turn)
     {
-        Turn turn = new Turn
-        {
-            Position = currentPosition,
-        };
         _turnsThisLoop.Add(turn);
 
         if (popupOnTurns.Contains(_turnsThisLoop.Count))
@@ -194,6 +157,16 @@ public class MainCharacter : MonoBehaviour
         }
 
         _loopManager.EndTurn(_turnsThisLoop);
+    }
+    
+    private void BroadcastTurnEnded()
+    {
+        Turn turn = new Turn
+        {
+            Position = _currentPosition,
+        };
+
+        BroadcastTurnEnded(turn);
     }
     
     public void Init(int[,] mapData, Vector2 startPosition)
@@ -220,16 +193,12 @@ public class MainCharacter : MonoBehaviour
         }
 
         _loopManager = LevelManager.Instance.LoopManager;
-        _exes = GameObject.FindGameObjectsWithTag("Exes");
-        _folders = GameObject.FindGameObjectsWithTag("Folder");
     }
 
     private void OnMouseDown()
     {
         if (IsInteractable)
         {
-            Debug.Log("GridManager", _gridManager);
-            Debug.Log("_loopManager", _loopManager);
             _availableTiles = LevelManager.Instance.GridManager.GetReachableTiles(_currentPosition, LevelManager.Instance.LoopManager.curMaxTurns - GetCurrentTurn());
             HighlightPotentialDestinationTiles();
             _isSelected = true;
