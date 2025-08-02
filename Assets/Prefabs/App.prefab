@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0, g: 0.757931, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -151,6 +151,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _particleSystem: {fileID: 3413226578932269457}
+  loopsToAddOnDestroy: 1
+  sprites:
+  - {fileID: 3855763738667770677, guid: c2f72ba2e223de744a306b8c1a2d790d, type: 3}
+  - {fileID: -6087287293557045000, guid: c2f72ba2e223de744a306b8c1a2d790d, type: 3}
+  - {fileID: 5587443812578447823, guid: c2f72ba2e223de744a306b8c1a2d790d, type: 3}
+  - {fileID: -8784721262384595203, guid: c2f72ba2e223de744a306b8c1a2d790d, type: 3}
+  - {fileID: 6770592492730746819, guid: c2f72ba2e223de744a306b8c1a2d790d, type: 3}
+  - {fileID: 5290995484944620296, guid: c2f72ba2e223de744a306b8c1a2d790d, type: 3}
 --- !u!50 &7082111827711029174
 Rigidbody2D:
   serializedVersion: 5

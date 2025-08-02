@@ -9,8 +9,14 @@ public class AppController : MonoBehaviour
     private Tile _tile;
     private int _loopDestroyedIn;
     [SerializeField] private int loopsToAddOnDestroy = 1;
-    
-    public bool BeenConsumedAtSomePoint {get; private set;} = false;
+    [SerializeField] private Sprite[] sprites;
+
+    void Start()
+    {
+        GetComponent<SpriteRenderer>().sprite = sprites[Random.Range(0, sprites.Length)];
+    }
+
+    public bool BeenConsumedAtSomePoint { get; private set; } = false;
     public void Init(Tile tile)
     {
         _tile = tile;
