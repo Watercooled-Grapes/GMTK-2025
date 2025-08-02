@@ -50,6 +50,7 @@ public class LoopInstance : MonoBehaviour
             StartCoroutine(MoveToTile(turn.Position));
             transform.position = turn.TeleportToPos.Value;
             _currentTurn++;
+            _animator.SetTrigger("idle");
             return;
         }
 

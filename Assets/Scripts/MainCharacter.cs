@@ -74,12 +74,7 @@ public class MainCharacter : MonoBehaviour
         _availableTiles.Clear();
         SetPositionWithLockedZ(_gridManager.GetTileCenterPosition(newTile));
         _currentPosition = new Vector2(newTile.X, newTile.Y);
-        Turn newTurn = new Turn
-        {
-            Position = _currentPosition,
-            TeleportToPos = new Vector2(newTile.X, newTile.Y),
-        };
-        BroadcastTurnEnded(newTurn);
+        _turnsThisLoop[_turnsThisLoop.Count - 1].TeleportToPos = new Vector2(newTile.X, newTile.Y);
     }
 
     private void MoveMainCharacter(Tile newTile)

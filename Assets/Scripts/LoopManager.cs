@@ -149,13 +149,6 @@ public class LoopManager : MonoBehaviour
         _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - LevelManager.Instance.MainCharacter.GetCurrentTurn(), maxLoops - CurrentLoops);
     }
 
-    public void addLoops(int n)
-    {
-        maxLoops += n;
-        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - LevelManager.Instance.MainCharacter.GetCurrentTurn(), maxLoops - CurrentLoops);
-
-    }
-
     public bool HasTurnsRemaining()
     {
         return curMaxTurns > LevelManager.Instance.MainCharacter.GetCurrentTurn();

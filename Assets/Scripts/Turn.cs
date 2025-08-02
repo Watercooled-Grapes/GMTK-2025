@@ -6,7 +6,7 @@ using UnityEngine;
  * 
  * Throwing apps occur on the same turn as a movement, hence it is part of 1 action 
  */
-public struct Turn
+public class Turn
 {
     public Vector2 Position;
     public Tile Tile;
