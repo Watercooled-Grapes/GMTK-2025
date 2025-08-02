@@ -12,6 +12,7 @@ public struct Turn
     public Tile Tile;
     public TurnType Type;
     public ExeScript exe;
+    public FolderScript tp;
 
     public enum TurnType
     {

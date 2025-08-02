@@ -45,6 +45,13 @@ public class LoopInstance : MonoBehaviour
             turn.exe.ghostCollect();
         }
 
+        if (turn.tp != null)
+        {
+            transform.position = new Vector2(turn.Position.x, turn.Position.y);
+            _currentTurn++;
+            return;
+        }
+
         float deltaX = turn.Position.x - transform.position.x;
         float deltaY = turn.Position.y - transform.position.y;
 

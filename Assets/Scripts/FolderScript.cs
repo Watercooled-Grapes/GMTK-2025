@@ -20,18 +20,35 @@ public class FolderScript : MonoBehaviour
         transform.position = pos;
     }
 
-    public void Update()
+    public FolderScript tryTp()
     {
-        if (tpToFolder == null) 
+        if (tpToFolder == null)
         {
-            return;
+            return null;
         }
+
         _player = FindFirstObjectByType<MainCharacter>();
         if (_player._currentPosition == _pos)
         {
             Vector2 tpPos = tpToFolder.GetComponent<FolderScript>()._pos;
             _player.TeleportMainCharacter(_gridManager.GetTileAtPosition(tpPos));
+            return this;
         }
+        return null;
+    }
+
+    public Vector2 getLocation()
+    {
+        return _pos;
+    }
+
+    public Vector2 tpLocation()
+    {
+        return tpToFolder.GetComponent<FolderScript>().getLocation();
+    }
+
+    public void Update()
+    {
         
     }
 }
