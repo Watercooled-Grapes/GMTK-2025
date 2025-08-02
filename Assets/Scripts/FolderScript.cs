@@ -20,27 +20,30 @@ public class FolderScript : MonoBehaviour
         Vector3 pos = _gridManager.GetTileCenterPosition(_pos);
         transform.position = pos;
 
-        LevelManager.Instance.LoopManager.RegisterTriggerableCallback(_pos, (_) => TryTeleport());
+        LevelManager.Instance.LoopManager.RegisterTriggerableCallback(_pos,  TryTeleport);
     }
 
-    public FolderScript TryTeleport()
+    public void TryTeleport(int loopIndex)
     {
         if (tpToFolder == null)
         {
-            return null;
+            Debug.LogError($"Please check Teleport folder, it is not configured properly. Name: {name}");
         }
 
         _player = LevelManager.Instance.MainCharacter;
-        if (_player._currentPosition == _pos)
+        if (loopIndex == LevelManager.Instance.LoopManager.CurrentLoops && _player._currentPosition == _pos && _player.DestPosition == _pos)
         {
             CinemachineImpulseSource cinemachineImpulseSource = GetComponent<CinemachineImpulseSource>();
             cinemachineImpulseSource.GenerateImpulse();
 
             Vector2 tpPos = tpToFolder.GetComponent<FolderScript>()._pos;
             _player.TeleportMainCharacter(_gridManager.GetTileAtPosition(tpPos));
-            return this;
         }
-        return null;
+        else
+        {
+            // Clone is triggering this
+            // See LoopInstance, loopinstance is handling this
+        }
     }
 
     public Vector2 GetTeleportLocation()

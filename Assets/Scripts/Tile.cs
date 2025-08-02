@@ -32,7 +32,6 @@ public class Tile : MonoBehaviour
 
     private const float SELECTED_COLOR_ALPHA = 0.4f;
 
-
     public void Init(bool isOffset, int x, int y, TileType tileType = TileType.EmptyTile)
     {
         TileType = tileType;
