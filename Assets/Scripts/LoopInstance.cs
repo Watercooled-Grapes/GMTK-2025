@@ -8,12 +8,15 @@ public class LoopInstance : MonoBehaviour
     private List<Turn> _turns;
     private Vector2 _startPosition;
     private int _currentTurn;
+    public int LoopCreatedIn { get; private set; }
     public int tilesToMove;
 
     private Animator _animator;
 
-    public void Init(List<Turn> turns, Vector2 startPosition)
+
+    public void Init(List<Turn> turns, Vector2 startPosition, int loopCreatedIn)
     {
+        LoopCreatedIn = loopCreatedIn;
         _turns = turns;
         _startPosition = startPosition;
         Reset();
@@ -34,9 +37,21 @@ public class LoopInstance : MonoBehaviour
             Debug.Log("Current turn out of bounds of turns");
             return;
         }
-        // TODO: Implement throwing
 
         Turn turn = _turns[_currentTurn];
+
+        if (turn.exe != null)
+        {
+            turn.exe.ghostCollect();
+        }
+
+        if (turn.tp != null)
+        {
+            transform.position = new Vector2(turn.Position.x, turn.Position.y);
+            _currentTurn++;
+            return;
+        }
+
         float deltaX = turn.Position.x - transform.position.x;
         float deltaY = turn.Position.y - transform.position.y;
 

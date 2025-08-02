@@ -16,12 +16,17 @@ public class MainCharacter : MonoBehaviour
 
     private GridManager _gridManager;
     private LoopManager _loopManager;
+    private GameObject[] _exes;
+    private GameObject[] _folders;
+
+    private AudioSource _audioSource; 
+    [SerializeField] private AudioClip _stepSoundEffect; 
 
     private AudioSource _audioSource; 
     [SerializeField] private AudioClip _stepSoundEffect; 
 
     // Events
-    public event Action<List<Turn>> TurnEnded;
+    // public event Action<List<Turn>> TurnEnded;
 
     public bool IsInteractable { get; set; } = true;
 
@@ -88,6 +93,7 @@ public class MainCharacter : MonoBehaviour
         Animator _animator = this.GetComponent<Animator>();
         foreach (Tile tile in path)
         {
+            bool isAppDeleted = tile.IsAppDeleted;
             Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
             targetPos.z = -5;
 
@@ -126,23 +132,87 @@ public class MainCharacter : MonoBehaviour
             // Log or animate step if needed
             Debug.Log("Step to " + tile.name);
 
-            if (tile.TileType == TileType.AppTile)
+
+            foreach (GameObject go in _exes)
             {
-                tile.appBroken = true;
+                ExeScript e = go.GetComponent<ExeScript>().tryCollect();
+                if (e != null)
+                {
+                    Turn turn = new Turn {
+                        Position = _currentPosition,
+                        exe = e
+                    };
+                    _turnsThisLoop.Add(turn);
+                    _loopManager.EndTurn(_turnsThisLoop);
+                    break;
+                }
             }
 
-            Turn turn = new Turn
+            foreach (GameObject go in _folders)
             {
-                Position = _currentPosition
-            };
-            _turnsThisLoop.Add(turn);
+                Debug.Log(go);
+                FolderScript f = go.GetComponent<FolderScript>().tryTp();
+                if (f != null)
+                {
+                    Turn turn = new Turn
+                    {
+                        Position = _currentPosition,
+                        tp = f
+                    };
+                    _turnsThisLoop.Add(turn);
+                    _loopManager.EndTurn(_turnsThisLoop);
+                    break;
+                }
+            }
 
-            TurnEnded?.Invoke(_turnsThisLoop);
+            if (!isAppDeleted)
+            {
+                BroadCastTurnEndedOnConsumable(tile, _currentPosition);
+            }
+            else
+            {
+                BroadcastTurnEnded(_currentPosition);
+            }
         }
         _animator.SetTrigger("idle");
         IsInteractable = true;
     }
 
+    private void BroadCastTurnEndedOnConsumable(Tile tile, Vector2 currentPosition)
+    {
+        // The tileType indicates the consumable type. This method is used for consumables which modify multiple turns 
+        switch (tile.TileType)
+        {
+            case TileType.AppTile:
+                for (int i = 0; i < AppController.AppDeleteTurnsCost; i++)
+                {
+                    if (_loopManager.HasTurnsRemaining())
+                    {
+                        Turn turn = new Turn
+                        {
+                            Position = currentPosition,
+                            Type = Turn.TurnType.DeleteApp
+                        };
+                        _turnsThisLoop.Add(turn);
+
+                        _loopManager.EndTurn(_turnsThisLoop);
+                    }
+                }
+                break;
+        }
+    }
+    
+    private void BroadcastTurnEnded(Vector2 currentPosition)
+    {
+        Turn turn = new Turn
+        {
+            Position = currentPosition,
+        };
+        _turnsThisLoop.Add(turn);
+
+        _loopManager.EndTurn(_turnsThisLoop);
+    }
+    
     public void Init(int[,] mapData, Vector2 startPosition)
     {
         _gridManager = FindFirstObjectByType<GridManager>();
@@ -167,6 +237,8 @@ public class MainCharacter : MonoBehaviour
         }
 
         _loopManager = FindFirstObjectByType<LoopManager>();
+        _exes = GameObject.FindGameObjectsWithTag("Exes");
+        _folders = GameObject.FindGameObjectsWithTag("Folder");
     }
 
     private void OnMouseDown()

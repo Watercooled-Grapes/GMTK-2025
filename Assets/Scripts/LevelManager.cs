@@ -38,7 +38,7 @@ public class LevelManager : MonoBehaviour
         _gridManager = FindFirstObjectByType<GridManager>();
         if (_gridManager != null) {
             _gridManager.GenerateGrid(_mapData);
-            _gridManager.GenerateApps(_mapData);
+            _gridManager.GenerateAppsIfMissing();
             Resetable += _gridManager.OnResetForLoop;
 
         } else {
@@ -65,11 +65,10 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Init Loop Manager");
         _loopManager = FindFirstObjectByType<LoopManager>();
         if (_loopManager != null) {
-            _loopManager.Init();
+            _loopManager.Init(_mainCharacter);
         } else {
             Debug.LogError("LoopManager is NULL");
         }
-        _mainCharacter.TurnEnded += _loopManager.OnTurnEnd;
 
         Debug.Log("Init Folders");
         GameObject[] folders = GameObject.FindGameObjectsWithTag("Folder");
@@ -84,6 +83,7 @@ public class LevelManager : MonoBehaviour
         foreach (GameObject go in exes)
         {
             go.GetComponent<ExeScript>().Init(_mapData);
+            Resetable += go.GetComponent<ExeScript>().OnResetForLoop;
         }
     }
     
