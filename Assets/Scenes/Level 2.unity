@@ -722,6 +722,11 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1518547257}
+    - target: {fileID: 925422343268714468, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_text
+      value: Those annoying firewalls always get in the way... Let's find some way
+        to switch them off!
+      objectReference: {fileID: 0}
     - target: {fileID: 2563520146760907989, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: spawnOnStart
       value: 1
@@ -779,9 +784,29 @@ PrefabInstance:
       propertyPath: m_overflowMode
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7001054824604236165, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 374.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7001054824604236165, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 462.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 7001054824604236165, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -785
+      objectReference: {fileID: 0}
+    - target: {fileID: 7001054824604236165, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -77
+      objectReference: {fileID: 0}
     - target: {fileID: 7048874808335316422, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_Name
       value: UIAssets
+      objectReference: {fileID: 0}
+    - target: {fileID: 9113996912427606367, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -8.945007
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
