@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4223768223983321045}
   - component: {fileID: 8083694671275652441}
   - component: {fileID: 4532052301256454288}
+  - component: {fileID: 4389706298488347180}
   m_Layer: 0
   m_Name: exe
   m_TagString: Exes
@@ -101,4 +102,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pos: {x: 1, y: 2}
-  turnsToAdd: 3
+  _turnsToAdd: 0
+--- !u!114 &4389706298488347180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6202403789989784044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36470aafb107d5d41a323f5af116b61c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amplitude: 0.1
+  frequency: 1

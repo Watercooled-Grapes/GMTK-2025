@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7302903679101595422}
   - component: {fileID: 5443006075633269428}
   - component: {fileID: 1378411991304332197}
+  - component: {fileID: 4776287244958655183}
   m_Layer: 0
   m_Name: App
   m_TagString: Apps
@@ -264,6 +265,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4776287244958655183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4178669051376518258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36470aafb107d5d41a323f5af116b61c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amplitude: 0.1
+  frequency: 1
+  randomStart: 0
+  floatX: 1
+  floatY: 1
 --- !u!1 &8764747889307882420
 GameObject:
   m_ObjectHideFlags: 0

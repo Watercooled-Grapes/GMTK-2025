@@ -34,6 +34,8 @@ public class ExeScript : MonoBehaviour
         transform.position = pos;
 
         _loopManager.RegisterTriggerableCallback(_pos, TryCollect);
+
+        GetComponent<Float>().Init();
     }
 
     public void TryCollect(int loopIndex)

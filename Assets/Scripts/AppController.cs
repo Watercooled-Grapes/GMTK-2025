@@ -33,6 +33,7 @@ public class AppController : MonoBehaviour
 
         _tile = LevelManager.Instance.GridManager.GetTileAtPosition(_pos);
 
+        GetComponent<Float>().Init();
         LevelManager.Instance.GridManager.RegisterAppController(_pos);
     }
     
