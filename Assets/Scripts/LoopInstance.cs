@@ -196,7 +196,7 @@ public class LoopInstance : MonoBehaviour
 
     public Vector2 GetCurrentTilePosition()
     {
-        if (0 < _currentTurn || _currentTurn >= _turns.Count)
+        if (_currentTurn < 0  || _currentTurn >= _turns.Count)
         {
             Debug.LogWarning("_currentTurn went out of range again!");
         }
