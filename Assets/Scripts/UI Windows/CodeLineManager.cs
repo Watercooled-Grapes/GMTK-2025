@@ -2,6 +2,7 @@ using UnityEngine;
 using Unity.Collections;
 using TMPro;
 using System.Collections.Generic;
+using System.Collections;
 
 public class CodeLineManager : MonoBehaviour
 {
@@ -36,6 +37,21 @@ public class CodeLineManager : MonoBehaviour
             // tmp.text += i + 1 + "|   " + printText + "\n";
             tmp.text += printText + "\n";
         }
+    }
+
+    public void GoCrazy()
+    {
+        StartCoroutine(SweepThroughCode());
+    }
+
+    private IEnumerator SweepThroughCode()
+    {
+        for (int i = 1; i < lines.Count; i++)
+        {
+            yield return new WaitForSeconds(0.1f);
+            UpdateCode(i);
+        }
+        StartCoroutine(SweepThroughCode());
     }
 
     public void addLines(int n)

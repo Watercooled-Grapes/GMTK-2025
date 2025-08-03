@@ -9,17 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/TitleScreen.unity
     guid: 7d86dcb6d09460f488368b843b4fe9db
   - enabled: 1
-    path: Assets/Scenes/Level1.unity
-    guid: 7fdf6429dfed48c499c42974c1b4a6e4
-  - enabled: 1
-    path: Assets/Scenes/Level2.unity
-    guid: 105919a23d9341e439674f259be465c3
-  - enabled: 1
-    path: Assets/Scenes/Level3.unity
-    guid: 72e8beb637b73af4dae61d3ead335776
-  - enabled: 1
-    path: Assets/Scenes/Level4.unity
-    guid: e166c020f29dbd148a6f5b9304991096
+    path: Assets/Scenes/Level 1.unity
+    guid: ecd427219f5d8474caee42d4e6c1980c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
