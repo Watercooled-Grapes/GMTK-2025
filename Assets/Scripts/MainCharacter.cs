@@ -259,12 +259,11 @@ public class MainCharacter : MonoBehaviour
         {
             Turn t = _turnsThisLoop[i];
             Vector3 pos = LevelManager.Instance.GridManager.GetTileCenterPosition(t.Position);
-            pos.z = -5;
-
-            transform.position = pos;
+            SetPositionWithLockedZ(pos);
             yield return new WaitForSeconds(0.05f);
         }
-
+        Vector3 startPos = _gridManager.GetTileCenterPosition(LevelManager.Instance.StartPosition);
+        SetPositionWithLockedZ(startPos);
         _animator.SetTrigger("idle");
     }
 }
