@@ -80,6 +80,7 @@ public class AppController : MonoBehaviour
             LevelManager.Instance.LoopManager.AddLoops(loopsToAddOnDestroy);
 
             _consumedOnce = true;
+            _tile.IsOccupied = false;
 
             _loopDestroyedIn = currentLoops;
             RunDestroySequence();
