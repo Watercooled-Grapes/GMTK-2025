@@ -194,7 +194,7 @@ PrefabInstance:
       objectReference: {fileID: 1518547254}
     - target: {fileID: 1400446999403647100, guid: fbc1b03e7f5ac44c980fe6f4a82a33c2, type: 3}
       propertyPath: _mapFileName
-      value: Maps/template_scene
+      value: Maps/level_1
       objectReference: {fileID: 0}
     - target: {fileID: 2124149415411327257, guid: fbc1b03e7f5ac44c980fe6f4a82a33c2, type: 3}
       propertyPath: maxTurns
@@ -462,7 +462,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &826636400
 Transform:
   m_ObjectHideFlags: 0
