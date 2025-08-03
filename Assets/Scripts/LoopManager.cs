@@ -104,17 +104,17 @@ public class LoopManager : MonoBehaviour
             switch (_selectedSong)
             {
                 case (0):
-                    _audioSource.resource = song1Layers[CurrentLoops + 1];
+                    _audioSource.resource = song1Layers[CurrentLoops];
                     _audioSource.time = songTime;
                     _audioSource.Play();
                     break;
                 case (1):
-                    _audioSource.resource = song2Layers[CurrentLoops + 1];
+                    _audioSource.resource = song2Layers[CurrentLoops];
                     _audioSource.time = songTime;
                     _audioSource.Play();
                     break;
                 case (2):
-                    _audioSource.resource = song3Layers[CurrentLoops + 1];
+                    _audioSource.resource = song3Layers[CurrentLoops];
                     _audioSource.time = songTime;
                     _audioSource.Play();
                     break;
@@ -128,7 +128,7 @@ public class LoopManager : MonoBehaviour
         }
     }
 
-    IEnumerator RestartLevelWithLoop(float delayTime, List<Turn> turns)
+    IEnumerator RestartLevelWithLoop(float delayTime, List<Turn> turns, int currentLoop)
     {
         curMaxTurns = maxTurns;
 
@@ -140,22 +140,20 @@ public class LoopManager : MonoBehaviour
         // 1) nothing is moving 2) we are not at goal 3) we HAVE loops available
         GameObject clone = Instantiate(_clonePrefab, Vector2.zero, Quaternion.identity);
         clone.SetActive(false);
-        clone.GetComponent<LoopInstance>().Init(turns, LevelManager.Instance.StartPosition, CurrentLoops);
+        clone.GetComponent<LoopInstance>().Init(turns, LevelManager.Instance.StartPosition, currentLoop);
         _loopInstances.Add(clone);
         _codeLineManager.UpdateCode(1);
         LevelManager.Instance.ResumeLevel();
-
-
+        
+        RestartLevelIfNecessary(currentLoop);
+        
         LevelManager.Instance.RestartLevelWithLoop();
-        CurrentLoops++;
-        _infoTextManager.UpdateTurnLoopInfo(maxTurns, maxLoops - CurrentLoops);
-
-        RestartLevelIfNecessary();
+        _infoTextManager.UpdateTurnLoopInfo(maxTurns, maxLoops - currentLoop);
     }
 
-    private void RestartLevelIfNecessary()
+    private void RestartLevelIfNecessary(int currentLoop)
     {
-        if (CurrentLoops > maxLoops && GameManager.Instance.CurrentState == GameState.PLAYING && !_isWinning)
+        if (currentLoop+1 > maxLoops && GameManager.Instance.CurrentState == GameState.PLAYING && !_isWinning)
         {
             GameManager.Instance.RestartLevel();
         }
@@ -176,9 +174,9 @@ public class LoopManager : MonoBehaviour
     public void EndTurn(List<Turn> turns, bool emitMessage = true)
     {
         Turn currentTurn = turns[turns.Count - 1];
-
+        int currentLoop = CurrentLoops;
         // The main character
-        if (emitMessage) InvokeCallbacksForPosition(currentTurn.Position, CurrentLoops);
+        if (emitMessage) InvokeCallbacksForPosition(currentTurn.Position, currentLoop);
 
         // Complete the turn and update all clones to take their next step
         Debug.Log("Number of clones " + _loopInstances.Count);
@@ -190,7 +188,7 @@ public class LoopManager : MonoBehaviour
         }
 
         _codeLineManager.UpdateCode(turns.Count + 1);
-        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - turns.Count, maxLoops - CurrentLoops);
+        _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - turns.Count, maxLoops - currentLoop);
 
         // if no more turns can be made, restart the loop
         if (turns.Count >= curMaxTurns && !_isRestarting)
@@ -198,7 +196,8 @@ public class LoopManager : MonoBehaviour
             _isRestarting = true;
             LevelManager levelManager = FindFirstObjectByType<LevelManager>();
             levelManager.PauseLevel();
-            StartCoroutine(RestartLevelWithLoop(1, turns));
+            CurrentLoops++;
+            StartCoroutine(RestartLevelWithLoop(1, turns, currentLoop));
         }
     }
 
