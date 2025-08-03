@@ -77,8 +77,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.16251333, g: 0.26535368, b: 0.41509432, a: 1}
+  m_Sprite: {fileID: -5195647831941899793, guid: c1bce0e70cc826b40a98688eef618d70, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -103,5 +103,9 @@ MonoBehaviour:
   _requiredLevers:
   - {fileID: 0}
   _pos: {x: 5, y: 4}
-  _closedColor: {r: 1, g: 0, b: 0, a: 1}
-  _openColor: {r: 0, g: 1, b: 0, a: 1}
+  isVertical: 0
+  sprites:
+  - {fileID: 3549996135023494478, guid: c1bce0e70cc826b40a98688eef618d70, type: 3}
+  - {fileID: -5195647831941899793, guid: c1bce0e70cc826b40a98688eef618d70, type: 3}
+  _closedColor: {r: 1, g: 1, b: 1, a: 1}
+  _openColor: {r: 1, g: 1, b: 1, a: 0}
