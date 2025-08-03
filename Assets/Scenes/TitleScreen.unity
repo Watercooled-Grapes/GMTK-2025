@@ -400,11 +400,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 27677245517208339, guid: ab0858355a2704bd697c077329de27b8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.60125
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 27677245517208339, guid: ab0858355a2704bd697c077329de27b8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.68334
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 27677245517208339, guid: ab0858355a2704bd697c077329de27b8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -421,6 +421,10 @@ PrefabInstance:
     - target: {fileID: 1205623905772213665, guid: ab0858355a2704bd697c077329de27b8, type: 3}
       propertyPath: m_Name
       value: CutsceneDisplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 1205623905772213665, guid: ab0858355a2704bd697c077329de27b8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1701,6 +1705,10 @@ PrefabInstance:
     - target: {fileID: 6932382541233403555, guid: fb6170adb10654ee2835223cd0a86ef4, type: 3}
       propertyPath: m_Name
       value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6932382541233403555, guid: fb6170adb10654ee2835223cd0a86ef4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

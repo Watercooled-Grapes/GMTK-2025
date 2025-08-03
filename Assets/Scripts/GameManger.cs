@@ -32,8 +32,10 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(cutsceneObject);
 
-        if (cutsceneObject == null) {
+        if (cutsceneObject == null)
+        {
             Debug.LogError("Please configure cutscene display for GameManager. The cutscene display can be found in prefabs");
         }
 
@@ -47,6 +49,7 @@ public class GameManager : MonoBehaviour
 
         FindFirstObjectByType<CodeLineManager>().GoCrazy();
         FindFirstObjectByType<InfoTextManager>().GoCrazy();
+        FindFirstObjectByType<MainCharacter>().IsInteractable = false;
         GameObject[] clones = GameObject.FindGameObjectsWithTag("Clones");
         foreach (GameObject go in clones)
         {
@@ -57,18 +60,19 @@ public class GameManager : MonoBehaviour
     private IEnumerator SpawnPopups()
     {
         yield return new WaitForSeconds(3);
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < 20; i++)
         {
             yield return new WaitForSeconds(0.1f);
             FindFirstObjectByType<PopupManager>().SpawnPopup(PopupTypes.Img);
         }
-        yield return new WaitForSeconds(2);
         CurrentState = GameState.PLAYING;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     
     public void LoadNextLevelWithCutscene(int nextSceneIndex)
     {
+        LoopManager mgr = FindFirstObjectByType<LoopManager>();
+        if (mgr) mgr._isWinning = true;
         CurrentState = GameState.CUTSCENE;
         StartCoroutine(PlayCutsceneAndLoad(nextSceneIndex));
     }
