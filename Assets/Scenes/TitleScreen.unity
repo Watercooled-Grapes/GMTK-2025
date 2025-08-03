@@ -308,7 +308,7 @@ PrefabInstance:
     - {fileID: 2934105207086879866, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4712046387622032008, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
-      insertIndex: 0
+      insertIndex: 1
       addedObject: {fileID: 1507412864}
     - targetCorrespondingSourceObject: {fileID: 4712046387622032008, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       insertIndex: -1
@@ -1392,6 +1392,10 @@ PrefabInstance:
     - target: {fileID: 7048874808335316422, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_Name
       value: UIAssets
+      objectReference: {fileID: 0}
+    - target: {fileID: 9113996912427606367, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -8.945007
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
