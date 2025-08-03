@@ -7,6 +7,7 @@ public class CutscenePlayer : MonoBehaviour
 
     void Start()
     {
+        videoPlayer.url = System.IO.Path.Combine(Application.streamingAssetsPath,"close.mp4"); 
         videoPlayer.loopPointReached += OnVideoFinished;
         videoPlayer.Play();
     }
