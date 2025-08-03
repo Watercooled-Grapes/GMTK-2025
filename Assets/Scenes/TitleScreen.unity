@@ -272,6 +272,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5841547116778939394, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6725472885350942888, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1455,6 +1459,8 @@ PlayableDirector:
     value: {fileID: 1142927038}
   - key: {fileID: -5661124593031610609, guid: 045491ce6d9360c4f8c59f59d5e7a39e, type: 2}
     value: {fileID: 1191347982}
+  - key: {fileID: 7716931144545957429, guid: 045491ce6d9360c4f8c59f59d5e7a39e, type: 2}
+    value: {fileID: 1191347982}
   m_ExposedReferences:
     m_References: []
 --- !u!114 &1142927036
@@ -1573,7 +1579,7 @@ Animator:
   m_GameObject: {fileID: 1191347980}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a10a3d03352f8df4b903dafe508562a0, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1629,7 +1635,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 461
-  m_Sprite: {fileID: 3040154443676929557, guid: 4056c87f368944342a57a6ae0e87a61e, type: 3}
+  m_Sprite: {fileID: -1911493731, guid: 3b2997269c8bc9b47aecd5c726419ea8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
