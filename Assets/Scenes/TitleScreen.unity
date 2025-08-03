@@ -306,9 +306,10 @@ PrefabInstance:
     - {fileID: 4505770383526756644, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
     - {fileID: 358655297274763737, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
     - {fileID: 2934105207086879866, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
+    - {fileID: 5432646388167350485, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4712046387622032008, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
-      insertIndex: 1
+      insertIndex: 0
       addedObject: {fileID: 1507412864}
     - targetCorrespondingSourceObject: {fileID: 4712046387622032008, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       insertIndex: -1
@@ -1389,6 +1390,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4395861586608308080, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1544440120}
     - target: {fileID: 7048874808335316422, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_Name
       value: UIAssets
