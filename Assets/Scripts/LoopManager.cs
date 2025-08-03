@@ -12,11 +12,17 @@ public class LoopManager : MonoBehaviour
     public int curMaxTurns;
     public int CurrentLoops { get; private set; } = 0;
     [SerializeField] private GameObject _clonePrefab;
+    [SerializeField] private AudioClip[] song1Layers;
+    [SerializeField] private AudioClip[] song2Layers;
+    [SerializeField] private AudioClip[] song3Layers;
+    private int _selectedSong;
+    private AudioSource _audioSource;
     private CodeLineManager _codeLineManager;
     private InfoTextManager _infoTextManager;
     private int _tilesToMove;
     private bool _isRestarting = false;
     public bool _isWinning = false;
+    private float songTime = 0f;
     public int tilesToMove
     {
         get
@@ -31,6 +37,11 @@ public class LoopManager : MonoBehaviour
                 loopInstance.GetComponent<LoopInstance>().tilesToMove = tilesToMove;
             }
         }
+    }
+
+    void Update()
+    {
+        songTime += Time.deltaTime;  
     }
 
     // Broadcast the signal when moving onto the tile position
@@ -48,6 +59,25 @@ public class LoopManager : MonoBehaviour
         _codeLineManager.Init(maxTurns);
         _infoTextManager = FindFirstObjectByType<InfoTextManager>();
         _infoTextManager.UpdateTurnLoopInfo(maxTurns, maxLoops - CurrentLoops);
+        _audioSource = GetComponent<AudioSource>();
+
+        _selectedSong = UnityEngine.Random.Range(0, 3);
+
+        switch (_selectedSong)
+            {
+                case (0):
+                    _audioSource.resource = song1Layers[0];
+                    _audioSource.Play();
+                    break;
+                case (1):
+                    _audioSource.resource = song2Layers[0];
+                    _audioSource.Play();
+                    break;
+                case (2):
+                    _audioSource.resource = song3Layers[0];
+                    _audioSource.Play();
+                    break;
+            }
     }
 
     public void RegisterTriggerableCallback(Vector2 _pos, Action<int> callback)
@@ -69,6 +99,28 @@ public class LoopManager : MonoBehaviour
     public void InitLoopInstances()
     {
         _isRestarting = false;
+        if (CurrentLoops < 4)
+        {
+            switch (_selectedSong)
+            {
+                case (0):
+                    _audioSource.resource = song1Layers[CurrentLoops + 1];
+                    _audioSource.time = songTime;
+                    _audioSource.Play();
+                    break;
+                case (1):
+                    _audioSource.resource = song2Layers[CurrentLoops + 1];
+                    _audioSource.time = songTime;
+                    _audioSource.Play();
+                    break;
+                case (2):
+                    _audioSource.resource = song3Layers[CurrentLoops + 1];
+                    _audioSource.time = songTime;
+                    _audioSource.Play();
+                    break;
+            }
+            songTime = 0;
+        }
         foreach (var loopInstance in _loopInstances)
         {
             loopInstance.SetActive(true);

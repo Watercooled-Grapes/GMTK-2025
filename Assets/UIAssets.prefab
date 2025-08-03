@@ -259,15 +259,15 @@ RectTransform:
   m_GameObject: {fileID: 5019948248944496106}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.91, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 847792079181448683}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.40802, y: 14.437988}
-  m_SizeDelta: {x: 562.38196, y: 62.981995}
+  m_AnchoredPosition: {x: -6.7039795, y: 23.272003}
+  m_SizeDelta: {x: 225.85095, y: 98.599}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8610845082337513442
 CanvasRenderer:
@@ -647,6 +647,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 4653421705664866952, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -20.891006
+      objectReference: {fileID: 0}
     - target: {fileID: 4712046387622032008, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -731,6 +735,14 @@ PrefabInstance:
       propertyPath: popupSound
       value: 
       objectReference: {fileID: 8300000, guid: a059ce8f0f70f6d4f950e71aba9c1797, type: 3}
+    - target: {fileID: 5403531758833107268, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 261.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 5403531758833107268, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 12.408997
+      objectReference: {fileID: 0}
     - target: {fileID: 7918819267349435187, guid: f1b7dba3000bac44fb1d0cb356b0d061, type: 3}
       propertyPath: m_Camera
       value: 
