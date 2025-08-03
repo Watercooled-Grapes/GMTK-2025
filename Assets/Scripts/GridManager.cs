@@ -7,6 +7,9 @@ public class GridManager : MonoBehaviour {
     [SerializeField] private int _width, _height;
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private CameraController _cameraController;
+
+    // Apps are different, we don't count them when calcuating the path
+    private HashSet<Vector2> appSets = new HashSet<Vector2>();
  
     private Dictionary<Vector2, Tile> _tiles;
     public enum TileType
@@ -58,10 +61,17 @@ public class GridManager : MonoBehaviour {
         };
 
         foreach (Vector2 dir in directions) {
+            bool shouldBreak = false;
             for (int i = 1; i <= turns; i++) {
+                if (shouldBreak)
+                {
+                    break;
+                }
                 Vector2 nextPos = startPos + dir * i;
                 Tile tile = GetTileAtPosition(nextPos);
                 if (tile == null || tile.TileType == TileType.WallTile || tile.IsOccupied) break;
+                // We break it next round instead of this round
+                if (appSets.Contains(nextPos)) shouldBreak = true;
                 reachableTiles.Add(tile, i);
             }
         }
@@ -144,5 +154,10 @@ public class GridManager : MonoBehaviour {
         }
 
         throw new InvalidOperationException($"Tile of type {tileType} was not found in the map."); 
+    }
+
+    public void RegisterAppController(Vector2 pos)
+    {
+        appSets.Add(pos);
     }
 }
