@@ -17,8 +17,7 @@ public class InfoTextManager : MonoBehaviour
     {
         
         tmp.text = "turns left: " + turnsLeft + "\n";
-        tmp.text += "loops left: " + loopsLeft + "\n";
-        tmp.text += "player@GTMK-2025:~$";
+        tmp.text += "loops left: " + loopsLeft ;
     }
 
     public void GoCrazy()
