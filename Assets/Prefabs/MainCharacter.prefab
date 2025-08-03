@@ -109,6 +109,7 @@ MonoBehaviour:
   popupOnTurns: 
   popupType: 
   _stepSoundEffect: {fileID: 8300000, guid: 27f0a1b24d236da49bbf17a1ee745bd9, type: 3}
+  _teleportSound: {fileID: 8300000, guid: 618451fcac257bb45b5b3fb23c8a926a, type: 3}
 --- !u!61 &8584160838334496228
 BoxCollider2D:
   m_ObjectHideFlags: 0
