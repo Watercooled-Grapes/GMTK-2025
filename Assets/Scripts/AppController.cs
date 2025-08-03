@@ -21,6 +21,8 @@ public class AppController : MonoBehaviour
 
     private LoopManager _loopManager;
 
+    public bool ConsumedOnce => _consumedOnce;
+
     void Start()
     {
         _renderer = GetComponent<SpriteRenderer>();
@@ -40,7 +42,7 @@ public class AppController : MonoBehaviour
         _tile = LevelManager.Instance.GridManager.GetTileAtPosition(_pos);
 
         GetComponent<Float>().Init();
-        LevelManager.Instance.GridManager.RegisterAppController(_pos);
+        LevelManager.Instance.GridManager.RegisterAppController(_pos, this);
         _tile.hoverEnter += onHoverEnter;
         _tile.hoverExit += onHoverExit;
     }
