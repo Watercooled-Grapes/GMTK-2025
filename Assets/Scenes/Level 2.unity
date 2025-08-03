@@ -722,6 +722,19 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1518547257}
+    - target: {fileID: 2563520146760907989, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: spawnOnStart
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563520146760907989, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: startingTitle
+      value: firewall.txt
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563520146760907989, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: startingString
+      value: Those annoying firewalls always get in the way... Lets find some way
+        to switch them off
+      objectReference: {fileID: 0}
     - target: {fileID: 2714591104664795429, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -21.37833

@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SpawnPopups());
 
         FindFirstObjectByType<CodeLineManager>().GoCrazy();
+        FindFirstObjectByType<InfoTextManager>().GoCrazy();
         GameObject[] clones = GameObject.FindGameObjectsWithTag("Clones");
         foreach (GameObject go in clones)
         {
@@ -56,7 +57,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator SpawnPopups()
     {
         yield return new WaitForSeconds(3);
-        for (int i = 0; i < 25; i++)
+        for (int i = 0; i < 50; i++)
         {
             yield return new WaitForSeconds(0.1f);
             FindFirstObjectByType<PopupManager>().SpawnPopup(PopupTypes.Img);

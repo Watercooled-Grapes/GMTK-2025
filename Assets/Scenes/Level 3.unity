@@ -825,6 +825,20 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1518547257}
+    - target: {fileID: 2563520146760907989, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: spawnOnStart
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563520146760907989, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: startingTitle
+      value: loops.txt
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563520146760907989, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: startingString
+      value: Fret not for running out of turns. You still have a few chances for
+        escape before the machine loops forever! when loops restart, your actions
+        carry over from previous loops through your past selves
+      objectReference: {fileID: 0}
     - target: {fileID: 2714591104664795429, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -21.37833
