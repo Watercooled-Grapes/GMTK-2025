@@ -1200,6 +1200,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1518547257}
+    - target: {fileID: 834947221303593109, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -142.2593
+      objectReference: {fileID: 0}
     - target: {fileID: 2563520146760907989, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: spawnOnStart
       value: 1
@@ -1261,6 +1265,22 @@ PrefabInstance:
       propertyPath: m_overflowMode
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7001054824604236165, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 345.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 7001054824604236165, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 462.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 7001054824604236165, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 462
+      objectReference: {fileID: 0}
+    - target: {fileID: 7001054824604236165, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -70
+      objectReference: {fileID: 0}
     - target: {fileID: 7048874808335316422, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_Name
       value: UIAssets
@@ -1268,6 +1288,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 7713799223089994764, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+    - {fileID: 5737983701772245066, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
