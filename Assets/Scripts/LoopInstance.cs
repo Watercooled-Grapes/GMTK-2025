@@ -153,4 +153,21 @@ public class LoopInstance : MonoBehaviour
         Turn turn = _turns[Math.Min(_currentTurn, _turns.Count - 1)];
         return turn.Position;
     }
+
+    public IEnumerator RewindVisual()
+    {
+        GetComponent<SpriteRenderer>().color = new Color32(255,255,255,40);
+        List<Turn> turns = _turns;
+        for (int i = turns.Count - 1; i >= 0; i--)
+        {
+            Turn t = turns[i];
+            Vector3 pos = LevelManager.Instance.GridManager.GetTileCenterPosition(t.Position);
+            pos.z = -5;
+
+            transform.position = pos;
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        GetComponent<Animator>().SetTrigger("idle");
+    }
 }
