@@ -223,6 +223,9 @@ public class LoopManager : MonoBehaviour
     private IEnumerator PlayRewindCoroutine()
     {
         Debug.Log("rewinding");
+
+        FindFirstObjectByType<Rewind>().SetVisible();
+
         LevelManager.Instance.MainCharacter.IsInteractable = false;
 
         int coroutinesRunning = 1;
@@ -237,6 +240,8 @@ public class LoopManager : MonoBehaviour
         }
 
         yield return new WaitUntil(() => coroutinesRunning == 0);
+
+        FindFirstObjectByType<Rewind>().SetInvisible();
 
         LevelManager.Instance.MainCharacter.IsInteractable = true;
         LevelManager.Instance.ResumeLevel();
