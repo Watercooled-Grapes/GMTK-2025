@@ -41,7 +41,7 @@ public class MainCharacter : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && IsInteractable)
         {
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3     mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mouseWorldPos.z = 0;
 
             // Clicking main character itself
@@ -57,7 +57,7 @@ public class MainCharacter : MonoBehaviour
             if (_isSelected)
             {
                 Tile targetTile = _gridManager.GetTileByWorldCoordinate(mouseWorldPos);
-                DestPosition = new Vector2(targetTile.X, targetTile.Y);
+                DestPosition = targetTile != null ? new Vector2(targetTile.X, targetTile.Y) : null;
 
                 if (targetTile != null && targetTile.TileType != TileType.WallTile && _availableTiles.ContainsKey(targetTile))
                 {
