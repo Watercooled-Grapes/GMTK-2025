@@ -252,4 +252,19 @@ public class MainCharacter : MonoBehaviour
     {
         return _turnsThisLoop;
     }
+
+    public IEnumerator RewindVisual()
+    {
+        for (int i = _turnsThisLoop.Count - 1; i >= 0; i--)
+        {
+            Turn t = _turnsThisLoop[i];
+            Vector3 pos = LevelManager.Instance.GridManager.GetTileCenterPosition(t.Position);
+            pos.z = -5;
+
+            transform.position = pos;
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        _animator.SetTrigger("idle");
+    }
 }

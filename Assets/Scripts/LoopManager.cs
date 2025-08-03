@@ -78,8 +78,10 @@ public class LoopManager : MonoBehaviour
     {
         curMaxTurns = maxTurns;
 
-        //Wait for the specified delay time before continuing.
+        // Wait for the specified delay time before continuing.
         yield return new WaitForSeconds(delayTime);
+        yield return StartCoroutine(PlayRewindCoroutine());
+
         //Do the action after the delay time has finished.
         // 1) nothing is moving 2) we are not at goal 3) we HAVE loops available
         GameObject clone = Instantiate(_clonePrefab, Vector2.zero, Quaternion.identity);
@@ -161,5 +163,33 @@ public class LoopManager : MonoBehaviour
     public bool HasTurnsRemaining()
     {
         return curMaxTurns > LevelManager.Instance.MainCharacter.GetCurrentTurn();
+    }
+
+    // We rewind main character and the clones all the together. 
+    private IEnumerator PlayRewindCoroutine()
+    {
+        LevelManager.Instance.MainCharacter.IsInteractable = false;
+
+        int coroutinesRunning = 1;
+
+        StartCoroutine(RunAndNotifyDone(LevelManager.Instance.MainCharacter.RewindVisual(), () => coroutinesRunning--));
+
+        foreach (var loopInstanceObj in _loopInstances)
+        {
+            coroutinesRunning++;
+            var loopInstance = loopInstanceObj.GetComponent<LoopInstance>();
+            StartCoroutine(RunAndNotifyDone(loopInstance.RewindVisual(), () => coroutinesRunning--));
+        }
+
+        yield return new WaitUntil(() => coroutinesRunning == 0);
+
+        LevelManager.Instance.MainCharacter.IsInteractable = true;
+        LevelManager.Instance.ResumeLevel();
+    }
+
+    private IEnumerator RunAndNotifyDone(IEnumerator routine, Action onDone)
+    {
+        yield return StartCoroutine(routine);
+        onDone?.Invoke();
     }
 }

@@ -13,6 +13,7 @@ public class LoopInstance : MonoBehaviour
 
     private Animator _animator;
     [SerializeField] private AudioClip splosionSound;
+    [SerializeField] private AudioClip implosionSound;
     private Boolean done = false;
 
 
@@ -106,6 +107,22 @@ public class LoopInstance : MonoBehaviour
         GetComponent<AudioSource>().PlayOneShot(splosionSound);
     }
 
+    public IEnumerator Implode()
+    {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        Color transparent = new Color(0, 1, 0, 0.2f);
+        Color visible = new Color(0, 1, 0, 1f);
+
+        spriteRenderer.color = transparent;
+        spriteRenderer.enabled = true;
+        transform.GetChild(1)?.GetComponent<ParticleSystem>()?.Play();
+        yield return new WaitForSeconds(0.5f);
+        GetComponent<AudioSource>().PlayOneShot(implosionSound);
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(ChangeColorOverTime(transparent, visible, 0.75f));
+        StartCoroutine(ShakeLeftRight(0.3f, 0.05f));
+    }
+
     private IEnumerator ChangeColorOverTime(Color startColor, Color targetColor, float duration)
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
@@ -168,5 +185,23 @@ public class LoopInstance : MonoBehaviour
         }
         Turn turn = _turns[Math.Min(_currentTurn, _turns.Count - 1)];
         return turn.Position;
+    }
+
+    public IEnumerator RewindVisual()
+    {
+        yield return StartCoroutine(Implode());
+        GetComponent<SpriteRenderer>().color = new Color32(255,255,255,40);
+        List<Turn> turns = _turns;
+        for (int i = turns.Count - 1; i >= 0; i--)
+        {
+            Turn t = turns[i];
+            Vector3 pos = LevelManager.Instance.GridManager.GetTileCenterPosition(t.Position);
+            pos.z = -5;
+
+            transform.position = pos;
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        GetComponent<Animator>().SetTrigger("idle");
     }
 }
