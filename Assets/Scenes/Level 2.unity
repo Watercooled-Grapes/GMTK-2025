@@ -194,11 +194,15 @@ PrefabInstance:
       objectReference: {fileID: 1518547254}
     - target: {fileID: 1400446999403647100, guid: fbc1b03e7f5ac44c980fe6f4a82a33c2, type: 3}
       propertyPath: _mapFileName
-      value: Maps/template_scene
+      value: Maps/level_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124149415411327257, guid: fbc1b03e7f5ac44c980fe6f4a82a33c2, type: 3}
+      propertyPath: maxLoops
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2124149415411327257, guid: fbc1b03e7f5ac44c980fe6f4a82a33c2, type: 3}
       propertyPath: maxTurns
-      value: 10
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6289385235736511645, guid: fbc1b03e7f5ac44c980fe6f4a82a33c2, type: 3}
       propertyPath: m_Name
@@ -307,11 +311,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9208470748522399372, guid: 0aa301e6fed484ceea4e825bdf84d974, type: 3}
       propertyPath: _pos.x
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 9208470748522399372, guid: 0aa301e6fed484ceea4e825bdf84d974, type: 3}
       propertyPath: _pos.y
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9208470748522399372, guid: 0aa301e6fed484ceea4e825bdf84d974, type: 3}
       propertyPath: '_requiredLevers.Array.data[0]'
@@ -392,7 +396,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2802156332780024459, guid: 1633604ed9c1d5d41a352d59c1a494dd, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3827714461433943710, guid: 1633604ed9c1d5d41a352d59c1a494dd, type: 3}
       propertyPath: _pos.x
@@ -605,7 +609,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4178669051376518258, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7302903679101595422, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
       propertyPath: _pos.x
@@ -699,7 +703,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6202403789989784044, guid: 3f3bccd0f96a8644a8d3d2720eaceab0, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -883,11 +887,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2374383851644010757, guid: 5d862d33950a34a8481bfd07a0950531, type: 3}
       propertyPath: _pos.x
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2374383851644010757, guid: 5d862d33950a34a8481bfd07a0950531, type: 3}
       propertyPath: _pos.y
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2374383851644010757, guid: 5d862d33950a34a8481bfd07a0950531, type: 3}
       propertyPath: '_connectedGates.Array.data[0]'
