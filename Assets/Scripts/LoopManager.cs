@@ -223,6 +223,7 @@ public class LoopManager : MonoBehaviour
     // We rewind main character and the clones all the together. 
     private IEnumerator PlayRewindCoroutine()
     {
+        Debug.Log("rewinding");
         LevelManager.Instance.MainCharacter.IsInteractable = false;
 
         int coroutinesRunning = 1;

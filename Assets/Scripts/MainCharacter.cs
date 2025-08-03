@@ -268,7 +268,7 @@ public class MainCharacter : MonoBehaviour
             transform.position = pos;
             yield return new WaitForSeconds(0.05f);
         }
-
+        transform.position = LevelManager.Instance.StartPosition;
         _animator.SetTrigger("idle");
     }
 }
