@@ -15,7 +15,8 @@ public class LoopInstance : MonoBehaviour
     [SerializeField] private AudioClip splosionSound;
     [SerializeField] private AudioClip implosionSound;
     private Boolean done = false;
-
+    private Boolean moving = false;
+    public Boolean exploding = false;
 
     public void Init(List<Turn> turns, Vector2 startPosition, int loopCreatedIn)
     {
@@ -53,9 +54,14 @@ public class LoopInstance : MonoBehaviour
 
     public void ReplayNext()
     {
+        moving = true;
         if (_currentTurn >= _turns.Count - 1)
         {
-            if (!done) StartCoroutine(Explode());
+            if (!done)
+            {
+                exploding = true;
+                StartCoroutine(Explode());
+            }
             done = true;
         }
 
@@ -96,6 +102,10 @@ public class LoopInstance : MonoBehaviour
 
     private IEnumerator Explode()
     {
+        while (moving)
+        {
+            yield return new WaitForFixedUpdate();
+        }
         StartCoroutine(ChangeColorOverTime(
             GetComponent<SpriteRenderer>().color, 
             new Color(0, 1, 0, 20f), 
@@ -105,6 +115,7 @@ public class LoopInstance : MonoBehaviour
         GetComponent<SpriteRenderer>().color = new Color32(0,0,0,0);
         transform.GetChild(0).GetComponent<ParticleSystem>().Play();
         GetComponent<AudioSource>().PlayOneShot(splosionSound);
+        exploding = false;
     }
 
     public IEnumerator Implode()
@@ -119,8 +130,13 @@ public class LoopInstance : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         GetComponent<AudioSource>().PlayOneShot(implosionSound);
         yield return new WaitForSeconds(0.5f);
-        StartCoroutine(ChangeColorOverTime(transparent, visible, 0.75f));
-        StartCoroutine(ShakeLeftRight(0.3f, 0.05f));
+
+        int coroutinesRunning = 2;
+
+        StartCoroutine(RunAndNotifyDone(ChangeColorOverTime(transparent, visible, 0.75f), () => coroutinesRunning--));
+        StartCoroutine(RunAndNotifyDone(ShakeLeftRight(0.3f, 0.05f), () => coroutinesRunning--));
+
+        yield return new WaitUntil(() => coroutinesRunning == 0);
     }
 
     private IEnumerator ChangeColorOverTime(Color startColor, Color targetColor, float duration)
@@ -175,6 +191,7 @@ public class LoopInstance : MonoBehaviour
         {
             _animator.SetTrigger("idle");
         }
+        moving = false;
     }
 
     public Vector2 GetCurrentTilePosition()
@@ -189,11 +206,16 @@ public class LoopInstance : MonoBehaviour
 
     public IEnumerator RewindVisual()
     {
+        while (moving)
+        {
+            yield return new WaitForFixedUpdate();
+        }
         yield return StartCoroutine(Implode());
         GetComponent<SpriteRenderer>().color = new Color32(255,255,255,40);
         List<Turn> turns = _turns;
         for (int i = turns.Count - 1; i >= 0; i--)
         {
+            Debug.Log(turns[i].Position);
             Turn t = turns[i];
             Vector3 pos = LevelManager.Instance.GridManager.GetTileCenterPosition(t.Position);
             pos.z = -5;
@@ -203,5 +225,11 @@ public class LoopInstance : MonoBehaviour
         }
 
         GetComponent<Animator>().SetTrigger("idle");
+    }
+
+    private IEnumerator RunAndNotifyDone(IEnumerator routine, Action onDone)
+    {
+        yield return StartCoroutine(routine);
+        onDone?.Invoke();
     }
 }
