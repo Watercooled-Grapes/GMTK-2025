@@ -13,12 +13,14 @@ public class AppController : MonoBehaviour
     [SerializeField] private Vector2 _pos;
     [SerializeField] private AudioClip explosionSound;
     
-    private bool _consumedOnce = false;
+    private bool _consumed = false;
     private Tile _tile;
     private SpriteRenderer _renderer;
     private TextMeshPro _infoText;
 
     private LoopManager _loopManager;
+
+    public bool IsConsumed => _consumed;
 
     void Start()
     {
@@ -39,7 +41,7 @@ public class AppController : MonoBehaviour
         _tile = LevelManager.Instance.GridManager.GetTileAtPosition(_pos);
 
         GetComponent<Float>().Init();
-        LevelManager.Instance.GridManager.RegisterAppController(_pos);
+        LevelManager.Instance.GridManager.RegisterAppController(_pos, this);
         _tile.hoverEnter += onHoverEnter;
         _tile.hoverExit += onHoverExit;
     }
@@ -57,7 +59,7 @@ public class AppController : MonoBehaviour
     public void Trigger(int loopIndex)
     {
         int currentLoops = LevelManager.Instance.LoopManager.CurrentLoops;
-        if (!_consumedOnce && loopIndex == currentLoops)
+        if (!_consumed && loopIndex == currentLoops)
         {
             // Consume it only when this is a main character
             for (int i = 0; i < AppController.APP_DELETE_TURNS_COST; i++)
@@ -79,17 +81,17 @@ public class AppController : MonoBehaviour
 
             LevelManager.Instance.LoopManager.AddLoops(loopsToAddOnDestroy);
 
-            _consumedOnce = true;
+            _consumed = true;
             _tile.IsOccupied = false;
 
             _loopDestroyedIn = currentLoops;
             RunDestroySequence();
-        } else if (!_consumedOnce && _loopDestroyedIn == loopIndex)
+        } else if (!_consumed && _loopDestroyedIn == loopIndex)
         {
             // If the clone consumes it, make the tile accessible for the main character.
             _tile.IsOccupied = false;
             RunDestroySequence();
-            _consumedOnce = true;
+            _consumed = true;
         }
     }
 
@@ -103,7 +105,7 @@ public class AppController : MonoBehaviour
 
     public void OnResetForLoop(int[,] mapData, Vector2 pos)
     {
-        if (_consumedOnce)
+        if (_consumed)
         {
             Color color = _renderer.color;
             color.a = 0.3f;
@@ -111,9 +113,9 @@ public class AppController : MonoBehaviour
         }
         _renderer.enabled = true;
 
-        _tile.IsOccupied = _consumedOnce;
+        _tile.IsOccupied = _consumed;
 
-        _consumedOnce = false;
+        _consumed = false;
     }
 
     void onHoverEnter()

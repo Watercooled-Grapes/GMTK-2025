@@ -9,7 +9,7 @@ public class GridManager : MonoBehaviour {
     [SerializeField] private CameraController _cameraController;
 
     // Apps are different, we don't count them when calcuating the path
-    private HashSet<Vector2> appSets = new HashSet<Vector2>();
+    private Dictionary<Vector2, AppController> appDicts = new Dictionary<Vector2, AppController>();
  
     private Dictionary<Vector2, Tile> _tiles;
     public enum TileType
@@ -71,7 +71,7 @@ public class GridManager : MonoBehaviour {
                 Tile tile = GetTileAtPosition(nextPos);
                 if (tile == null || tile.TileType == TileType.WallTile || tile.IsOccupied) break;
                 // We break it next round instead of this round
-                if (appSets.Contains(nextPos)) shouldBreak = true;
+                if (appDicts.ContainsKey(nextPos) && !appDicts[nextPos].IsConsumed) shouldBreak = true;
                 reachableTiles.Add(tile, i);
             }
         }
@@ -156,8 +156,8 @@ public class GridManager : MonoBehaviour {
         throw new InvalidOperationException($"Tile of type {tileType} was not found in the map."); 
     }
 
-    public void RegisterAppController(Vector2 pos)
+    public void RegisterAppController(Vector2 pos, AppController app)
     {
-        appSets.Add(pos);
+        appDicts.Add(pos, app);
     }
 }
