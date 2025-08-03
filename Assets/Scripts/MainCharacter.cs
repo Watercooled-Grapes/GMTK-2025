@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using static GridManager;
 using Unity.VisualScripting;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 
 public class MainCharacter : MonoBehaviour
 {
@@ -41,12 +40,6 @@ public class MainCharacter : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Scene currentScene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(currentScene.name);
-        }
-
         if (Input.GetMouseButtonDown(0) && IsInteractable)
         {
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
