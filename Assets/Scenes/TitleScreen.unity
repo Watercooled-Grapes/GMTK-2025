@@ -447,6 +447,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 31
       objectReference: {fileID: 0}
+    - target: {fileID: 8607090971702037720, guid: ab0858355a2704bd697c077329de27b8, type: 3}
+      propertyPath: m_VideoClip
+      value: 
+      objectReference: {fileID: 32900000, guid: 7b1b6a8d5cf5a544e8552cd0b3014a3c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
