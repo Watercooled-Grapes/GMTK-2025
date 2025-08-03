@@ -19,7 +19,7 @@ public class LoopInstance : MonoBehaviour
     public void Init(List<Turn> turns, Vector2 startPosition, int loopCreatedIn)
     {
         LoopCreatedIn = loopCreatedIn;
-        _turns = turns;
+        _turns = new List<Turn>(turns);
         _startPosition = startPosition;
         Reset();
 

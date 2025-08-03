@@ -15,6 +15,7 @@ public class LoopManager : MonoBehaviour
     private CodeLineManager _codeLineManager;
     private InfoTextManager _infoTextManager;
     private int _tilesToMove;
+    private bool _isRestarting = false;
     public int tilesToMove {
         get
             {
@@ -65,6 +66,7 @@ public class LoopManager : MonoBehaviour
 
     public void InitLoopInstances()
     {
+        _isRestarting = false;
         foreach (var loopInstance in _loopInstances)
         {
             loopInstance.SetActive(true);
@@ -82,7 +84,7 @@ public class LoopManager : MonoBehaviour
         // 1) nothing is moving 2) we are not at goal 3) we HAVE loops available
         GameObject clone = Instantiate(_clonePrefab, Vector2.zero, Quaternion.identity);
         clone.SetActive(false);
-        clone.GetComponent<LoopInstance>().Init(new List<Turn>(turns), LevelManager.Instance.StartPosition, CurrentLoops);
+        clone.GetComponent<LoopInstance>().Init(turns, LevelManager.Instance.StartPosition, CurrentLoops);
         _loopInstances.Add(clone);
         _codeLineManager.UpdateCode(1);
         LevelManager.Instance.ResumeLevel();
@@ -134,8 +136,9 @@ public class LoopManager : MonoBehaviour
         _infoTextManager.UpdateTurnLoopInfo(curMaxTurns - turns.Count, maxLoops - CurrentLoops);
 
         // if no more turns can be made, restart the loop
-        if (turns.Count >= curMaxTurns)
+        if (turns.Count >= curMaxTurns && !_isRestarting)
         {
+            _isRestarting = true;
             LevelManager levelManager = FindFirstObjectByType<LevelManager>();
             levelManager.PauseLevel();
             StartCoroutine(RestartLevelWithLoop(1, turns));
