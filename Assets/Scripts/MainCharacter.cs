@@ -154,7 +154,7 @@ public class MainCharacter : MonoBehaviour
     {
         _turnsThisLoop.Add(turn);
 
-        if (popupOnTurns.Contains(_turnsThisLoop.Count))
+        if (popupOnTurns.Contains(_turnsThisLoop.Count) && _loopManager.CurrentLoops == 0)
         {
             _popupManager.SpawnPopup(popupType[_popupTypeIt]);
             _popupTypeIt++;
