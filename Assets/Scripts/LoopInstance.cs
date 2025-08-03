@@ -47,12 +47,12 @@ public class LoopInstance : MonoBehaviour
         while (_currentTurn < _turns.Count - 1)
         {
             yield return new WaitForSeconds(0.25f);
-            ReplayNext();
+            ReplayNext(false);
         }
         StartCoroutine(GoBackAndForth());
     }
 
-    public void ReplayNext()
+    public void ReplayNext(bool appTurn)
     {
         moving = true;
         if (_currentTurn >= _turns.Count - 1)
@@ -71,6 +71,12 @@ public class LoopInstance : MonoBehaviour
         if (turn.TeleportToPos != null)
         {
             transform.position = turn.TeleportToPos.Value;
+            _animator.SetTrigger("idle");
+            return;
+        }
+        if (appTurn)
+        {
+            transform.position = turn.Position;
             _animator.SetTrigger("idle");
             return;
         }
