@@ -994,6 +994,14 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1518547257}
+    - target: {fileID: 925422343268714468, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_text
+      value: This is the final challenge. The break condition is in sight. Good Luck!
+      objectReference: {fileID: 0}
+    - target: {fileID: 925422343268714468, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_margin.z
+      value: 804.0212
+      objectReference: {fileID: 0}
     - target: {fileID: 2563520146760907989, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: spawnOnStart
       value: 1
@@ -1062,6 +1070,22 @@ PrefabInstance:
     - target: {fileID: 5236364522954423836, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_overflowMode
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7001054824604236165, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 327.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7001054824604236165, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 462.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 7001054824604236165, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -790
+      objectReference: {fileID: 0}
+    - target: {fileID: 7001054824604236165, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -66
       objectReference: {fileID: 0}
     - target: {fileID: 7048874808335316422, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_Name
