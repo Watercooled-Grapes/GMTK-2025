@@ -322,7 +322,10 @@ PrefabInstance:
     - {fileID: 7082111827711029174, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5802264889151503500, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
 --- !u!4 &328886941 stripped
 Transform:
@@ -703,7 +706,10 @@ PrefabInstance:
     - {fileID: 7082111827711029174, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5802264889151503500, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 874363e1df6751e4eab1604b3c2fb2b3, type: 3}
 --- !u!114 &959852807 stripped
 MonoBehaviour:
@@ -787,7 +793,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3048343427105513028, guid: 3f3bccd0f96a8644a8d3d2720eaceab0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 3f3bccd0f96a8644a8d3d2720eaceab0, type: 3}
 --- !u!4 &1025471755 stripped
 Transform:
@@ -865,7 +874,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3048343427105513028, guid: 3f3bccd0f96a8644a8d3d2720eaceab0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 3f3bccd0f96a8644a8d3d2720eaceab0, type: 3}
 --- !u!1001 &1165322279
 PrefabInstance:
@@ -879,6 +891,19 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1518547257}
+    - target: {fileID: 2563520146760907989, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: spawnOnStart
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563520146760907989, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: startingTitle
+      value: symlinks.txt
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563520146760907989, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: startingString
+      value: Folders (Symlinks) whisk you off to a distant place. *CAREFUL* The file
+        system is unstable and might not allow return trips
+      objectReference: {fileID: 0}
     - target: {fileID: 2714591104664795429, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -21.37833
@@ -1014,7 +1039,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3048343427105513028, guid: 3f3bccd0f96a8644a8d3d2720eaceab0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 3f3bccd0f96a8644a8d3d2720eaceab0, type: 3}
 --- !u!4 &1413792718 stripped
 Transform:

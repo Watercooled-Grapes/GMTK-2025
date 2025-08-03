@@ -324,7 +324,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3048343427105513028, guid: 3f3bccd0f96a8644a8d3d2720eaceab0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 3f3bccd0f96a8644a8d3d2720eaceab0, type: 3}
 --- !u!4 &218929135 stripped
 Transform:
@@ -787,7 +790,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3048343427105513028, guid: 3f3bccd0f96a8644a8d3d2720eaceab0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 3f3bccd0f96a8644a8d3d2720eaceab0, type: 3}
 --- !u!1001 &1165322279
 PrefabInstance:
@@ -801,6 +807,19 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1518547257}
+    - target: {fileID: 2563520146760907989, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: spawnOnStart
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563520146760907989, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: startingTitle
+      value: scripts.txt
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563520146760907989, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: startingString
+      value: Those scripts over there might help you tamper with the machine by injecting
+        some code. This might grant you some more turns
+      objectReference: {fileID: 0}
     - target: {fileID: 2714591104664795429, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -21.37833
