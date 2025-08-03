@@ -87,6 +87,8 @@ public class GameManager : MonoBehaviour
         cutsceneObject.SetActive(true);
         GetComponent<AudioSource>().PlayOneShot(turnoffSound);
 
+        cutsceneObject.GetComponent<Canvas>().worldCamera = GameObject.FindGameObjectsWithTag("MainCamera")[0].GetComponent<Camera>();
+
         yield break;
     }
 
