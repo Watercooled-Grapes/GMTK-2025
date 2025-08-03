@@ -26,6 +26,7 @@ public class MainCharacter : MonoBehaviour
     private AudioSource _audioSource;
     private Animator _animator;
     [SerializeField] private AudioClip _stepSoundEffect;
+    [SerializeField] private AudioClip _teleportSound;
 
     public Vector2? DestPosition { get; set; } = null;
 
@@ -69,6 +70,7 @@ public class MainCharacter : MonoBehaviour
 
     public void TeleportMainCharacter(Tile newTile)
     {
+        _audioSource.PlayOneShot(_teleportSound);
         _isSelected = false;
         RemoveHightlights();
         _availableTiles.Clear();

@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AppController : MonoBehaviour
@@ -83,6 +84,7 @@ public class AppController : MonoBehaviour
             _tile.IsOccupied = false;
 
             _loopDestroyedIn = currentLoops;
+            FindFirstObjectByType<MainCharacter>().gameObject.GetComponent<Animator>().SetTrigger("sweep");
             RunDestroySequence();
         } else if (!_consumedOnce && _loopDestroyedIn == loopIndex)
         {
