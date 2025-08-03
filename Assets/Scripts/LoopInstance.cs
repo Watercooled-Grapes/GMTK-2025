@@ -54,8 +54,11 @@ public class LoopInstance : MonoBehaviour
 
         float deltaX = turn.Position.x - transform.position.x;
         float deltaY = turn.Position.y - transform.position.y;
-
-        if (Math.Abs(deltaX) > Math.Abs(deltaY) && deltaX > 0)
+        if (deltaX < 0.1f && deltaY < 0.1f)
+        {
+            _animator.SetTrigger("sweep");
+        }
+        else if (Math.Abs(deltaX) > Math.Abs(deltaY) && deltaX > 0)
         {
             _animator.SetTrigger("right");
         }

@@ -6,6 +6,7 @@ public class LeverScript : MonoBehaviour
     [SerializeField] private bool _isTriggered = false;
     [SerializeField] private Vector2 _pos;
     [SerializeField] private List<GateScript> _connectedGates;
+    [SerializeField] private AudioClip switchSound;
 
     private Animator _animator;
 
@@ -22,6 +23,7 @@ public class LeverScript : MonoBehaviour
     {
         if (_isTriggered) return;
 
+        GetComponent<AudioSource>().PlayOneShot(switchSound);
         _isTriggered = true;
         Debug.Log($"{name} was triggered!");
 
