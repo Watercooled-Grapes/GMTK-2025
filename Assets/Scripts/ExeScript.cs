@@ -44,7 +44,7 @@ public class ExeScript : MonoBehaviour
         // the one that triggers this is the clone that has previously collected it
         if (!_collected || (loopIndex != _loopManager.CurrentLoops && _collectedIn == loopIndex))
         {
-            _loopManager.addTurns(_turnsToAdd);
+            _loopManager.AddTurns(_turnsToAdd);
             _renderer.enabled = false;
             _collected = true;
             _collectedIn = loopIndex;
@@ -64,7 +64,7 @@ public class ExeScript : MonoBehaviour
 
     public void CollectByClone()
     {
-        _loopManager.addTurns(_turnsToAdd);
+        _loopManager.AddTurns(_turnsToAdd);
         _renderer.enabled = false;
     }
 }
