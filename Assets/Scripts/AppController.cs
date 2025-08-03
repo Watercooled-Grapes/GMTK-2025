@@ -48,7 +48,8 @@ public class AppController : MonoBehaviour
     
     public void Trigger(int loopIndex)
     {
-        if (!_consumedOnce && loopIndex == LevelManager.Instance.LoopManager.CurrentLoops)
+        int currentLoops = LevelManager.Instance.LoopManager.CurrentLoops;
+        if (!_consumedOnce && loopIndex == currentLoops)
         {
             // Consume it only when this is a main character
             for (int i = 0; i < AppController.APP_DELETE_TURNS_COST; i++)
@@ -70,7 +71,7 @@ public class AppController : MonoBehaviour
 
             _consumedOnce = true;
 
-            _loopDestroyedIn = LevelManager.Instance.LoopManager.CurrentLoops;
+            _loopDestroyedIn = currentLoops;
             RunDestroySequence();
         } else if (!_consumedOnce && _loopDestroyedIn == loopIndex)
         {
