@@ -16,15 +16,17 @@ public class LoopManager : MonoBehaviour
     private InfoTextManager _infoTextManager;
     private int _tilesToMove;
     private bool _isRestarting = false;
-    public int tilesToMove {
+    public bool _isWinning = false;
+    public int tilesToMove
+    {
         get
-            {
-                return _tilesToMove; 
-            }
+        {
+            return _tilesToMove;
+        }
         set
         {
-        _tilesToMove = value; 
-        foreach (var loopInstance in _loopInstances)
+            _tilesToMove = value;
+            foreach (var loopInstance in _loopInstances)
             {
                 loopInstance.GetComponent<LoopInstance>().tilesToMove = tilesToMove;
             }
@@ -101,7 +103,7 @@ public class LoopManager : MonoBehaviour
 
     private void RestartLevelIfNecessary()
     {
-        if (CurrentLoops >= maxLoops && GameManager.Instance.CurrentState == GameState.PLAYING)
+        if (CurrentLoops > maxLoops && GameManager.Instance.CurrentState == GameState.PLAYING && !_isWinning)
         {
             GameManager.Instance.RestartLevel();
         }
