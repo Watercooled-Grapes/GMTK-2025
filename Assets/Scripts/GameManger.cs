@@ -57,6 +57,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void InstaRestart() {SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);}
+
     private IEnumerator SpawnPopups()
     {
         yield return new WaitForSeconds(3);
