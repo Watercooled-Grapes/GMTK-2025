@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ public class AppController : MonoBehaviour
 {
     public static int APP_DELETE_TURNS_COST = 3;
     [SerializeField] private ParticleSystem _particleSystem;
-    private int _loopDestroyedIn;
+    private int _loopDestroyedIn = -1;
     [SerializeField] private int loopsToAddOnDestroy = 1;
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private Vector2 _pos;
@@ -15,6 +16,7 @@ public class AppController : MonoBehaviour
     private bool _consumedOnce = false;
     private Tile _tile;
     private SpriteRenderer _renderer;
+    private TextMeshPro _infoText;
 
     private LoopManager _loopManager;
 
@@ -23,6 +25,9 @@ public class AppController : MonoBehaviour
         _renderer = GetComponent<SpriteRenderer>();
         _renderer.enabled = true;
         _renderer.sprite = sprites[Random.Range(0, sprites.Length)];
+
+        _infoText = gameObject.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>();
+        _infoText.text = $"+{loopsToAddOnDestroy} loops\n -{APP_DELETE_TURNS_COST} turns";
     }
 
     public void Init()
@@ -35,6 +40,8 @@ public class AppController : MonoBehaviour
 
         GetComponent<Float>().Init();
         LevelManager.Instance.GridManager.RegisterAppController(_pos);
+        _tile.hoverEnter += onHoverEnter;
+        _tile.hoverExit += onHoverExit;
     }
     
     IEnumerator DelayedDestroy(float delayTime)
@@ -106,5 +113,21 @@ public class AppController : MonoBehaviour
         _tile.IsOccupied = _consumedOnce;
 
         _consumedOnce = false;
+    }
+
+    void onHoverEnter()
+    {
+        if (_loopDestroyedIn == -1)
+        {
+            _infoText.enabled = true;
+        }
+    }
+
+    void onHoverExit()
+    {
+        if (_loopDestroyedIn == -1)
+        {
+            _infoText.enabled = false;
+        }
     }
 }
