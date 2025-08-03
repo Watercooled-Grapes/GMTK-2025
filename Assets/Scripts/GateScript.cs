@@ -6,10 +6,13 @@ public class GateScript : MonoBehaviour
     [SerializeField] private List<LeverScript> _requiredLevers;
     [SerializeField] private Vector2 _pos;
     private bool _isOpen = false;
+    [SerializeField] private bool isVertical = false;
     private Tile _tile;
 
     private SpriteRenderer _spriteRenderer;
 
+    [SerializeField] private List<Sprite> sprites = new List<Sprite>();
+    
     [SerializeField]
     private Color _closedColor = Color.red;
     [SerializeField]
@@ -23,6 +26,8 @@ public class GateScript : MonoBehaviour
         if (_spriteRenderer != null)
         {
             _spriteRenderer.color = _closedColor;
+            // 0 is vertical gate -> |, 1 is horizontal gate -> ___ 
+            _spriteRenderer.sprite = isVertical ? sprites[0] : sprites[1];
         }
 
         _tile.IsOccupied = true;
