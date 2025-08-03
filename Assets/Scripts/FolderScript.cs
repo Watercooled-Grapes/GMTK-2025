@@ -10,7 +10,7 @@ public class FolderScript : MonoBehaviour
     private GridManager _gridManager;
 
     public void Init(int[,] mapData)
-    {   
+    {
         _gridManager = LevelManager.Instance.GridManager;
         if (_gridManager == null)
         {
@@ -20,7 +20,9 @@ public class FolderScript : MonoBehaviour
         Vector3 pos = _gridManager.GetTileCenterPosition(_pos);
         transform.position = pos;
 
-        LevelManager.Instance.LoopManager.RegisterTriggerableCallback(_pos,  TryTeleport);
+        LevelManager.Instance.LoopManager.RegisterTriggerableCallback(_pos, TryTeleport);
+        
+        GetComponent<Float>().Init();
     }
 
     public void TryTeleport(int loopIndex)

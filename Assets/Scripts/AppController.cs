@@ -32,6 +32,8 @@ public class AppController : MonoBehaviour
         _loopManager.RegisterTriggerableCallback(_pos, Trigger);
 
         _tile = LevelManager.Instance.GridManager.GetTileAtPosition(_pos);
+
+        GetComponent<Float>().Init();
     }
     
     IEnumerator DelayedDestroy(float delayTime)
