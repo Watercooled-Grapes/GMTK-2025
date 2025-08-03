@@ -72,7 +72,7 @@ public class AppController : MonoBehaviour
                         TeleportToPos = null,
                     };
                     LevelManager.Instance.MainCharacter.AddTurn(turn);
-                    LevelManager.Instance.LoopManager.EndTurn(LevelManager.Instance.MainCharacter.GetTurns(), false);
+                    LevelManager.Instance.LoopManager.EndTurn(LevelManager.Instance.MainCharacter.GetTurns(), true, false);
                 } else {
                     break;
                 }

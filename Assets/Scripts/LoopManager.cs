@@ -171,7 +171,7 @@ public class LoopManager : MonoBehaviour
         }
     }
 
-    public void EndTurn(List<Turn> turns, bool emitMessage = true)
+    public void EndTurn(List<Turn> turns, bool appTurn=false, bool emitMessage = true)
     {
         Turn currentTurn = turns[turns.Count - 1];
         int currentLoop = CurrentLoops;
@@ -184,7 +184,7 @@ public class LoopManager : MonoBehaviour
         {
             LoopInstance loopInstance = loopInstanceObj.GetComponent<LoopInstance>();
             if (emitMessage) InvokeCallbacksForPosition(loopInstance.GetCurrentTilePosition(), loopInstance.LoopCreatedIn);
-            loopInstance.ReplayNext();
+            loopInstance.ReplayNext(appTurn);
         }
 
         _codeLineManager.UpdateCode(turns.Count + 1);
