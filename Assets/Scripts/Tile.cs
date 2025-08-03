@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
@@ -19,7 +20,9 @@ public class Tile : MonoBehaviour
     private LineRenderer _lineRenderer;
     private Coroutine _fadeCoroutine;
     private Coroutine _scaleCoroutine;
-    
+
+    public event Action hoverEnter;
+    public event Action hoverExit;
     public int X { get; set; } = 0;
     public int Y { get; set; } = 0;
     
@@ -135,11 +138,13 @@ public class Tile : MonoBehaviour
     {
         if (TileType == TileType.WallTile) return;
         enableHatch();
+        hoverEnter?.Invoke();
     }
 
     void OnMouseExit()
     {
         disableHatch();
+        hoverExit?.Invoke();
     }
 
     public void HighlightAsMoveOption()

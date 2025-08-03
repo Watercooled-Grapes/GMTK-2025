@@ -1,4 +1,6 @@
+using TMPro;
 using UnityEngine;
+using static GridManager;
 
 public class ExeScript : MonoBehaviour
 {
@@ -11,12 +13,15 @@ public class ExeScript : MonoBehaviour
     private bool _collected = false;
     private int _collectedIn;
     private Tile _tile;
+    private TextMeshPro _infoText;
 
     private SpriteRenderer _renderer;
 
     void Start()
     {
         _renderer = GetComponent<SpriteRenderer>();
+        _infoText = gameObject.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>();
+        _infoText.text = $"+{_turnsToAdd} turns";
     }
 
     public void Init(int[,] mapData)
@@ -36,6 +41,8 @@ public class ExeScript : MonoBehaviour
         _loopManager.RegisterTriggerableCallback(_pos, TryCollect);
 
         GetComponent<Float>().Init();
+        _tile.hoverEnter += onHoverEnter;
+        _tile.hoverExit += onHoverExit;
     }
 
     public void TryCollect(int loopIndex)
@@ -66,5 +73,25 @@ public class ExeScript : MonoBehaviour
     {
         _loopManager.AddTurns(_turnsToAdd);
         _renderer.enabled = false;
+    }
+
+    void onHoverEnter()
+    {
+        if (_collected)
+        {
+            return;
+        }
+        
+        _infoText.enabled = true;
+    }
+
+    void onHoverExit()
+    {
+        if (_collected)
+        {
+            return;
+        }
+
+        _infoText.enabled = false;
     }
 }
