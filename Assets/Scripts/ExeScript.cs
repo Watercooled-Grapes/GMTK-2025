@@ -6,6 +6,7 @@ public class ExeScript : MonoBehaviour
 {
     [SerializeField] private Vector2 _pos;
     [SerializeField] private int _turnsToAdd;
+    [SerializeField] private AudioClip pickupSound;
 
     private MainCharacter _player;
     private GridManager _gridManager;
@@ -51,6 +52,7 @@ public class ExeScript : MonoBehaviour
         // the one that triggers this is the clone that has previously collected it
         if (!_collected || (loopIndex != _loopManager.CurrentLoops && _collectedIn == loopIndex))
         {
+            GetComponent<AudioSource>().PlayOneShot(pickupSound);
             _loopManager.AddTurns(_turnsToAdd);
             _renderer.enabled = false;
             _collected = true;
