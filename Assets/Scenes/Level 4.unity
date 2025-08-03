@@ -584,6 +584,22 @@ PrefabInstance:
     - target: {fileID: 1482186432358994783, guid: c6e6ee92196d14c16b000729adf05c05, type: 3}
       propertyPath: _popupManager
       value: 
+      objectReference: {fileID: 1165322280}
+    - target: {fileID: 1482186432358994783, guid: c6e6ee92196d14c16b000729adf05c05, type: 3}
+      propertyPath: popupType.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1482186432358994783, guid: c6e6ee92196d14c16b000729adf05c05, type: 3}
+      propertyPath: popupOnTurns.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1482186432358994783, guid: c6e6ee92196d14c16b000729adf05c05, type: 3}
+      propertyPath: 'popupType.Array.data[0]'
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1482186432358994783, guid: c6e6ee92196d14c16b000729adf05c05, type: 3}
+      propertyPath: 'popupOnTurns.Array.data[0]'
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3572065343469405318, guid: c6e6ee92196d14c16b000729adf05c05, type: 3}
       propertyPath: m_LocalPosition.x
@@ -990,6 +1006,17 @@ PrefabInstance:
       addedObject: {fileID: 1009126627}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+--- !u!114 &1165322280 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2563520146760907989, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+  m_PrefabInstance: {fileID: 1165322279}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca353dae2c1e4904aba6e6ffc5100021, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1362123254 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4223768223983321045, guid: 3f3bccd0f96a8644a8d3d2720eaceab0, type: 3}
