@@ -9,6 +9,8 @@ public class Float : MonoBehaviour
     [SerializeField] private float frequency = 1.0f;      // Speed of the floating motion
     private float _xFrequency;
     private float _yFrequency;
+    private float _xOffset;  // Random offset for X position
+    private float _yOffset;  // Random offset for Y position
     
     // Original position
     private Vector3 _startPosition;
@@ -19,13 +21,17 @@ public class Float : MonoBehaviour
         _startPosition = transform.position;
         _xFrequency = frequency * Random.Range(0.7f, 1.3f);
         _yFrequency = frequency * Random.Range(0.7f, 1.3f);
+
+        // Random starting positions in the animation cycle (0 to 2π)
+        _xOffset = Random.Range(0f, Mathf.PI * 2f);
+        _yOffset = Random.Range(0f, Mathf.PI * 2f);
     }
 
     void Update()
     {
         // Calculate the new position offset using a sine wave
-        float xTime = Time.time * _xFrequency;
-        float yTime = Time.time * _yFrequency;
+        float xTime = Time.time * _xFrequency + _xOffset;
+        float yTime = Time.time * _yFrequency + _yOffset;
         
         // Create a new position with the sine wave offset
         Vector3 newPosition = _startPosition;
