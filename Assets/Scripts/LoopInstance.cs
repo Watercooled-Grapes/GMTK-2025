@@ -34,6 +34,22 @@ public class LoopInstance : MonoBehaviour
         _currentTurn = 0;
     }
 
+    public void GoCrazy()
+    {
+        StartCoroutine(GoBackAndForth());
+    }
+
+    private IEnumerator GoBackAndForth()
+    {
+        Reset();
+        while (_currentTurn < _turns.Count - 1)
+        {
+            yield return new WaitForSeconds(0.25f);
+            ReplayNext();
+        }
+        StartCoroutine(GoBackAndForth());
+    }
+
     public void ReplayNext()
     {
         if (_currentTurn >= _turns.Count - 1)
@@ -43,7 +59,7 @@ public class LoopInstance : MonoBehaviour
         }
 
         Turn turn = _turns[_currentTurn];
-        _currentTurn = Math.Min(_currentTurn + 1,  _turns.Count - 1);
+        _currentTurn = Math.Min(_currentTurn + 1, _turns.Count - 1);
 
         if (turn.TeleportToPos != null)
         {

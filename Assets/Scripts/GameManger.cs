@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using static MainCharacter;
 
 public enum GameState {
     CUTSCENE = 0,
@@ -39,6 +40,32 @@ public class GameManager : MonoBehaviour
         CurrentState = GameState.PLAYING;
     }
 
+    public void RestartLevel()
+    {
+        CurrentState = GameState.CUTSCENE;
+        StartCoroutine(SpawnPopups());
+
+        FindFirstObjectByType<CodeLineManager>().GoCrazy();
+        GameObject[] clones = GameObject.FindGameObjectsWithTag("Clones");
+        foreach (GameObject go in clones)
+        {
+            go.GetComponent<LoopInstance>().GoCrazy();
+        }
+    }
+
+    private IEnumerator SpawnPopups()
+    {
+        yield return new WaitForSeconds(3);
+        for (int i = 0; i < 25; i++)
+        {
+            yield return new WaitForSeconds(0.1f);
+            FindFirstObjectByType<PopupManager>().SpawnPopup(PopupTypes.Img);
+        }
+        yield return new WaitForSeconds(2);
+        CurrentState = GameState.PLAYING;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    
     public void LoadNextLevelWithCutscene(int nextSceneIndex)
     {
         CurrentState = GameState.CUTSCENE;

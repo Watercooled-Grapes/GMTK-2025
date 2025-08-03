@@ -99,7 +99,7 @@ public class LoopManager : MonoBehaviour
     {
         if (CurrentLoops >= maxLoops && GameManager.Instance.CurrentState == GameState.PLAYING)
         {
-            GameManager.Instance.LoadNextLevelWithCutscene(SceneManager.GetActiveScene().buildIndex);
+            GameManager.Instance.RestartLevel();
         }
     }
 
