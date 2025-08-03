@@ -93,7 +93,7 @@ public class LoopManager : MonoBehaviour
         _codeLineManager.UpdateCode(1);
         LevelManager.Instance.ResumeLevel();
 
-        
+
         LevelManager.Instance.RestartLevelWithLoop();
         CurrentLoops++;
         _infoTextManager.UpdateTurnLoopInfo(maxTurns, maxLoops - CurrentLoops);
@@ -111,7 +111,8 @@ public class LoopManager : MonoBehaviour
 
     private void InvokeCallbacksForPosition(Vector2 pos, int loopIndex)
     {
-        if (!TriggerableCallbacks.ContainsKey(pos)) {
+        if (!TriggerableCallbacks.ContainsKey(pos))
+        {
             return;
         }
         foreach (var callback in TriggerableCallbacks[pos])
@@ -119,14 +120,14 @@ public class LoopManager : MonoBehaviour
             callback.Invoke(loopIndex);
         }
     }
-    
-    public void EndTurn(List<Turn> turns, bool emitMessage=true)
+
+    public void EndTurn(List<Turn> turns, bool emitMessage = true)
     {
         Turn currentTurn = turns[turns.Count - 1];
 
         // The main character
         if (emitMessage) InvokeCallbacksForPosition(currentTurn.Position, CurrentLoops);
-        
+
         // Complete the turn and update all clones to take their next step
         Debug.Log("Number of clones " + _loopInstances.Count);
         foreach (var loopInstanceObj in _loopInstances)
@@ -193,5 +194,10 @@ public class LoopManager : MonoBehaviour
     {
         yield return StartCoroutine(routine);
         onDone?.Invoke();
+    }
+    
+    public bool IsDeathLoop()
+    {
+        return CurrentLoops >= maxLoops;
     }
 }

@@ -23,9 +23,9 @@ public class MainCharacter : MonoBehaviour
     private GridManager _gridManager;
     private LoopManager _loopManager;
 
-    private AudioSource _audioSource; 
+    private AudioSource _audioSource;
     private Animator _animator;
-    [SerializeField] private AudioClip _stepSoundEffect; 
+    [SerializeField] private AudioClip _stepSoundEffect;
 
     public Vector2? DestPosition { get; set; } = null;
 
@@ -41,7 +41,7 @@ public class MainCharacter : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && IsInteractable)
         {
-            Vector3     mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mouseWorldPos.z = 0;
 
             // Clicking main character itself
@@ -98,7 +98,7 @@ public class MainCharacter : MonoBehaviour
             Vector3 targetPos = _gridManager.GetTileCenterPosition(tile);
             targetPos.z = -5;
 
-            _audioSource.pitch = 1 + UnityEngine.Random.Range(-0.2f,0.2f);
+            _audioSource.pitch = 1 + UnityEngine.Random.Range(-0.2f, 0.2f);
             _audioSource.PlayOneShot(_stepSoundEffect);
 
             if (_currentPosition.x < tile.X)
@@ -153,7 +153,7 @@ public class MainCharacter : MonoBehaviour
 
         _loopManager.EndTurn(_turnsThisLoop);
     }
-    
+
     private void BroadcastTurnEnded()
     {
         Turn turn = new Turn
@@ -164,11 +164,13 @@ public class MainCharacter : MonoBehaviour
 
         BroadcastTurnEnded(turn);
     }
-    
+
     public void Init(int[,] mapData, Vector2 startPosition)
     {
         _gridManager = LevelManager.Instance.GridManager;
         _isSelected = false;
+
+        if (_loopManager && !_loopManager.IsDeathLoop()) GetComponent<Animator>().SetTrigger("split");
 
         if (_gridManager == null)
         {

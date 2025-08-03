@@ -56,6 +56,6 @@ public class CodeLineManager : MonoBehaviour
 
     public void addLines(int n)
     {
-        for (int i = 0; i < n; i++) lines.Insert(1, "   move();");
+        for (int i = 0; i < n; i++) lines.Insert(1, "   " + randomCode[Random.Range(0,randomCode.Length)]);
     }
 }
