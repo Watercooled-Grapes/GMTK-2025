@@ -1055,6 +1055,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 12.408997
       objectReference: {fileID: 0}
+    - target: {fileID: 4395861586608308080, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1518547257}
     - target: {fileID: 5236364522954423836, guid: c59491ff82d9b7045b846ca661a0b80a, type: 3}
       propertyPath: m_overflowMode
       value: 3
